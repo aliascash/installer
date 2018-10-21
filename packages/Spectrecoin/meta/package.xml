@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Spectrecoin</DisplayName>
+    <Description>Spectrecoin</Description>
+    <Version>2.1.0</Version>
+    <ReleaseDate>2018-10-17</ReleaseDate>
+    <Licenses>
+        <License name="License Agreement" file="LICENSE.txt" />
+    </Licenses>
+    <Default>true</Default>
+</Package>
