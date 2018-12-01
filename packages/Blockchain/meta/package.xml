@@ -8,4 +8,5 @@
         <License name="License Agreement Spectrecoin" file="LICENSE.txt" />
     </Licenses>
     <Default>true</Default>
+    <Script>installscript.js</Script>
 </Package>
