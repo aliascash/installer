@@ -17,6 +17,14 @@ tmpWorkdir=/tmp/SpectrecoinUpdate
 tmpChecksumfile=checksumfile.txt
 tmpBinaryArchive=Spectrecoin.tgz
 
+if [[ -z "${versionToInstall}" ]] ; then
+    echo "No version to install (tag) given, installing latest release"
+    githubTag=$(curl -L -s https://api.github.com/repos/spectrecoin/spectre/releases/latest | grep tag_name | cut -d: -f2 | cut -d '"' -f2)
+else
+    githubTag=${versionToInstall}
+fi
+echo ""
+
 echo "Determining system"
 if [[ -e /etc/os-release ]] ; then
     . /etc/os-release
@@ -42,14 +50,6 @@ else
 fi
 echo ""
 
-if [[ -z "${versionToInstall}" ]] ; then
-    echo "No version to install (tag) given, installing latest release"
-    githubTag=$(curl -L -s https://api.github.com/repos/spectrecoin/spectre/releases/latest | grep tag_name | cut -d: -f2 | cut -d '"' -f2)
-else
-    githubTag=${versionToInstall}
-fi
-echo ""
-
 checksumfile=''
 case ${NAME} in
     "Debian GNU/Linux")
@@ -71,7 +71,11 @@ mkdir -p ${tmpWorkdir}
 downloadBaseURL=https://github.com/spectrecoin/spectre/releases/download/${githubTag}
 checksumfileToDownload=${downloadBaseURL}/${checksumfile}
 echo "Downloading checksum file ${checksumfileToDownload}"
-curl -L -o ${tmpWorkdir}/${tmpChecksumfile} ${checksumfileToDownload} || echo "Error downloading checksum file ${checksumfileToDownload}"
+curl -L -o ${tmpWorkdir}/${tmpChecksumfile} ${checksumfileToDownload}
+if [[ $(cat ${tmpWorkdir}/${tmpChecksumfile}) = 'Not Found' ]] ; then
+    echo "Checksum file ${checksumfileToDownload} not found!"
+    exit 1
+fi
 echo "    Done"
 echo ""
 filenameToDownload=$(head -n 1 ${tmpWorkdir}/${tmpChecksumfile})
@@ -82,6 +86,10 @@ givenSHA512Hash=$(head -n 5 ${tmpWorkdir}/${tmpChecksumfile} | tail -n 1 | tr -s
 
 echo "Downloading binary archive ${downloadBaseURL}/${filenameToDownload}"
 curl -L -o ${tmpWorkdir}/${tmpBinaryArchive} ${downloadBaseURL}/${filenameToDownload} || echo "Error downloading archive file ${downloadBaseURL}/${filenameToDownload}"
+if [[ "$(head -n 1 ${tmpWorkdir}/${tmpBinaryArchive})" = 'Not Found' ]] ; then
+    echo "Archive ${downloadBaseURL}/${filenameToDownload} not found!"
+    exit 1
+fi
 echo "    Done"
 echo ""
 
