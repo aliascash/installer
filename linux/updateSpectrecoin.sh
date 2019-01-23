@@ -93,7 +93,7 @@ givenSHA256Hash=$(head -n 4 ${tmpWorkdir}/${tmpChecksumfile} | tail -n 1 | tr -s
 givenSHA512Hash=$(head -n 5 ${tmpWorkdir}/${tmpChecksumfile} | tail -n 1 | tr -s " " | cut -d ' ' -f 2)
 
 echo "Downloading binary archive ${downloadBaseURL}/${filenameToDownload}"
-curl -L -o ${tmpWorkdir}/${tmpBinaryArchive} ${downloadBaseURL}/${filenameToDownload} || echo "Error downloading archive file ${downloadBaseURL}/${filenameToDownload}"
+curl -L -o ${tmpWorkdir}/${tmpBinaryArchive} ${downloadBaseURL}/${filenameToDownload}
 if [[ "$(head -n 1 ${tmpWorkdir}/${tmpBinaryArchive})" = 'Not Found' ]] ; then
     echo "Archive ${downloadBaseURL}/${filenameToDownload} not found!"
     exit 1
