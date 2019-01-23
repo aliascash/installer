@@ -36,8 +36,16 @@ echo "    Determined $NAME"
 echo ""
 
 if [[ -e ${installPath}/spectrecoind ]] ; then
-    currentVersion=$(${installPath}/spectrecoind -version)
-    echo "Creating backup of current version ${currentVersion}"
+    # Option '-version' is working since v3.x
+    #currentVersion=$(${installPath}/spectrecoind -version)
+    # At the moment use a workaround
+    currentVersion=$(strings ${installPath}/spectrecoind | grep "v[123]\..\..\." | head -n 1)
+    if [[ -z "${currentVersion}" ]] ; then
+        currentVersion=$(date +%Y%m%d-%H%M)
+        echo "Unable to determine version of current binaries, using timestamp '${currentVersion}'"
+    else
+        echo "Creating backup of current version ${currentVersion}"
+    fi
     if [[ -f ${installPath}/spectrecoind-${currentVersion} ]] ; then
         echo "    Backup of current version already existing"
     else
