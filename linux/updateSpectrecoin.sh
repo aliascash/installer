@@ -32,7 +32,7 @@ else
     echo "File /etc/os-release not found, not updating anything"
     exit 1
 fi
-echo "   Determined $NAME"
+echo "    Determined $NAME"
 echo ""
 
 if [[ -e ${installPath}/spectrecoind ]] ; then
