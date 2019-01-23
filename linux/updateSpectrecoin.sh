@@ -79,8 +79,8 @@ mkdir -p ${tmpWorkdir}
 downloadBaseURL=https://github.com/spectrecoin/spectre/releases/download/${githubTag}
 checksumfileToDownload=${downloadBaseURL}/${checksumfile}
 echo "Downloading checksum file ${checksumfileToDownload}"
-curl -L -o ${tmpWorkdir}/${tmpChecksumfile} ${checksumfileToDownload}
-if [[ $(cat ${tmpWorkdir}/${tmpChecksumfile}) = 'Not Found' ]] ; then
+httpCode=$(curl -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${checksumfileToDownload})
+if [[ ${httpCode} -ge 400 ]] ; then
     echo "Checksum file ${checksumfileToDownload} not found!"
     exit 1
 fi
@@ -93,8 +93,8 @@ givenSHA256Hash=$(head -n 4 ${tmpWorkdir}/${tmpChecksumfile} | tail -n 1 | tr -s
 givenSHA512Hash=$(head -n 5 ${tmpWorkdir}/${tmpChecksumfile} | tail -n 1 | tr -s " " | cut -d ' ' -f 2)
 
 echo "Downloading binary archive ${downloadBaseURL}/${filenameToDownload}"
-curl -L -o ${tmpWorkdir}/${tmpBinaryArchive} ${downloadBaseURL}/${filenameToDownload}
-if [[ "$(head -n 1 ${tmpWorkdir}/${tmpBinaryArchive})" = 'Not Found' ]] ; then
+httpCode=$(curl -L -o ${tmpWorkdir}/${tmpBinaryArchive} -w "%{http_code}" ${downloadBaseURL}/${filenameToDownload})
+if [[ ${httpCode} -ge 400 ]] ; then
     echo "Archive ${downloadBaseURL}/${filenameToDownload} not found!"
     exit 1
 fi
