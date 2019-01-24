@@ -25,7 +25,7 @@ At first, spectrecoind must be stopped to replace the binaries.
 Execute the updater script afterwards with
 
 ```
-curl -L -s https://raw.githubusercontent.com/spectrecoin/installer/simpleUpdater/linux/updateSpectrecoin.sh | sudo bash -s
+curl -L -s https://raw.githubusercontent.com/spectrecoin/installer/master/linux/updateSpectrecoin.sh | sudo bash -s
 ```
 
 This will update the local installation to the latest release.
@@ -34,7 +34,7 @@ To update with a dedicated (develop-) version, just add the corresponding
 tag to the cmdline. The following example shows the installation of `Build129`:
 
 ```
-curl -L -s https://raw.githubusercontent.com/spectrecoin/installer/simpleUpdater/linux/updateSpectrecoin.sh | sudo bash -s Build129
+curl -L -s https://raw.githubusercontent.com/spectrecoin/installer/master/linux/updateSpectrecoin.sh | sudo bash -s Build129
 ```
 
 ### What it does
