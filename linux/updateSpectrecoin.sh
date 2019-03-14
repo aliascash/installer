@@ -35,16 +35,19 @@ fi
 echo "    Determined $NAME"
 echo ""
 
-checksumfile=''
-case ${NAME} in
-    "Debian GNU/Linux")
-        checksumfile="Checksum-Spectrecoin-Debian.txt"
+usedDistro=''
+case ${ID} in
+    "debian")
+        usedDistro="Debian"
         ;;
-    "Ubuntu")
-        checksumfile="Checksum-Spectrecoin-Ubuntu.txt"
+    "ubuntu")
+        usedDistro="Ubuntu"
         ;;
-    "Fedora")
-        checksumfile="Checksum-Spectrecoin-Fedora.txt"
+    "fedora")
+        usedDistro="Fedora"
+        ;;
+    "raspbian")
+        usedDistro="RaspberryPi"
         ;;
 esac
 
@@ -54,20 +57,19 @@ mkdir -p ${tmpWorkdir}
 #https://github.com/spectrecoin/spectre/releases/download/2.2.1/Spectrecoin-2.2.1-8706c85-Ubuntu.tgz
 #https://github.com/spectrecoin/spectre/releases/download/Build127/Spectrecoin-Build127-8e152a8-Debian.tgz
 downloadBaseURL=https://github.com/spectrecoin/spectre/releases/download/${githubTag}
-checksumfileToDownload=${downloadBaseURL}/${checksumfile}
-echo "Downloading checksum file ${checksumfileToDownload}"
-httpCode=$(curl -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${checksumfileToDownload})
+releasenotesToDownload=${downloadBaseURL}/RELESAENOTES.txt
+echo "Downloading release notes with checksums ${releasenotesToDownload}"
+httpCode=$(curl -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${releasenotesToDownload})
 if [[ ${httpCode} -ge 400 ]] ; then
-    echo "Checksum file ${checksumfileToDownload} not found!"
+    echo "${releasenotesToDownload} not found!"
     exit 1
 fi
 echo "    Done"
 echo ""
-filenameToDownload=$(head -n 1 ${tmpWorkdir}/${tmpChecksumfile})
-givenMD5Hash=$(head -n 2 ${tmpWorkdir}/${tmpChecksumfile} | tail -n 1 | tr -s " " | cut -d ' ' -f 2)
-givenSHA1Hash=$(head -n 3 ${tmpWorkdir}/${tmpChecksumfile} | tail -n 1 | tr -s " " | cut -d ' ' -f 2)
-givenSHA256Hash=$(head -n 4 ${tmpWorkdir}/${tmpChecksumfile} | tail -n 1 | tr -s " " | cut -d ' ' -f 2)
-givenSHA512Hash=$(head -n 5 ${tmpWorkdir}/${tmpChecksumfile} | tail -n 1 | tr -s " " | cut -d ' ' -f 2)
+# Desired line of text looks like this:
+# **Spectrecoin-Build139-0c97a29-Debian.tgz:** `1128be441ff910ef31361dfb04273618b23809ee25a29ec9f67effde060c53bb`
+officialChecksum=$(grep "${usedDistro}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '`' -f2)
+filenameToDownload=$(grep "${usedDistro}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '*' -f3 | sed "s/://g")
 
 echo "Downloading binary archive ${downloadBaseURL}/${filenameToDownload}"
 httpCode=$(curl -L -o ${tmpWorkdir}/${tmpBinaryArchive} -w "%{http_code}" ${downloadBaseURL}/${filenameToDownload})
@@ -78,36 +80,15 @@ fi
 echo "    Done"
 echo ""
 
-echo "Verifying checksums"
-determinedMD5Hash=$(md5sum ${tmpWorkdir}/${tmpBinaryArchive} | awk '{ print $1 }')
-if [[ "${givenMD5Hash}" != "${determinedMD5Hash}" ]] ; then
-    echo "ERROR: MD5 hash of downloaded file not matching value from ${checksumfileToDownload} (${givenMD5Hash} != ${determinedMD5Hash})"
+echo "Verifying checksum"
+determinedSha256Checksum=$(sha256sum ${tmpWorkdir}/${tmpBinaryArchive} | awk '{ print $1 }')
+if [[ "${officialChecksum}" != "${determinedSha256Checksum}" ]] ; then
+    echo "ERROR: sha256sum of downloaded file not matching value from ${releasenotesToDownload}: (${officialChecksum} != ${determinedSha256Checksum})"
     exit 1
 else
-    echo "    MD5 hash OK"
+    echo "    sha256sum OK"
 fi
-determinedSHA1Hash=$(sha1sum ${tmpWorkdir}/${tmpBinaryArchive} | awk '{ print $1 }')
-if [[ "${givenSHA1Hash}" != "${determinedSHA1Hash}" ]] ; then
-    echo "ERROR: SHA1 hash of downloaded file not matching value from ${checksumfileToDownload} (${givenSHA1Hash} != ${determinedSHA1Hash})"
-    exit 1
-else
-    echo "    SHA1 hash OK"
-fi
-determinedSHA256Hash=$(sha256sum ${tmpWorkdir}/${tmpBinaryArchive} | awk '{ print $1 }')
-if [[ "${givenSHA256Hash}" != "${determinedSHA256Hash}" ]] ; then
-    echo "ERROR: SHA256 hash of downloaded file not matching value from ${checksumfileToDownload} (${givenSHA256Hash} != ${determinedSHA256Hash})"
-    exit 1
-else
-    echo "    SHA256 hash OK"
-fi
-determinedSHA512Hash=$(sha512sum ${tmpWorkdir}/${tmpBinaryArchive} | awk '{ print $1 }')
-if [[ "${givenSHA512Hash}" != "${determinedSHA512Hash}" ]] ; then
-    echo "ERROR: SHA512 hash of downloaded file not matching value from ${checksumfileToDownload} (${givenSHA512Hash} != ${determinedSHA512Hash})"
-    exit 1
-else
-    echo "    SHA512 hash OK"
-fi
-echo "    Downloaded archive is ok, checksums match values from ${checksumfileToDownload}"
+echo "    Downloaded archive is ok, checksums match values from ${releasenotesToDownload}"
 echo ""
 
 if [[ -e ${installPath}/spectrecoind ]] ; then
