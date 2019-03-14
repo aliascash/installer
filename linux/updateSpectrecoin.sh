@@ -91,6 +91,14 @@ fi
 echo "    Downloaded archive is ok, checksums match values from ${releasenotesToDownload}"
 echo ""
 
+# Handle old binary location /usr/bin/
+if [[ -e /usr/bin/spectrecoind -a ! -L /usr/bin/spectrecoind ]] ; then
+    # Binary found on old location and is _not_ a symlink,
+    # so move to new location and create symlink
+    mv /usr/bin/spectrecoind ${installPath}/spectrecoind
+    ln -s ${installPath}/spectrecoind /usr/bin/spectrecoind
+fi
+
 if [[ -e ${installPath}/spectrecoind ]] ; then
     # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
     # but only the version and the commit hash separated by "_" is used later on.
