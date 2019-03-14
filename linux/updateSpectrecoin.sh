@@ -95,8 +95,15 @@ echo ""
 if [[ -e /usr/bin/spectrecoind -a ! -L /usr/bin/spectrecoind ]] ; then
     # Binary found on old location and is _not_ a symlink,
     # so move to new location and create symlink
+    echo "Found binaries on old location, cleaning them up"
     mv /usr/bin/spectrecoind ${installPath}/spectrecoind
     ln -s ${installPath}/spectrecoind /usr/bin/spectrecoind
+    if [[ -e /usr/bin/spectrecoin -a ! -L /usr/bin/spectrecoin ]] ; then
+        mv /usr/bin/spectrecoin ${installPath}/spectrecoin
+        ln -s ${installPath}/spectrecoin /usr/bin/spectrecoin
+    fi
+    echo "    Done"
+    echo ""
 fi
 
 if [[ -e ${installPath}/spectrecoind ]] ; then
@@ -115,8 +122,10 @@ if [[ -e ${installPath}/spectrecoind ]] ; then
     if [[ -f ${installPath}/spectrecoind-${currentVersion} ]] ; then
         echo "    Backup of current version already existing"
     else
-        mv ${installPath}/spectrecoin  ${installPath}/spectrecoin-${currentVersion}
         mv ${installPath}/spectrecoind ${installPath}/spectrecoind-${currentVersion}
+        if [[ -e ${installPath}/spectrecoin ]] ; then
+            mv ${installPath}/spectrecoin  ${installPath}/spectrecoin-${currentVersion}
+        fi
         echo "    Done"
     fi
 else
