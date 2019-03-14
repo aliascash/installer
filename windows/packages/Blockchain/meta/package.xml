@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <Package>
-    <DisplayName>Spectrecoin</DisplayName>
-    <Description>Spectrecoin</Description>
+    <DisplayName>Blockchain</DisplayName>
+    <Description>Bootstrapped Spectrecoin blockchain</Description>
     <Version>2.1.0</Version>
-    <ReleaseDate>2018-10-17</ReleaseDate>
+    <ReleaseDate>2018-11-22</ReleaseDate>
     <Licenses>
         <License name="License Agreement Spectrecoin" file="LICENSE.txt" />
     </Licenses>
     <Default>true</Default>
+    <Script>installscript.js</Script>
 </Package>
