@@ -92,13 +92,13 @@ echo "    Downloaded archive is ok, checksums match values from ${releasenotesTo
 echo ""
 
 # Handle old binary location /usr/bin/
-if [[ -e /usr/bin/spectrecoind -a ! -L /usr/bin/spectrecoind ]] ; then
+if [[ -e /usr/bin/spectrecoind && ! -L /usr/bin/spectrecoind ]] ; then
     # Binary found on old location and is _not_ a symlink,
     # so move to new location and create symlink
     echo "Found binaries on old location, cleaning them up"
     mv /usr/bin/spectrecoind ${installPath}/spectrecoind
     ln -s ${installPath}/spectrecoind /usr/bin/spectrecoind
-    if [[ -e /usr/bin/spectrecoin -a ! -L /usr/bin/spectrecoin ]] ; then
+    if [[ -e /usr/bin/spectrecoin && ! -L /usr/bin/spectrecoin ]] ; then
         mv /usr/bin/spectrecoin ${installPath}/spectrecoin
         ln -s ${installPath}/spectrecoin /usr/bin/spectrecoin
     fi
