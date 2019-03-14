@@ -92,10 +92,12 @@ echo "    Downloaded archive is ok, checksums match values from ${releasenotesTo
 echo ""
 
 if [[ -e ${installPath}/spectrecoind ]] ; then
+    # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
+    # but only the version and the commit hash separated by "_" is used later on.
     # Option '-version' is working since v3.x
     #currentVersion=$(${installPath}/spectrecoind -version)
     # At the moment use a workaround
-    currentVersion=$(strings ${installPath}/spectrecoind | grep "v[123]\..\..\." | head -n 1)
+    currentVersion=$(strings ${installPath}/spectrecoind | grep "v[123]\..\..\." | head -n 1 | sed -e "s/(//g" -e "s/)//g" | cut -d " " -f1-2 | sed "s/ /_/g")
     if [[ -z "${currentVersion}" ]] ; then
         currentVersion=$(date +%Y%m%d-%H%M)
         echo "Unable to determine version of current binaries, using timestamp '${currentVersion}'"
