@@ -57,7 +57,7 @@ mkdir -p ${tmpWorkdir}
 #https://github.com/spectrecoin/spectre/releases/download/2.2.1/Spectrecoin-2.2.1-8706c85-Ubuntu.tgz
 #https://github.com/spectrecoin/spectre/releases/download/Build127/Spectrecoin-Build127-8e152a8-Debian.tgz
 downloadBaseURL=https://github.com/spectrecoin/spectre/releases/download/${githubTag}
-releasenotesToDownload=${downloadBaseURL}/RELESAENOTES.txt
+releasenotesToDownload=${downloadBaseURL}/RELEASENOTES.txt
 echo "Downloading release notes with checksums ${releasenotesToDownload}"
 httpCode=$(curl -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${releasenotesToDownload})
 if [[ ${httpCode} -ge 400 ]] ; then
