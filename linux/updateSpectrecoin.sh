@@ -16,6 +16,8 @@ installPath=/usr/local/bin
 tmpWorkdir=/tmp/SpectrecoinUpdate
 tmpChecksumfile=checksumfile.txt
 tmpBinaryArchive=Spectrecoin.tgz
+backportsRepo="deb http://ftp.debian.org/debian stretch-backports main"
+boostVersion='1.67.0'
 
 if [[ -z "${versionToInstall}" ]] ; then
     echo "No version to install (tag) given, installing latest release"
@@ -36,11 +38,11 @@ echo "    Determined $NAME"
 echo ""
 
 usedDistro=''
-addBackports=false
+backportsFile=''
 case ${ID} in
     "debian")
         usedDistro="Debian"
-        addBackports=true
+        backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
         ;;
     "ubuntu")
         usedDistro="Ubuntu"
@@ -50,7 +52,7 @@ case ${ID} in
         ;;
     "raspbian")
         usedDistro="RaspberryPi"
-        addBackports=true
+        backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
         ;;
 esac
 
@@ -94,17 +96,42 @@ fi
 echo "    Downloaded archive is ok, checksums match values from ${releasenotesToDownload}"
 echo ""
 
-if ${addBackports} ; then
-    if [[ -e /etc/apt/sources.list.d/stretch-backports.list ]] ; then
-        echo "Backports repo already existing"
+# ----------------------------------------------------------------------------
+# If necessary, check for configured backports repo
+if [[ -n "${backportsFile}" ]] ; then
+    if [[ -e ${backportsFile} ]] ; then
+        echo "Backports repo already configured"
     else
-        echo "Adding backports repo..."
-        # ToDo
+        echo "Adding backports repo"
+        echo "${backportsRepo}" | sudo tee --append ${backportsFile} > /dev/null
         echo "    Done"
     fi
     echo ""
 fi
 
+# ----------------------------------------------------------------------------
+# Update the whole system
+echo "Updating system"
+case ${ID} in
+    "debian"|"raspbian")
+        sudo apt-get update -y && sudo apt-get upgrade -y && apt-get install -y --no-install-recommends --allow-unauthenticated \
+            libboost-chrono${boostVersion} \
+            libboost-filesystem${boostVersion} \
+            libboost-program-options${boostVersion} \
+            libboost-thread${boostVersion}
+        ;;
+    "ubuntu")
+        sudo apt-get update -y && sudo apt-get upgrade -y
+        ;;
+    "fedora")
+        dnf update -y
+        ;;
+esac
+echo "    Done"
+echo ""
+
+
+# ----------------------------------------------------------------------------
 # Handle old binary location /usr/bin/
 if [[ -e /usr/bin/spectrecoind && ! -L /usr/bin/spectrecoind ]] ; then
     # Binary found on old location and is _not_ a symlink,
