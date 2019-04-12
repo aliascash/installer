@@ -36,9 +36,11 @@ echo "    Determined $NAME"
 echo ""
 
 usedDistro=''
+addBackports=false
 case ${ID} in
     "debian")
         usedDistro="Debian"
+        addBackports=true
         ;;
     "ubuntu")
         usedDistro="Ubuntu"
@@ -48,6 +50,7 @@ case ${ID} in
         ;;
     "raspbian")
         usedDistro="RaspberryPi"
+        addBackports=true
         ;;
 esac
 
@@ -90,6 +93,17 @@ else
 fi
 echo "    Downloaded archive is ok, checksums match values from ${releasenotesToDownload}"
 echo ""
+
+if ${addBackports} ; then
+    if [[ -e /etc/apt/sources.list.d/stretch-backports.list ]] ; then
+        echo "Backports repo already existing"
+    else
+        echo "Adding backports repo..."
+        # ToDo
+        echo "    Done"
+    fi
+    echo ""
+fi
 
 # Handle old binary location /usr/bin/
 if [[ -e /usr/bin/spectrecoind && ! -L /usr/bin/spectrecoind ]] ; then
