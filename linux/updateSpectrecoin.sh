@@ -164,6 +164,22 @@ if [[ -e /usr/bin/spectrecoind && ! -L /usr/bin/spectrecoind ]] ; then
 fi
 
 # ----------------------------------------------------------------------------
+# Backup wallet.dat
+if [[ -e ~/.spectrecoin/wallet.dat ]] ; then
+    backupFile=$(date +%Y-%m-%d_%H-%M)-wallet.dat
+    echo "Creating backup of wallet.dat (${backupFile})"
+    cp ~/.spectrecoin/wallet.dat ~/${backupFile}
+    echo "    Done"
+fi
+if [[ -e ~/.spectrecoin/testnet/wallet.dat ]] ; then
+    backupFile=$(date +%Y-%m-%d_%H-%M)-testnet-wallet.dat
+    echo "Creating backup of testnet wallet.dat (${backupFile})"
+    cp ~/.spectrecoin/testnet/wallet.dat ~/${backupFile}
+    echo "    Done"
+fi
+echo ""
+
+# ----------------------------------------------------------------------------
 # Backup current binaries
 if [[ -e ${installPath}/spectrecoind ]] ; then
     # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
