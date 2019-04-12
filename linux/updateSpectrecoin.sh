@@ -124,17 +124,23 @@ fi
 echo "Updating system"
 case ${ID} in
     "debian"|"raspbian")
-        sudo apt-get update -y && sudo apt-get upgrade -y && apt-get install -y --no-install-recommends --allow-unauthenticated \
+        sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get install -y \
+            --no-install-recommends \
+            --allow-unauthenticated \
             libboost-chrono${boostVersion} \
             libboost-filesystem${boostVersion} \
             libboost-program-options${boostVersion} \
-            libboost-thread${boostVersion}
+            libboost-thread${boostVersion} \
+            tor
         ;;
     "ubuntu")
-        sudo apt-get update -y && sudo apt-get upgrade -y
+        sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get install -y \
+            --no-install-recommends \
+            tor
         ;;
     "fedora")
-        dnf update -y
+        sudo dnf update -y && sudo dnf install -y \
+            tor
         ;;
 esac
 echo "    Done"
