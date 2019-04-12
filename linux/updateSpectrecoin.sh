@@ -19,6 +19,8 @@ tmpBinaryArchive=Spectrecoin.tgz
 backportsRepo="deb http://ftp.debian.org/debian stretch-backports main"
 boostVersion='1.67.0'
 
+# ----------------------------------------------------------------------------
+# Define version to install
 if [[ -z "${versionToInstall}" ]] ; then
     echo "No version to install (tag) given, installing latest release"
     githubTag=$(curl -L -s https://api.github.com/repos/spectrecoin/spectre/releases/latest | grep tag_name | cut -d: -f2 | cut -d '"' -f2)
@@ -27,6 +29,8 @@ else
 fi
 echo ""
 
+# ----------------------------------------------------------------------------
+# Determining current operating system (distribution)
 echo "Determining system"
 if [[ -e /etc/os-release ]] ; then
     . /etc/os-release
@@ -37,6 +41,8 @@ fi
 echo "    Determined $NAME"
 echo ""
 
+# ----------------------------------------------------------------------------
+# Define some variables
 usedDistro=''
 backportsFile=''
 case ${ID} in
@@ -56,6 +62,8 @@ case ${ID} in
         ;;
 esac
 
+# ----------------------------------------------------------------------------
+# Create work dir and download release notes and binary archive
 mkdir -p ${tmpWorkdir}
 
 #https://github.com/spectrecoin/spectre/releases/latest
@@ -85,6 +93,8 @@ fi
 echo "    Done"
 echo ""
 
+# ----------------------------------------------------------------------------
+# Get checksum from release notes and verify downloaded archive
 echo "Verifying checksum"
 determinedSha256Checksum=$(sha256sum ${tmpWorkdir}/${tmpBinaryArchive} | awk '{ print $1 }')
 if [[ "${officialChecksum}" != "${determinedSha256Checksum}" ]] ; then
@@ -147,6 +157,8 @@ if [[ -e /usr/bin/spectrecoind && ! -L /usr/bin/spectrecoind ]] ; then
     echo ""
 fi
 
+# ----------------------------------------------------------------------------
+# Backup current binaries
 if [[ -e ${installPath}/spectrecoind ]] ; then
     # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
     # but only the version and the commit hash separated by "_" is used later on.
@@ -174,6 +186,8 @@ else
 fi
 echo ""
 
+# ----------------------------------------------------------------------------
+# Install new binaries
 echo "Installing new binaries"
 cd ${tmpWorkdir}
 tar xzf ${tmpBinaryArchive} .
@@ -182,6 +196,8 @@ chmod +x /usr/local/bin/spectre*
 echo "    Done"
 echo ""
 
+# ----------------------------------------------------------------------------
+# Cleanup temporary data
 echo "Cleanup"
 rm -rf ${tmpWorkdir}
 echo "    Done"
