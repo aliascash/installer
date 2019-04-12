@@ -187,12 +187,13 @@ if [[ -e ${installPath}/spectrecoind ]] ; then
     # Option '-version' is working since v3.x
     #currentVersion=$(${installPath}/spectrecoind -version)
     # At the moment use a workaround
+    echo "Determining current binary version"
     currentVersion=$(strings ${installPath}/spectrecoind | grep "v[123]\..\..\." | head -n 1 | sed -e "s/(//g" -e "s/)//g" | cut -d " " -f1-2 | sed "s/ /_/g")
     if [[ -z "${currentVersion}" ]] ; then
         currentVersion=$(date +%Y%m%d-%H%M)
-        echo "Unable to determine version of current binaries, using timestamp '${currentVersion}'"
+        echo "    Unable to determine version of current binaries, using timestamp '${currentVersion}'"
     else
-        echo "Creating backup of current version ${currentVersion}"
+        echo "    Creating backup of current version ${currentVersion}"
     fi
     if [[ -f ${installPath}/spectrecoind-${currentVersion} ]] ; then
         echo "    Backup of current version already existing"
