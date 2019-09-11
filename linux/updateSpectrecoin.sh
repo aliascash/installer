@@ -44,11 +44,19 @@ echo ""
 # ----------------------------------------------------------------------------
 # Define some variables
 usedDistro=''
+useBackports=false
 backportsFile=''
+releaseName=''
 case ${ID} in
     "debian")
         usedDistro="Debian"
-        backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
+        if [[ -z "${VERSION_ID}" ]] || [[ "${VERSION_ID}" = 9 ]] ; then
+            useBackports=true
+            backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
+            releaseName='-Stretch'
+        elif [[ "${VERSION_ID}" = 10 ]] ; then
+            releaseName='-Buster'
+        fi
         ;;
     "ubuntu")
         usedDistro="Ubuntu"
@@ -58,7 +66,17 @@ case ${ID} in
         ;;
     "raspbian")
         usedDistro="RaspberryPi"
-        backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
+        if [[ -z "${VERSION_ID}" ]] || [[ "${VERSION_ID}" = 9 ]] ; then
+            useBackports=true
+            backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
+            releaseName='-Stretch'
+        elif [[ "${VERSION_ID}" = 10 ]] ; then
+            releaseName='-Buster'
+        fi
+        ;;
+    *)
+        echo "Unsupported operating system ${ID}"
+        exit
         ;;
 esac
 
@@ -80,9 +98,16 @@ fi
 echo "    Done"
 echo ""
 # Desired line of text looks like this:
-# **Spectrecoin-Build139-0c97a29-Debian.tgz:** `1128be441ff910ef31361dfb04273618b23809ee25a29ec9f67effde060c53bb`
-officialChecksum=$(grep "${usedDistro}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '`' -f2)
-filenameToDownload=$(grep "${usedDistro}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '*' -f3 | sed "s/://g")
+# **Spectrecoin-Build139-0c97a29-Debian-Buster.tgz:** `1128be441ff910ef31361dfb04273618b23809ee25a29ec9f67effde060c53bb`
+officialChecksum=$(grep "${usedDistro}${releaseName}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '`' -f2)
+filenameToDownload=$(grep "${usedDistro}${releaseName}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '*' -f3 | sed "s/://g")
+
+# If nothing found, try again without ${releaseName}
+if [[ -z "${officialChecksum}" ]] || [[ -z "${filenameToDownload}" ]] ; then
+    # **Spectrecoin-Build139-0c97a29-Debian.tgz:** `1128be441ff910ef31361dfb04273618b23809ee25a29ec9f67effde060c53bb`
+    officialChecksum=$(grep "${usedDistro}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '`' -f2)
+    filenameToDownload=$(grep "${usedDistro}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '*' -f3 | sed "s/://g")
+fi
 
 echo "Downloading binary archive ${downloadBaseURL}/${filenameToDownload}"
 httpCode=$(curl -L -o ${tmpWorkdir}/${tmpBinaryArchive} -w "%{http_code}" ${downloadBaseURL}/${filenameToDownload})
@@ -182,13 +207,13 @@ echo ""
 # ----------------------------------------------------------------------------
 # Backup current binaries
 if [[ -e ${installPath}/spectrecoind ]] ; then
+    echo "Determining current binary version"
     # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
     # but only the version and the commit hash separated by "_" is used later on.
     # Option '-version' is working since v3.x
-    #currentVersion=$(${installPath}/spectrecoind -version)
+    currentVersion=$(${installPath}/spectrecoind -version)
     # At the moment use a workaround
-    echo "Determining current binary version"
-    currentVersion=$(strings ${installPath}/spectrecoind | grep "v[123]\..\..\." | head -n 1 | sed -e "s/(//g" -e "s/)//g" | cut -d " " -f1-2 | sed "s/ /_/g")
+    #currentVersion=$(strings ${installPath}/spectrecoind | grep "v[123]\..\..\." | head -n 1 | sed -e "s/(//g" -e "s/)//g" | cut -d " " -f1-2 | sed "s/ /_/g")
     if [[ -z "${currentVersion}" ]] ; then
         currentVersion=$(date +%Y%m%d-%H%M)
         echo "    Unable to determine version of current binaries, using timestamp '${currentVersion}'"
