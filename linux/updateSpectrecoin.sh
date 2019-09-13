@@ -254,21 +254,29 @@ if [[ -e ${installPath}/spectrecoind ]] ; then
     # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
     # but only the version and the commit hash separated by "_" is used later on.
     # Option '-version' is working since v3.x
-    currentVersion=$(${installPath}/spectrecoind -version)
-    # At the moment use a workaround
-    #currentVersion=$(strings ${installPath}/spectrecoind | grep "v[123]\..\..\." | head -n 1 | sed -e "s/(//g" -e "s/)//g" | cut -d " " -f1-2 | sed "s/ /_/g")
-    if [[ -z "${currentVersion}" ]] ; then
-        currentVersion=$(date +%Y%m%d-%H%M)
-        echo "    Unable to determine version of current binaries, using timestamp '${currentVersion}'"
+    queryResult=$(${installPath}/spectrecoind -version)
+    currentVersion=$(echo ${queryResult/\(/} | cut -d ' ' -f 1)
+    gitHash=$(echo ${queryResult/\(/} | cut -d ' ' -f 2)
+    if [[ -n "${gitHash}" ]] ; then
+        fullVersion=${currentVersion}-${gitHash}
     else
-        echo "    Creating backup of current version ${currentVersion}"
+        fullVersion=${currentVersion}
     fi
-    if [[ -f ${installPath}/spectrecoind-${currentVersion} ]] ; then
+
+    # At the moment use a workaround
+    #fullVersion=$(strings ${installPath}/spectrecoind | grep "v[123]\..\..\." | head -n 1 | sed -e "s/(//g" -e "s/)//g" | cut -d " " -f1-2 | sed "s/ /_/g")
+    if [[ -z "${fullVersion}" ]] ; then
+        fullVersion=$(date +%Y%m%d-%H%M)
+        echo "    Unable to determine version of current binaries, using timestamp '${fullVersion}'"
+    else
+        echo "    Creating backup of current version ${fullVersion}"
+    fi
+    if [[ -f ${installPath}/spectrecoind-${fullVersion} ]] ; then
         echo "    Backup of current version already existing"
     else
-        mv ${installPath}/spectrecoind ${installPath}/spectrecoind-${currentVersion}
+        mv ${installPath}/spectrecoind ${installPath}/spectrecoind-${fullVersion}
         if [[ -e ${installPath}/spectrecoin ]] ; then
-            mv ${installPath}/spectrecoin  ${installPath}/spectrecoin-${currentVersion}
+            mv ${installPath}/spectrecoin  ${installPath}/spectrecoin-${fullVersion}
         fi
         echo "    Done"
     fi
