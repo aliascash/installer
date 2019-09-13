@@ -17,6 +17,9 @@ tmpWorkdir=/tmp/SpectrecoinUpdate
 tmpChecksumfile=checksumfile.txt
 tmpBinaryArchive=Spectrecoin.tgz
 backportsRepo="deb http://ftp.debian.org/debian stretch-backports main"
+torRepoBionic="deb https://deb.torproject.org/torproject.org bionic main"
+torRepoBuster="deb https://deb.torproject.org/torproject.org buster main"
+torRepoStretch="deb https://deb.torproject.org/torproject.org stretch main"
 boostVersion='1.67.0'
 
 # ----------------------------------------------------------------------------
@@ -46,36 +49,63 @@ echo ""
 usedDistro=''
 useBackports=false
 backportsFile=''
+torRepoFile="/etc/apt/sources.list.d/tor.list"
+torRepo=''
 releaseName=''
 case ${ID} in
     "debian")
         usedDistro="Debian"
-        if [[ -z "${VERSION_ID}" ]] || [[ "${VERSION_ID}" = 9 ]] ; then
-            useBackports=true
-            backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
-            releaseName='-Stretch'
-        elif [[ "${VERSION_ID}" = 10 ]] ; then
-            releaseName='-Buster'
-        fi
+        case ${VERSION_ID} in
+            "9")
+                useBackports=true
+                backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
+                torRepo=${torRepoStretch}
+                releaseName='-Stretch'
+                ;;
+            "10")
+                torRepo=${torRepoBuster}
+                releaseName='-Buster'
+                ;;
+            *)
+                echo "Unsupported operating system ID=${ID}, VERSION_ID=${VERSION_ID}"
+                exit
+                ;;
+        esac
         ;;
     "ubuntu")
         usedDistro="Ubuntu"
+        case ${VERSION_CODENAME} in
+            "bionic")
+                torRepo=${torRepoBionic}
+                ;;
+        esac
         ;;
     "fedora")
         usedDistro="Fedora"
         ;;
     "raspbian")
         usedDistro="RaspberryPi"
-        if [[ -z "${VERSION_ID}" ]] || [[ "${VERSION_ID}" = 9 ]] ; then
-            useBackports=true
-            backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
-            releaseName='-Stretch'
-        elif [[ "${VERSION_ID}" = 10 ]] ; then
-            releaseName='-Buster'
-        fi
+        case ${VERSION_ID} in
+            "9")
+                useBackports=true
+                backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
+                torRepoFile="/etc/apt/sources.list.d/stretch-tor.list"
+                torRepo=${torRepoStretch}
+                releaseName='-Stretch'
+                ;;
+            "10")
+                torRepoFile="/etc/apt/sources.list.d/buster-tor.list"
+                torRepo=${torRepoBuster}
+                releaseName='-Buster'
+                ;;
+            *)
+                echo "Unsupported operating system ID=${ID}, VERSION_ID=${VERSION_ID}"
+                exit
+                ;;
+        esac
         ;;
     *)
-        echo "Unsupported operating system ${ID}"
+        echo "Unsupported operating system ${ID}, VERSION_ID=${VERSION_ID}"
         exit
         ;;
 esac
@@ -132,13 +162,23 @@ echo "    Downloaded archive is ok, checksums match values from ${releasenotesTo
 echo ""
 
 # ----------------------------------------------------------------------------
-# If necessary, check for configured backports repo
+# If necessary, check for configured backports and Tor repo
 if [[ -n "${backportsFile}" ]] ; then
     if [[ -e ${backportsFile} ]] ; then
         echo "Backports repo already configured"
     else
         echo "Adding backports repo"
         echo "${backportsRepo}" | sudo tee --append ${backportsFile} > /dev/null
+        echo "    Done"
+    fi
+    echo ""
+fi
+if [[ -n "${torRepo}" ]] ; then
+    if [[ -e ${torRepoFile} ]] ; then
+        echo "Tor repo already configured"
+    else
+        echo "Adding Tor repo"
+        echo "${torRepo}" | sudo tee --append ${torRepoFile} > /dev/null
         echo "    Done"
     fi
     echo ""
@@ -156,16 +196,19 @@ case ${ID} in
             libboost-filesystem${boostVersion} \
             libboost-program-options${boostVersion} \
             libboost-thread${boostVersion} \
-            tor
+            tor \
+            && apt-get clean
         ;;
     "ubuntu")
         sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get install -y \
             --no-install-recommends \
-            tor
+            tor \
+            && apt-get clean
         ;;
     "fedora")
         sudo dnf update -y && sudo dnf install -y \
-            tor
+            tor \
+            && dnf clean all
         ;;
 esac
 echo "    Done"
