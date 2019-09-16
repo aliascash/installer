@@ -192,6 +192,7 @@ case ${ID} in
         sudo apt-get update -y \
             && sudo apt-get install -y \
                 apt-transport-https \
+                deb.torproject.org-keyring \
             && sudo apt-get upgrade -y \
             && sudo apt-get install -y \
                 --no-install-recommends \
