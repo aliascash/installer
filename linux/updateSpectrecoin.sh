@@ -19,7 +19,6 @@ tmpBinaryArchive=Spectrecoin.tgz
 backportsRepo="deb http://ftp.debian.org/debian stretch-backports main"
 torRepoBionic="deb https://deb.torproject.org/torproject.org bionic main"
 torRepoBuster="deb https://deb.torproject.org/torproject.org buster main"
-torRepoStretch="deb https://deb.torproject.org/torproject.org stretch main"
 boostVersion='1.67.0'
 
 # ----------------------------------------------------------------------------
@@ -59,10 +58,10 @@ case ${ID} in
             "9")
                 useBackports=true
                 backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
-                torRepo=${torRepoStretch}
                 releaseName='-Stretch'
                 ;;
             "10")
+                torRepoFile="/etc/apt/sources.list.d/buster-tor.list"
                 torRepo=${torRepoBuster}
                 releaseName='-Buster'
                 ;;
@@ -89,8 +88,6 @@ case ${ID} in
             "9")
                 useBackports=true
                 backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
-                torRepoFile="/etc/apt/sources.list.d/stretch-tor.list"
-                torRepo=${torRepoStretch}
                 releaseName='-Stretch'
                 ;;
             "10")
