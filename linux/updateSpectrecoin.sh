@@ -22,10 +22,16 @@ torRepoBuster="deb https://deb.torproject.org/torproject.org buster main"
 boostVersion='1.67.0'
 
 # ----------------------------------------------------------------------------
+# Use ca-certificates if available
+if [[ -e /etc/ssl/certs/ca-certificates.crt ]] ; then
+    cacertParam="--cacert /etc/ssl/certs/ca-certificates.crt"
+fi
+
+# ----------------------------------------------------------------------------
 # Define version to install
 if [[ -z "${versionToInstall}" ]] ; then
     echo "No version to install (tag) given, installing latest release"
-    githubTag=$(curl -L -s https://api.github.com/repos/spectrecoin/spectre/releases/latest | grep tag_name | cut -d: -f2 | cut -d '"' -f2)
+    githubTag=$(curl ${cacertParam} -L -s https://api.github.com/repos/spectrecoin/spectre/releases/latest | grep tag_name | cut -d: -f2 | cut -d '"' -f2)
 else
     githubTag=${versionToInstall}
 fi
@@ -117,7 +123,7 @@ mkdir -p ${tmpWorkdir}
 downloadBaseURL=https://github.com/spectrecoin/spectre/releases/download/${githubTag}
 releasenotesToDownload=${downloadBaseURL}/RELEASENOTES.txt
 echo "Downloading release notes with checksums ${releasenotesToDownload}"
-httpCode=$(curl -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${releasenotesToDownload})
+httpCode=$(curl ${cacertParam} -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${releasenotesToDownload})
 if [[ ${httpCode} -ge 400 ]] ; then
     echo "${releasenotesToDownload} not found!"
     exit 1
@@ -137,7 +143,7 @@ if [[ -z "${officialChecksum}" ]] || [[ -z "${filenameToDownload}" ]] ; then
 fi
 
 echo "Downloading binary archive ${downloadBaseURL}/${filenameToDownload}"
-httpCode=$(curl -L -o ${tmpWorkdir}/${tmpBinaryArchive} -w "%{http_code}" ${downloadBaseURL}/${filenameToDownload})
+httpCode=$(curl ${cacertParam} -L -o ${tmpWorkdir}/${tmpBinaryArchive} -w "%{http_code}" ${downloadBaseURL}/${filenameToDownload})
 if [[ ${httpCode} -ge 400 ]] ; then
     echo "Archive ${downloadBaseURL}/${filenameToDownload} not found!"
     exit 1
@@ -190,6 +196,7 @@ case ${ID} in
             && sudo apt-get install -y \
                 apt-transport-https \
                 deb.torproject.org-keyring \
+                dirmngr \
             && sudo apt-get upgrade -y \
             && sudo apt-get install -y \
                 --no-install-recommends \
