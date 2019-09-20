@@ -182,6 +182,8 @@ if [[ -n "${torRepo}" ]] ; then
     else
         echo "Adding Tor repo"
         echo "${torRepo}" | sudo tee --append ${torRepoFile} > /dev/null
+        curl ${cacertParam} https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
+        gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
         echo "    Done"
     fi
     echo ""
@@ -209,14 +211,24 @@ case ${ID} in
             && apt-get clean
         ;;
     "ubuntu")
-        sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get install -y \
-            --no-install-recommends \
-            tor \
+        sudo apt-get update -y \
+            && sudo apt-get install -y \
+                apt-transport-https \
+                deb.torproject.org-keyring \
+                dirmngr \
+            && sudo apt-get upgrade -y \
+            && sudo apt-get install -y \
+                --no-install-recommends \
+                tor \
             && apt-get clean
         ;;
     "fedora")
-        sudo dnf update -y && sudo dnf install -y \
-            tor \
+        sudo dnf update -y \
+            && sudo dnf install -y \
+                apt-transport-https \
+                deb.torproject.org-keyring \
+            && sudo dnf install -y \
+                tor \
             && dnf clean all
         ;;
 esac
