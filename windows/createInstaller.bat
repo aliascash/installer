@@ -6,7 +6,8 @@ IF "%QTIFWDIR%" == "" GOTO NOQT
 set CALL_DIR=%cd%
 
 %QTIFWDIR%\bin\repogen.exe -p packages -i Blockchain,Spectrecoin,Tor repository
-%QTIFWDIR%\bin\binarycreator.exe -n -c config\config.xml -p packages Spectrecoin-Installer.exe
+%QTIFWDIR%\bin\binarycreator.exe -c config\config.xml -p packages --online-only  Spectrecoin-Installer-Light.exe
+%QTIFWDIR%\bin\binarycreator.exe -c config\config.xml -p packages --offline-only Spectrecoin-Installer.exe
 
 
 echo "Everything is OK"
