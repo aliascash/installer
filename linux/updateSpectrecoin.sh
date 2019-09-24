@@ -194,7 +194,10 @@ fi
 echo "Updating system"
 case ${ID} in
     "debian"|"raspbian")
-        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7638D0442B90D010 \
+        sudo apt-get update -y \
+            && sudo apt-get install -y \
+                dirmngr \
+            && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7638D0442B90D010 \
             && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC \
             && sudo apt-get update -y \
             && sudo apt-get install -y \
