@@ -187,9 +187,9 @@ if [[ -e ${installPath}/spectrecoind ]] ; then
     if [[ -f ${installPath}/spectrecoind-${fullVersion} ]] ; then
         echo "    Backup of current version already existing"
     else
-        mv ${installPath}/spectrecoind ${installPath}/spectrecoind-${fullVersion}
+        sudo mv ${installPath}/spectrecoind ${installPath}/spectrecoind-${fullVersion}
         if [[ -e ${installPath}/spectrecoin ]] ; then
-            mv ${installPath}/spectrecoin  ${installPath}/spectrecoin-${fullVersion}
+            sudo mv ${installPath}/spectrecoin  ${installPath}/spectrecoin-${fullVersion}
         fi
         echo "    Done"
     fi
@@ -203,8 +203,8 @@ echo ""
 echo "Installing new binaries"
 cd ${tmpWorkdir}
 tar xzf ${tmpBinaryArchive} .
-mv usr/local/bin/spectre* /usr/local/bin/
-chmod +x /usr/local/bin/spectre*
+sudo mv usr/local/bin/spectre* /usr/local/bin/
+sudo chmod +x /usr/local/bin/spectrecoin /usr/local/bin/spectrecoind
 echo "    Done"
 echo ""
 
