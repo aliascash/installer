@@ -60,7 +60,8 @@ case ${ID} in
                 echo "Running on ${ID}/${VERSION_CODENAME}"
                 ;;
             *)
-                echo "Unable to execute update script for Bionic on ${VERSION_CODENAME}"
+                echo "Unable to execute update script for Ubuntu 18.04 (Bionic) on this system:"
+                cat /etc/os-release
                 exit 1
                 ;;
         esac

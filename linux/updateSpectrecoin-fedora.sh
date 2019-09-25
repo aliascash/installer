@@ -58,7 +58,8 @@ case ${ID} in
         usedDistro="Fedora"
         ;;
     *)
-        echo "Wrong update script for operating system ${ID}!"
+        echo "Unable to execute update script for Fedora on this system:"
+        cat /etc/os-release
         exit 1
         ;;
 esac

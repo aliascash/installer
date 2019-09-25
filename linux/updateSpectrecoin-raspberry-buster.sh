@@ -60,7 +60,8 @@ case ${ID} in
                 echo "Running on ${ID}/${VERSION_ID}"
                 ;;
             *)
-                echo "Unable to execute update script for Raspbian Stretch on ${VERSION_ID}"
+                echo "Unable to execute update script for Raspbian Buster on this system:"
+                cat /etc/os-release
                 exit 1
                 ;;
         esac
