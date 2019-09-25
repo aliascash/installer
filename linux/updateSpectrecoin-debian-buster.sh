@@ -195,10 +195,6 @@ sudo apt-get upgrade -y
 sudo apt-get install -y \
     --no-install-recommends \
     --allow-unauthenticated \
-    libboost-chrono${boostVersion} \
-    libboost-filesystem${boostVersion} \
-    libboost-program-options${boostVersion} \
-    libboost-thread${boostVersion} \
     tor
 sudo apt-get clean
 echo "    Done"
