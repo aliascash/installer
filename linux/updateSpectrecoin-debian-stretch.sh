@@ -17,8 +17,13 @@ installPath=/usr/local/bin
 tmpWorkdir=/tmp/SpectrecoinUpdate
 tmpChecksumfile=checksumfile.txt
 tmpBinaryArchive=Spectrecoin.tgz
+backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
 backportsRepo="deb http://ftp.debian.org/debian stretch-backports main"
+testingFile="/etc/apt/sources.list.d/testing.list"
+testingRepo="deb http://http.us.debian.org/debian/ testing non-free contrib main"
 boostVersion='1.67.0'
+usedDistro="Debian"
+releaseName='-Stretch'
 
 # ----------------------------------------------------------------------------
 # Use ca-certificates if available
@@ -49,10 +54,7 @@ echo "    Determined $NAME"
 echo ""
 
 # ----------------------------------------------------------------------------
-# Define some variables
-usedDistro="Debian"
-backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
-releaseName='-Stretch'
+# Check current system
 case ${ID} in
     "debian")
         case ${VERSION_ID} in
@@ -123,12 +125,20 @@ echo "    Downloaded archive is ok, checksums match values from ${releasenotesTo
 echo ""
 
 # ----------------------------------------------------------------------------
-# If necessary, check for configured backports repo
+# If necessary, check for configured backports and testing repo
 if [[ -e ${backportsFile} ]] ; then
     echo "Backports repo already configured"
 else
     echo "Adding backports repo"
     echo "${backportsRepo}" | sudo tee --append ${backportsFile} > /dev/null
+    echo "    Done"
+fi
+echo ""
+if [[ -e ${testingFile} ]] ; then
+    echo "Testing repo already configured"
+else
+    echo "Adding testing repo"
+    echo "${testingRepo}" | sudo tee --append ${testingFile} > /dev/null
     echo "    Done"
 fi
 echo ""
@@ -231,7 +241,7 @@ echo "Installing new binaries"
 cd ${tmpWorkdir}
 tar xzf ${tmpBinaryArchive} .
 mv usr/local/bin/spectre* /usr/local/bin/
-chmod +x /usr/local/bin/spectre*
+sudo chmod +x /usr/local/bin/spectre*
 echo "    Done"
 echo ""
 

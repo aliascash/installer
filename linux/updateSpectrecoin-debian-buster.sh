@@ -20,6 +20,8 @@ tmpBinaryArchive=Spectrecoin.tgz
 torRepo="deb https://deb.torproject.org/torproject.org buster main"
 torRepoFile="/etc/apt/sources.list.d/tor.list"
 boostVersion='1.67.0'
+usedDistro="Debian"
+releaseName='-Buster'
 
 # ----------------------------------------------------------------------------
 # Use ca-certificates if available
@@ -50,9 +52,7 @@ echo "    Determined $NAME"
 echo ""
 
 # ----------------------------------------------------------------------------
-# Define some variables
-usedDistro="Debian"
-releaseName='-Buster'
+# Check current system
 case ${ID} in
     "debian")
         case ${VERSION_ID} in
