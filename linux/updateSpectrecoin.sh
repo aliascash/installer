@@ -222,7 +222,7 @@ case ${ID} in
                     libboost-program-options${boostVersion} \
                     libboost-thread${boostVersion} \
                     tor
-                apt-get clean
+                sudo apt-get clean
                 ;;
             "10")
                 sudo apt-get install -y \
@@ -242,7 +242,7 @@ case ${ID} in
                     libboost-program-options${boostVersion} \
                     libboost-thread${boostVersion} \
                     tor
-                apt-get clean
+                sudo apt-get clean
                 ;;
             *)
                 echo "Unsupported operating system ID=${ID}, VERSION_ID=${VERSION_ID}"
@@ -263,7 +263,7 @@ case ${ID} in
         sudo apt-get install -y \
             --no-install-recommends \
             tor
-        apt-get clean
+        sudo apt-get clean
         ;;
     "fedora")
         sudo dnf update -y
@@ -272,7 +272,7 @@ case ${ID} in
             deb.torproject.org-keyring
         sudo dnf install -y \
             tor
-        dnf clean all
+        sudo dnf clean all
         ;;
 esac
 echo "    Done"
