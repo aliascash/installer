@@ -50,13 +50,11 @@ echo ""
 
 # ----------------------------------------------------------------------------
 # Define some variables
-usedDistro=''
-useBackports=false
+usedDistro="Ubuntu"
 torRepoFile="/etc/apt/sources.list.d/tor.list"
 releaseName='-18-04'
 case ${ID} in
     "ubuntu")
-        usedDistro="Ubuntu"
         case ${VERSION_CODENAME} in
             "bionic")
                 echo "Running on ${ID}/${VERSION_CODENAME}"
