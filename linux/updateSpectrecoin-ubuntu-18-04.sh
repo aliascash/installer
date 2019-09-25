@@ -4,7 +4,7 @@
 # FILE:         updateSpectrecoin-ubuntu-18-04.sh
 #
 # DESCRIPTION:  Simple installer script to update Spectrecoin binaries
-#               on Ubuntu 18
+#               on Ubuntu 18 (Bionic)
 #
 # AUTHOR:       HLXEasy
 # PROJECT:      https://spectreproject.io/
