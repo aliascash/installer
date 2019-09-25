@@ -131,6 +131,44 @@ echo "    Downloaded archive is ok, checksums match values from ${releasenotesTo
 echo ""
 
 # ----------------------------------------------------------------------------
+# Backup current binaries
+if [[ -e ${installPath}/spectrecoind ]] ; then
+    echo "Determining current binary version"
+    # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
+    # but only the version and the commit hash separated by "_" is used later on.
+    # Option '-version' is working since v3.x
+    queryResult=$(${installPath}/spectrecoind -version)
+    currentVersion=$(echo ${queryResult/\(/} | cut -d ' ' -f 1)
+    gitHash=$(echo ${queryResult/\(/} | cut -d ' ' -f 2)
+    if [[ -n "${gitHash}" ]] ; then
+        fullVersion=${currentVersion}-${gitHash}
+    else
+        fullVersion=${currentVersion}
+    fi
+
+    # At the moment use a workaround
+    #fullVersion=$(strings ${installPath}/spectrecoind | grep "v[123]\..\..\." | head -n 1 | sed -e "s/(//g" -e "s/)//g" | cut -d " " -f1-2 | sed "s/ /_/g")
+    if [[ -z "${fullVersion}" ]] ; then
+        fullVersion=$(date +%Y%m%d-%H%M)
+        echo "    Unable to determine version of current binaries, using timestamp '${fullVersion}'"
+    else
+        echo "    Creating backup of current version ${fullVersion}"
+    fi
+    if [[ -f ${installPath}/spectrecoind-${fullVersion} ]] ; then
+        echo "    Backup of current version already existing"
+    else
+        sudo mv ${installPath}/spectrecoind ${installPath}/spectrecoind-${fullVersion}
+        if [[ -e ${installPath}/spectrecoin ]] ; then
+            sudo mv ${installPath}/spectrecoin  ${installPath}/spectrecoin-${fullVersion}
+        fi
+        echo "    Done"
+    fi
+else
+    echo "Binary ${installPath}/spectrecoind not found, skip backup creation"
+fi
+echo ""
+
+# ----------------------------------------------------------------------------
 # If necessary, check for configured Tor repo
 if [[ -e ${torRepoFile} ]] ; then
     echo "Tor repo already configured"
@@ -196,44 +234,6 @@ if [[ -e ~/.spectrecoin/testnet/wallet.dat ]] ; then
     echo "Creating backup of testnet wallet.dat (${backupFile})"
     cp ~/.spectrecoin/testnet/wallet.dat ~/${backupFile}
     echo "    Done"
-fi
-echo ""
-
-# ----------------------------------------------------------------------------
-# Backup current binaries
-if [[ -e ${installPath}/spectrecoind ]] ; then
-    echo "Determining current binary version"
-    # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
-    # but only the version and the commit hash separated by "_" is used later on.
-    # Option '-version' is working since v3.x
-    queryResult=$(${installPath}/spectrecoind -version)
-    currentVersion=$(echo ${queryResult/\(/} | cut -d ' ' -f 1)
-    gitHash=$(echo ${queryResult/\(/} | cut -d ' ' -f 2)
-    if [[ -n "${gitHash}" ]] ; then
-        fullVersion=${currentVersion}-${gitHash}
-    else
-        fullVersion=${currentVersion}
-    fi
-
-    # At the moment use a workaround
-    #fullVersion=$(strings ${installPath}/spectrecoind | grep "v[123]\..\..\." | head -n 1 | sed -e "s/(//g" -e "s/)//g" | cut -d " " -f1-2 | sed "s/ /_/g")
-    if [[ -z "${fullVersion}" ]] ; then
-        fullVersion=$(date +%Y%m%d-%H%M)
-        echo "    Unable to determine version of current binaries, using timestamp '${fullVersion}'"
-    else
-        echo "    Creating backup of current version ${fullVersion}"
-    fi
-    if [[ -f ${installPath}/spectrecoind-${fullVersion} ]] ; then
-        echo "    Backup of current version already existing"
-    else
-        sudo mv ${installPath}/spectrecoind ${installPath}/spectrecoind-${fullVersion}
-        if [[ -e ${installPath}/spectrecoin ]] ; then
-            sudo mv ${installPath}/spectrecoin  ${installPath}/spectrecoin-${fullVersion}
-        fi
-        echo "    Done"
-    fi
-else
-    echo "Binary ${installPath}/spectrecoind not found, skip backup creation"
 fi
 echo ""
 
