@@ -60,9 +60,16 @@ case ${ID} in
                 echo "Running on ${ID}/${VERSION_ID}"
                 ;;
             *)
-                echo "Unable to execute update script for Raspbian Buster on this system:"
-                cat /etc/os-release
-                exit 1
+                case ${PRETTY_NAME} in
+                    "*bullseye*")
+                        echo "Detected ${PRETTY_NAME}, installing Buster binaries"
+                        ;;
+                    *)
+                        echo "Unable to execute update script for Raspbian Buster on this system:"
+                        cat /etc/os-release
+                        exit 1
+                        ;;
+                esac
                 ;;
         esac
         ;;
