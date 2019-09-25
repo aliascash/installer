@@ -54,7 +54,7 @@ usedDistro="Debian"
 backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
 releaseName='-Stretch'
 case ${ID} in
-    "raspbian")
+    "debian")
         case ${VERSION_ID} in
             "9")
                 echo "Running on ${ID}/${VERSION_ID}"
