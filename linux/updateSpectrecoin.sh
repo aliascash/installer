@@ -184,61 +184,65 @@ if [[ -n "${backportsFile}" ]] ; then
     fi
     echo ""
 fi
-if [[ -n "${torRepo}" ]] ; then
-    if [[ -e ${torRepoFile} ]] ; then
-        echo "Tor repo already configured"
-    else
-        echo "Adding Tor repo"
-        echo "${torRepo}" | sudo tee --append ${torRepoFile} > /dev/null
-        curl ${cacertParam} https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
-        gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
-        echo "    Done"
+
+installTorRepo(){
+    if [[ -n "${torRepo}" ]] ; then
+        if [[ -e ${torRepoFile} ]] ; then
+            echo "Tor repo already configured"
+        else
+            echo "Adding Tor repo"
+            echo "${torRepo}" | sudo tee --append ${torRepoFile} > /dev/null
+            curl ${cacertParam} https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
+            gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
+            echo "    Done"
+        fi
+        echo ""
     fi
-    echo ""
-fi
+}
 
 # ----------------------------------------------------------------------------
 # Update the whole system
 echo "Updating system"
 case ${ID} in
     "debian"|"raspbian")
+        installTorRepo
         case ${VERSION_ID} in
             "9")
                 sudo apt-get install -y \
-                    dirmngr \
-                && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7638D0442B90D010 \
-                && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC \
-                && sudo apt-get update -y \
-                && sudo apt-get upgrade -y \
-                && sudo apt-get install -y \
+                    dirmngr
+                sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7638D0442B90D010
+                sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
+                sudo apt-get update -y
+                sudo apt-get upgrade -y
+                sudo apt-get install -y \
                     --no-install-recommends \
                     --allow-unauthenticated \
                     libboost-chrono${boostVersion} \
                     libboost-filesystem${boostVersion} \
                     libboost-program-options${boostVersion} \
                     libboost-thread${boostVersion} \
-                    tor \
-                && apt-get clean
+                    tor
+                apt-get clean
                 ;;
             "10")
                 sudo apt-get install -y \
-                    dirmngr \
-                && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7638D0442B90D010 \
-                && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC \
-                && sudo apt-get update -y \
-                && sudo apt-get install -y \
+                    dirmngr
+                sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7638D0442B90D010
+                sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
+                sudo apt-get update -y
+                sudo apt-get install -y \
                     apt-transport-https \
-                    deb.torproject.org-keyring \
-                && sudo apt-get upgrade -y \
-                && sudo apt-get install -y \
+                    deb.torproject.org-keyring
+                sudo apt-get upgrade -y
+                sudo apt-get install -y \
                     --no-install-recommends \
                     --allow-unauthenticated \
                     libboost-chrono${boostVersion} \
                     libboost-filesystem${boostVersion} \
                     libboost-program-options${boostVersion} \
                     libboost-thread${boostVersion} \
-                    tor \
-                && apt-get clean
+                    tor
+                apt-get clean
                 ;;
             *)
                 echo "Unsupported operating system ID=${ID}, VERSION_ID=${VERSION_ID}"
@@ -247,25 +251,28 @@ case ${ID} in
         esac
         ;;
     "ubuntu")
-        sudo apt-get update -y \
-            && sudo apt-get install -y \
-                apt-transport-https \
-                deb.torproject.org-keyring \
-                dirmngr \
-            && sudo apt-get upgrade -y \
-            && sudo apt-get install -y \
-                --no-install-recommends \
-                tor \
-            && apt-get clean
+        sudo apt-get install -y \
+            gpg
+        installTorRepo
+        sudo apt-get update -y
+        sudo apt-get install -y \
+            apt-transport-https \
+            deb.torproject.org-keyring \
+            dirmngr
+        sudo apt-get upgrade -y
+        sudo apt-get install -y \
+            --no-install-recommends \
+            tor
+        apt-get clean
         ;;
     "fedora")
-        sudo dnf update -y \
-            && sudo dnf install -y \
-                apt-transport-https \
-                deb.torproject.org-keyring \
-            && sudo dnf install -y \
-                tor \
-            && dnf clean all
+        sudo dnf update -y
+        sudo dnf install -y \
+            apt-transport-https \
+            deb.torproject.org-keyring
+        sudo dnf install -y \
+            tor
+        dnf clean all
         ;;
 esac
 echo "    Done"
