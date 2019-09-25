@@ -81,7 +81,15 @@ case ${ID} in
         usedDistro="Ubuntu"
         case ${VERSION_CODENAME} in
             "bionic")
+                releaseName='-18-04'
                 torRepo=${torRepoBionic}
+                ;;
+            "disco")
+                releaseName='-19-04'
+                ;;
+            *)
+                echo "Unsupported operating system ID=${ID}, VERSION_ID=${VERSION_CODENAME}"
+                exit
                 ;;
         esac
         ;;
