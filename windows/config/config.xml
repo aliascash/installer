@@ -19,5 +19,4 @@
         </Repository>
     </RemoteRepositories>
     <MaintenanceToolName>Spectrecoin-Maintenance</MaintenanceToolName>
-    <RunProgram>@TargetDir@/Spectrecoin.exe</RunProgram>
 </Installer>
