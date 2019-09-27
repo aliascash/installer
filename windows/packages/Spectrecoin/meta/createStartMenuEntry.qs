@@ -15,8 +15,13 @@ Component.prototype.createOperations = function()
     component.createOperations();
 
     if (systemInfo.productType === "windows") {
+        // Spectrecoin itself
         component.addOperation("CreateShortcut", "@TargetDir@/Spectrecoin.exe", "@StartMenuDir@/Spectrecoin.lnk",
-            "workingDirectory=@TargetDir@", "iconPath=@TargetDir@/spectrecoin-128.png",
+            "workingDirectory=@TargetDir@",
             "iconId=2", "description=Start Spectrecoin Wallet");
+        // Maintenance tool
+        component.addOperation("CreateShortcut", "@TargetDir@/Spectrecoin-Maintenance.exe", "@StartMenuDir@/Updater.lnk",
+            "workingDirectory=@TargetDir@",
+            "iconId=3", "description=Start Maintenance Tool");
     }
 }
