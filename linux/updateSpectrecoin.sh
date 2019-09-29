@@ -28,7 +28,7 @@ echo ""
 # ----------------------------------------------------------------------------
 # Use ca-certificates if available
 if [[ -e /etc/ssl/certs/ca-certificates.crt ]] ; then
-    cacertParam="--cacert /etc/ssl/certs/ca-certificates.crt"
+    cacertParam='--cacert /etc/ssl/certs/ca-certificates.crt'
 fi
 
 usedDistro=''
@@ -106,4 +106,4 @@ case ${ID} in
         ;;
 esac
 
-curl ${cacertParam} -L -s https://raw.githubusercontent.com/spectrecoin/installer/master/linux/updateSpectrecoin-${usedDistro}${releaseName}.sh | sudo bash -s "${versionToInstall}"
+curl ${cacertParam} -L -s https://raw.githubusercontent.com/spectrecoin/installer/splitUpdaterscripts/linux/updateSpectrecoin-${usedDistro}${releaseName}.sh | sudo bash -s "${versionToInstall}"
