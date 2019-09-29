@@ -13,33 +13,12 @@
 # ============================================================================
 
 versionToInstall=$1
-installPath=/usr/local/bin
-tmpWorkdir=/tmp/SpectrecoinUpdate
-tmpChecksumfile=checksumfile.txt
-tmpBinaryArchive=Spectrecoin.tgz
-backportsFile="/etc/apt/sources.list.d/stretch-backports.list"
-backportsRepo="deb http://ftp.debian.org/debian stretch-backports main"
-testingFile="/etc/apt/sources.list.d/testing.list"
-testingRepo="deb http://http.us.debian.org/debian/ testing non-free contrib main"
-boostVersion='1.67.0'
-usedDistro="Debian"
-releaseName='-Stretch'
 
 # ----------------------------------------------------------------------------
 # Use ca-certificates if available
 if [[ -e /etc/ssl/certs/ca-certificates.crt ]] ; then
     cacertParam="--cacert /etc/ssl/certs/ca-certificates.crt"
 fi
-
-# ----------------------------------------------------------------------------
-# Define version to install
-if [[ -z "${versionToInstall}" ]] ; then
-    echo "No version to install (tag) given, installing latest release"
-    githubTag=$(curl ${cacertParam} -L -s https://api.github.com/repos/spectrecoin/spectre/releases/latest | grep tag_name | cut -d: -f2 | cut -d '"' -f2)
-else
-    githubTag=${versionToInstall}
-fi
-echo ""
 
 # ----------------------------------------------------------------------------
 # Determining current operating system (distribution)
