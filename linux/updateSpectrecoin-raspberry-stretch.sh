@@ -55,62 +55,16 @@ esac
 
 echo ""
 echo "======================================================================"
-echo "=      Your system will be updated/upgraded to Raspbian Buster       ="
 echo "=                                                                    ="
-echo "=          At first all packages will be updated/upgraded            ="
-echo "=        and afterwards the system upgrade will be performed         ="
-echo "=             Last step is to reboot the whole system                ="
-echo "=                  to boot into Raspbian Buster                      ="
+echo "=              Your system is running Raspbian Buster                ="
+echo "=                                                                    ="
+echo "=         A silent system upgrade is not possible this way           ="
+echo "=                                                                    ="
+echo "=              Please stop the Wallet on this system,                ="
+echo "=                  backup your wallet.dat file                       ="
+echo "=             and install the latest raspbian image from             ="
+echo "=           https://spectreproject.io/index.html#download            ="
+echo "=      onto a different SD card, so you have this one as backup.     ="
+echo "=                                                                    ="
 echo "======================================================================"
 echo ""
-echo "Press return to see the list of steps which will be performed."
-
-read a
-
-echo ""
-echo "The following steps will be performed:"
-echo "- Update /etc/apt/sources.list"
-echo "- Remove backports and testing repo on /etc/apt/sources.list.d/"
-echo "- apt update"
-echo "- apt upgrade"
-echo "- apt full-upgrade"
-echo "- reboot"
-echo ""
-echo "During these steps there might be additional user input required"
-echo ""
-
-echo "======================================================================"
-echo "    Go ahead with upgrade? "
-echo -n "    Type 'YES' to go ahead or anything else to cancel: "
-read doUpgrade
-
-if [[ "${doUpgrade}" -ne "YES" ]] ; then
-    echo "System upgrade canceled, press return to exit update script"
-    read a
-    exit
-fi
-
-echo "Updating /etc/apt/sources.list"
-sudo sed -i "s/stretch/buster/g" /etc/apt/sources.list
-
-echo "Removing /etc/apt/sources.list.d/*backport*.list"
-sudo rm /etc/apt/sources.list.d/*backport*.list
-
-echo "Removing /etc/apt/sources.list.d/*test*.list"
-sudo rm /etc/apt/sources.list.d/*test*.list
-
-echo "Performing apt update"
-sudo apt update
-
-echo "Performing apt upgrade"
-sudo apt upgrade
-
-echo "Performing apt full-upgrade"
-sudo apt full-upgrade
-
-echo ""
-echo "All finished. The system will reboot now."
-echo "Please start the update afterwards again!"
-echo "Press return to reboot the system."
-read a
-sudo reboot
