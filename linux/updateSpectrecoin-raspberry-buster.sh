@@ -61,7 +61,7 @@ case ${ID} in
                 ;;
             *)
                 case ${PRETTY_NAME} in
-                    "*bullseye*")
+                    *bullseye*)
                         echo "Detected ${PRETTY_NAME}, installing Buster binaries"
                         ;;
                     *)
