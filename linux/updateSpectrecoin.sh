@@ -74,7 +74,7 @@ case ${ID} in
         esac
         ;;
     "fedora")
-        usedDistro="Fedora"
+        usedDistro="fedora"
         ;;
     "raspbian")
         usedDistro="raspberry"
