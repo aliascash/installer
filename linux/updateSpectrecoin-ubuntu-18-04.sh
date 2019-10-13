@@ -56,7 +56,7 @@ releaseName='-18-04'
 case ${ID} in
     "ubuntu")
         case ${VERSION_CODENAME} in
-            "bionic")
+            "bionic"|"cosmic")
                 echo "Running on ${ID}/${VERSION_CODENAME}"
                 ;;
             *)

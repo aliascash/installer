@@ -61,7 +61,7 @@ case ${ID} in
     "ubuntu")
         usedDistro="ubuntu"
         case ${VERSION_CODENAME} in
-            "bionic")
+            "bionic"|"cosmic")
                 releaseName='-18-04'
                 ;;
             "disco")
