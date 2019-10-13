@@ -2,7 +2,7 @@
 <Installer>
     <Name>Spectrecoin</Name>
     <Version>1.0.0</Version>
-    <Title>Spectrecoin Installer</Title>
+    <Title>Spectrecoin</Title>
     <Publisher>The Spectrecoin Team</Publisher>
     <StartMenuDir>Spectrecoin</StartMenuDir>
     <ProductUrl>https://spectreproject.io/</ProductUrl>

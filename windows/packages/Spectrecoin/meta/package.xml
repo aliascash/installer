@@ -8,4 +8,6 @@
         <License name="License Agreement Spectrecoin" file="LICENSE.txt" />
     </Licenses>
     <Default>true</Default>
+    <SortingPriority>10</SortingPriority>
+    <Script>createStartMenuEntry.qs</Script>
 </Package>
