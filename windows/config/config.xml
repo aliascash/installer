@@ -13,7 +13,7 @@
     <WizardStyle>Modern</WizardStyle>
     <RemoteRepositories>
         <Repository>
-            <Url>http://download.spectreproject.io/repository/</Url>
+            <Url>http://download.spectreproject.io/files/repository/</Url>
             <Enabled>1</Enabled>
             <DisplayName>Spectrecoin repository</DisplayName>
         </Repository>
