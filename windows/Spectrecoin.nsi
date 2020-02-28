@@ -73,7 +73,7 @@ Section "Spectrecoin" SecDummy
 
 SectionEnd
 
-Section "Bootstrap Blockchain" SecBlockchain
+Section /o "Bootstrap Blockchain" SecBlockchain
 
   SetOutPath "$APPDATA"
 
