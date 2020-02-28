@@ -27,6 +27,14 @@
 ;--------------------------------
 ;Interface Settings
 
+  !define MUI_ICON "images\spectrecoin.ico"
+  !define MUI_HEADERIMAGE
+  !define MUI_HEADERIMAGE_BITMAP "images\banner_150_57.bmp" ; optional
+  !define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
+  !define MUI_HEADERIMAGE_UNBITMAP "images\banner_150_57.bmp" ; optional
+  !define MUI_HEADERIMAGE_UNBITMAP_NOSTRETCH
+  !define MUI_HEADERIMAGE_RIGHT
+  !define MUI_HEADER_TRANSPARENT_TEXT
   !define MUI_ABORTWARNING
 
 ;--------------------------------
