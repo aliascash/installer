@@ -17,7 +17,7 @@
 
   ;Default installation folder
   InstallDir "$LOCALAPPDATA\Spectrecoin"
-  
+
   ;Get installation folder from registry if available
   InstallDirRegKey HKCU "Software\Spectrecoin" ""
 
@@ -36,13 +36,13 @@
   !insertmacro MUI_PAGE_COMPONENTS
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_INSTFILES
-  
+
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
-  
+
 ;--------------------------------
 ;Languages
- 
+
   !insertmacro MUI_LANGUAGE "English"
 
 ;--------------------------------
@@ -51,12 +51,15 @@
 Section "Spectrecoin" SecDummy
 
   SetOutPath "$INSTDIR"
-  
+
   ;ADD YOUR OWN FILES HERE...
-  
+  File /r content\Spectrecoin\*
+  SetOutPath $INSTDIR\Tor
+  File /r content\Tor\*
+
   ;Store installation folder
   WriteRegStr HKCU "Software\Spectrecoin" "" $INSTDIR
-  
+
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
@@ -64,7 +67,7 @@ SectionEnd
 
 Section "Bootstrap Blockchain" SecBlockchain
 
-  SetOutPath "$LOCALAPPDATA"
+  SetOutPath "$APPDATA"
 
   ;ADD YOUR OWN FILES HERE...
 
