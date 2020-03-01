@@ -101,14 +101,16 @@ SectionEnd
 ;--------------------------------
 ;Uninstaller Section
 
-Section "Uninstall"
+Section un.install
 
-  ;ADD YOUR OWN FILES HERE...
+    ;Generate list and include it in script at compile-time
+    !execute 'include\unList.exe /DATE=1 /INSTDIR=..\content\Spectrecoin /LOG=Test.log /PREFIX="	" /MB=0'
+	!include "Test.log"
 
-  Delete "$INSTDIR\Uninstall.exe"
+    Delete "$INSTDIR\Uninstall.exe"
 
-  RMDir "$INSTDIR"
+    RMDir "$INSTDIR"
 
-  DeleteRegKey /ifempty HKCU "Software\Spectrecoin"
+    DeleteRegKey /ifempty HKCU "Software\Spectrecoin"
 
 SectionEnd
