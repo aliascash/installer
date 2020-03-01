@@ -10,8 +10,11 @@
 ; 2005 Matei "Ambient.Impact" Stanca (ambient.impact@rogers.com)
 ;-----------------------------------------------------------------------------------------------
 
-Name "unList v1.5"
-OutFile "unList.exe"
+; 3/5/2019 v1.51 Edited to save temp files to working folder instead of $PLUGINSDIR due to
+; permissions issues when copied back to work folder.
+; See http://forums.winamp.com/showthread.php?s=&threadid=213182
+
+Name "unList v1.51"OutFile "unList.exe"
 Caption "$(^Name)"
 SubCaption 2 " "
 SubCaption 3 " "
@@ -144,10 +147,13 @@ Function main
 	StrLen $R5 $INSTDIR
 	IntOp $R5 $R5 + 1
 
-	InitPluginsDir
-	GetTempFileName $R1 $PLUGINSDIR
-	GetTempFileName $R2 $PLUGINSDIR
-	GetTempFileName $R3 $PLUGINSDIR
+    ;InitPluginsDir
+    ;GetTempFileName $R1 $PLUGINSDIR
+    ;GetTempFileName $R2 $PLUGINSDIR
+    ;GetTempFileName $R3 $PLUGINSDIR
+    StrCpy $R1 'temp1.txt'
+    StrCpy $R2 'temp2.txt'
+    StrCpy $R3 'temp3.txt'
 	ExpandEnvStrings $R0 %COMSPEC%
 
 	nsExec::Exec '"$R0" /C DIR "$INSTDIR\$FILEFILTER" /A-D /B /S /ON>"$R1"'
@@ -175,6 +181,8 @@ Function main
 	quit
 
 	success:
+	Delete '$R1'
+    Delete '$R3'
 	StrCmp $MB 0 quit
 	HideWindow
 	MessageBox MB_OK|MB_ICONINFORMATION '"$LOG" was successfully generated'
