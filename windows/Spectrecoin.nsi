@@ -76,12 +76,16 @@ SectionEnd
 
 Section /o "Bootstrap Blockchain" SecBlockchain
 
-    SetOutPath "$APPDATA"
+    CreateDirectory "$APPDATA\chain-test"
+    SetOutPath "$APPDATA\chain-test"
+
+    inetc::get /caption "Bootstrap blockchain" /canceltext "Cancel!" "https://github.com/spectrecoin/spectre/releases/download/4.1.0/RELEASENOTES.txt" "$APPDATA\chain-test\RELEASENOTES.txt" /end
+    Pop $1 # return value = exit code, "OK" means OK
 
     ;ADD YOUR OWN FILES HERE...
 
     ;Create uninstaller
-    WriteUninstaller "$INSTDIR\Uninstall-BlockchainData.exe"
+    WriteUninstaller "$APPDATA\chain-test\Uninstall-BlockchainData.exe"
 
 SectionEnd
 
