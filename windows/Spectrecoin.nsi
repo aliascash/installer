@@ -89,6 +89,12 @@ Section /o "Bootstrap Blockchain" SecBlockchain
 
 SectionEnd
 
+Section "Start Menu Shortcuts"
+    CreateDirectory "$SMPROGRAMS\Spectrecoin"
+    CreateShortCut "$SMPROGRAMS\Spectrecoin\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+    CreateShortCut "$SMPROGRAMS\Spectrecoin\Spectrecoin.lnk" "$INSTDIR\Spectrecoin.exe" "" "$INSTDIR\Spectrecoin.exe" 0
+SectionEnd
+
 ;--------------------------------
 ;Descriptions
 
