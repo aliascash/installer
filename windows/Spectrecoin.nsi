@@ -104,8 +104,8 @@ SectionEnd
 Section un.install
 
     ;Generate list and include it in script at compile-time
-    !execute 'include\unList.exe /DATE=1 /INSTDIR=..\content\Spectrecoin /LOG=Test.log /PREFIX="	" /MB=0'
-	!include "Test.log"
+    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Spectrecoin /LOG=Install.log /PREFIX="	" /MB=0'
+	!include "include\Install.log"
 
     Delete "$INSTDIR\Uninstall.exe"
 
