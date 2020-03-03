@@ -22,6 +22,10 @@
     ;Default installation folder
     InstallDir "$LOCALAPPDATA\Spectrecoin"
 
+    ;Default data folder
+    !define APPDATA_FOLDER "$APPDATA\Spectrecoin-test"
+
+
     ;Get installation folder from registry if available
     InstallDirRegKey HKCU "Software\Spectrecoin" ""
 
@@ -60,7 +64,7 @@
 ;--------------------------------
 ;Installer Sections
 
-Section "Spectrecoin" SecDummy
+Section "Spectrecoin" SectionWalletBinary
 
     SetOutPath "$INSTDIR"
 
@@ -75,10 +79,10 @@ Section "Spectrecoin" SecDummy
 
 SectionEnd
 
-Section /o "Bootstrap Blockchain" SecBlockchain
+Section /o "Bootstrap Blockchain" SectionBlockchain
 
-    CreateDirectory "$APPDATA\Spectrecoin-test"
-    SetOutPath "$APPDATA\Spectrecoin-test"
+    CreateDirectory "${APPDATA_FOLDER}"
+    SetOutPath "${APPDATA_FOLDER}"
 
     ;Backup wallet.dat if existing
     IfFileExists wallet.dat 0 goAheadWithDownload
@@ -88,11 +92,11 @@ Section /o "Bootstrap Blockchain" SecBlockchain
 
     goAheadWithDownload:
     MessageBox MB_OK "Downloading blockchain"
-    inetc::get /caption "Downloading bootstrap blockchain. Patience, this could take a while..." /canceltext "Cancel" "https://github.com/spectrecoin/spectre-builder/archive/1.2.zip" "$APPDATA\Spectrecoin-test\BootstrapChain.zip" /end
+    inetc::get /caption "Downloading bootstrap blockchain. Patience, this could take a while..." /canceltext "Cancel" "https://github.com/spectrecoin/spectre-builder/archive/1.2.zip" "${APPDATA_FOLDER}\BootstrapChain.zip" /end
     Pop $1 # return value = exit code, "OK" means OK
 
     MessageBox MB_OK "Unzip blockchain"
-    nsisunz::UnzipToStack "$APPDATA\Spectrecoin-test\BootstrapChain.zip" "$APPDATA\Spectrecoin-test\ziptest"
+    nsisunz::UnzipToStack "${APPDATA_FOLDER}\BootstrapChain.zip" "${APPDATA_FOLDER}\ziptest"
     Pop $0
     StrCmp $0 "success" ok
         DetailPrint "$0" ;print error message to log
@@ -108,7 +112,7 @@ Section /o "Bootstrap Blockchain" SecBlockchain
     skiplist:
 
     ;Create uninstaller
-    WriteUninstaller "$APPDATA\chain-test\Uninstall-BlockchainData.exe"
+    WriteUninstaller "${APPDATA_FOLDER}\Uninstall-BlockchainData.exe"
 
 SectionEnd
 
@@ -122,19 +126,19 @@ SectionEnd
 ;Descriptions
 
     ;Language strings
-    LangString DESC_SecDummy ${LANG_ENGLISH} "The Spectrecoin wallet with all it's required components."
-    LangString DESC_SecBlockchain ${LANG_ENGLISH} "The bootstrap blockchain data."
+    LangString DESC_SectionWalletBinary ${LANG_ENGLISH} "The Spectrecoin wallet with all it's required components."
+    LangString DESC_SectionBlockchain ${LANG_ENGLISH} "The bootstrap blockchain data."
 
     ;Assign language strings to sections
     !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-        !insertmacro MUI_DESCRIPTION_TEXT ${SecDummy} $(DESC_SecDummy)
-        !insertmacro MUI_DESCRIPTION_TEXT ${SecBlockchain} $(DESC_SecBlockchain)
+        !insertmacro MUI_DESCRIPTION_TEXT ${SectionWalletBinary} $(DESC_SectionWalletBinary)
+        !insertmacro MUI_DESCRIPTION_TEXT ${SectionBlockchain} $(DESC_SectionBlockchain)
     !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;--------------------------------
 ;Uninstaller Section
 
-Section un.install
+Section un.SectionWalletBinary
 
     ;Generate list and include it in script at compile-time
     !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Spectrecoin /LOG=Install.log /PREFIX="	" /MB=0'
@@ -144,6 +148,19 @@ Section un.install
 
     RMDir "$INSTDIR"
 
+    Delete "$SMPROGRAMS\Spectrecoin\Uninstall.lnk"
+    Delete "$SMPROGRAMS\Spectrecoin\Spectrecoin.lnk"
+    RMDir "$SMPROGRAMS\Spectrecoin"
+
     DeleteRegKey /ifempty HKCU "Software\Spectrecoin"
+
+SectionEnd
+
+Section un.SectionBlockchain
+
+    Delete "$APPDATA_FOLDER\BootstrapChain.zip"
+    Delete "$APPDATA_FOLDER\blk0001.dat"
+    Delete "$APPDATA_FOLDER\txleveldb"
+    Delete "$APPDATA_FOLDER\Uninstall.exe"
 
 SectionEnd
