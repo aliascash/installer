@@ -8,6 +8,7 @@
     !include "MUI2.nsh"
 
     !include "FileFunc.nsh"
+    !insertmacro GetTime
     !insertmacro un.GetTime
 
 ;--------------------------------
@@ -76,13 +77,35 @@ SectionEnd
 
 Section /o "Bootstrap Blockchain" SecBlockchain
 
-    CreateDirectory "$APPDATA\chain-test"
-    SetOutPath "$APPDATA\chain-test"
+    CreateDirectory "$APPDATA\Spectrecoin-test"
+    SetOutPath "$APPDATA\Spectrecoin-test"
 
-    inetc::get /caption "Bootstrap blockchain" /canceltext "Cancel!" "https://github.com/spectrecoin/spectre/releases/download/4.1.0/RELEASENOTES.txt" "$APPDATA\chain-test\RELEASENOTES.txt" /end
+    ;Backup wallet.dat if existing
+    IfFileExists wallet.dat 0 goAheadWithDownload
+    MessageBox MB_OK "Create backup of wallet.dat"
+    ${GetTime} "" "L" $0 $1 $2 $3 $4 $5 $6
+    CopyFiles "wallet.dat" "wallet.dat.$2-$1-$0-$4$5$6"
+
+    goAheadWithDownload:
+    MessageBox MB_OK "Downloading blockchain"
+    inetc::get /caption "Downloading bootstrap blockchain. Patience, this could take a while..." /canceltext "Cancel" "https://github.com/spectrecoin/spectre-builder/archive/1.2.zip" "$APPDATA\Spectrecoin-test\BootstrapChain.zip" /end
     Pop $1 # return value = exit code, "OK" means OK
 
-    ;ADD YOUR OWN FILES HERE...
+    MessageBox MB_OK "Unzip blockchain"
+    nsisunz::UnzipToStack "$APPDATA\Spectrecoin-test\BootstrapChain.zip" "$APPDATA\Spectrecoin-test\ziptest"
+    Pop $0
+    StrCmp $0 "success" ok
+        DetailPrint "$0" ;print error message to log
+        Goto skiplist
+    ok:
+
+    ; Print out list of files extracted to log
+    next:
+    Pop $0
+        DetailPrint $0
+        StrCmp $0 "" 0 next ; pop strings until a blank one arrives
+
+    skiplist:
 
     ;Create uninstaller
     WriteUninstaller "$APPDATA\chain-test\Uninstall-BlockchainData.exe"
