@@ -23,14 +23,14 @@ ${ReadmeLanguage} "${LANG_GERMAN}" \
       "Read Me" \
       "Kurzinformation zum Spectrecoin-Installer." \
       "Über den Installer:" \
-      "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
+      "$\n  Drücken Sie die Bild-Runter-Taste, um den restlichen Text zu sehen."
 
 ;set up uninstall lang strings for second lang
 ${Un.ReadmeLanguage} "${LANG_GERMAN}" \
       "Read Me" \
       "Kurzinformation zum Spectrecoin-Uninstaller." \
       "Über den Uninstaller:" \
-      "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
+      "$\n  Drücken Sie die Bild-Runter-Taste, um den restlichen Text zu sehen."
 
 LangString DESC_SectionWalletBinary ${LANG_GERMAN} "Die Spectrecoin Wallet-Software mit allen benötigten Abhängigkeiten."
 LangString DESC_SectionBlockchain ${LANG_GERMAN} "Die Spectrecoin Bootstrap-Blockchain. Der Download wird unter Umständen einige Zeit dauern, da es sich um ein 1.2G grosses Archiv handelt."
