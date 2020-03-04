@@ -8,6 +8,7 @@
     !include "MUI2.nsh"
 
     !include "FileFunc.nsh"
+    !include "LogicLib.nsh"
     !insertmacro GetTime
     !insertmacro un.GetTime
 
@@ -19,18 +20,18 @@
     OutFile "Spectrecoin-Installer.exe"
     Unicode True
 
-    ;Default installation folder
+    ;Defaults
     InstallDir "$LOCALAPPDATA\Spectrecoin"
-
-    ;Default data folder
-    !define APPDATA_FOLDER "$APPDATA\Spectrecoin-test"
-
+    !define APPDATA_FOLDER "$APPDATA\Spectrecoin"
+    !define UninstId "Spectrecoin"
 
     ;Get installation folder from registry if available
     InstallDirRegKey HKCU "Software\Spectrecoin" ""
 
     ;Request application privileges for Windows Vista
     RequestExecutionLevel user
+
+    !include "include\uninstallHandling.nsi"
 
 ;--------------------------------
 ;Interface Settings
@@ -66,6 +67,8 @@
 
 Section "Spectrecoin" SectionWalletBinary
 
+    Call checkPreviousInstallation
+
     SetOutPath "$INSTDIR"
 
     ;All required files
@@ -73,6 +76,9 @@ Section "Spectrecoin" SectionWalletBinary
 
     ;Store installation folder on registry
     WriteRegStr HKCU "Software\Spectrecoin" "" $INSTDIR
+    WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "DisplayName" "Spectrecoin"
+    WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
+    WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "QuietUninstallString" '"$INSTDIR\Uninstall.exe" /S'
 
     ;Create startmenu entries
     CreateDirectory "$SMPROGRAMS\Spectrecoin"
@@ -156,6 +162,7 @@ Section un.SectionWalletBinary
     Delete "$SMPROGRAMS\Spectrecoin\Spectrecoin.lnk"
     RMDir "$SMPROGRAMS\Spectrecoin"
 
+    DeleteRegKey HKCU "Software\Spectrecoin\${UninstId}"
     DeleteRegKey /ifempty HKCU "Software\Spectrecoin"
 
 SectionEnd
