@@ -12,6 +12,8 @@ ${Un.ReadmeLanguage} "${LANG_ENGLISH}" \
       "About Uninstall:" \
       "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
 
+LangString DESC_SectionWalletBinary ${LANG_ENGLISH} "The Spectrecoin wallet software with all it's required components."
+LangString DESC_SectionBlockchain ${LANG_ENGLISH} "The bootstrap blockchain data. Download may take some time as it's a 1.2G archive."
 
 ;Add 2nd language
 !insertmacro MUI_LANGUAGE "German"
@@ -29,3 +31,6 @@ ${Un.ReadmeLanguage} "${LANG_GERMAN}" \
       "Kurzinformation zum Spectrecoin-Uninstaller." \
       "Über den Uninstaller:" \
       "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
+
+LangString DESC_SectionWalletBinary ${LANG_GERMAN} "Die Spectrecoin Wallet-Software mit allen benötigten Abhängigkeiten."
+LangString DESC_SectionBlockchain ${LANG_GERMAN} "Die Spectrecoin Bootstrap-Blockchain. Der Download wird unter Umständen einige Zeit dauern, da es sich um ein 1.2G grosses Archiv handelt."

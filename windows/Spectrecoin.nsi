@@ -161,10 +161,6 @@ SectionEnd
 ;--------------------------------
 ;Descriptions
 
-    ;Language strings
-    LangString DESC_SectionWalletBinary ${LANG_ENGLISH} "The Spectrecoin wallet software with all it's required components."
-    LangString DESC_SectionBlockchain ${LANG_ENGLISH} "The bootstrap blockchain data. Download may take some time as it's a 1.2G archive."
-
     ;Assign language strings to sections
     !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
         !insertmacro MUI_DESCRIPTION_TEXT ${SectionWalletBinary} $(DESC_SectionWalletBinary)
