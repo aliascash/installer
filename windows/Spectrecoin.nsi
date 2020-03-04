@@ -93,6 +93,8 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
     IfFileExists wallet.dat 0 goAheadWithDownload
 ;    MessageBox MB_OK "Create backup of wallet.dat"
     ${GetTime} "" "L" $0 $1 $2 $3 $4 $5 $6
+    IntCmp $4 9 0 0 +2
+    StrCpy $4 '0$4'
     CopyFiles "wallet.dat" "wallet.dat.$2-$1-$0-$4$5$6"
 
     goAheadWithDownload:
