@@ -69,9 +69,11 @@
 
 Section "Spectrecoin" SectionWalletBinary
 
-    Call checkPreviousInstallation
-
     SetOutPath "$INSTDIR"
+
+    Push "Spectrecoin.exe"
+    Call CloseRunningApplication
+    Call CheckPreviousInstallation
 
     ;All required files
     File /r content\Spectrecoin\*
@@ -98,6 +100,9 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
     ;Bootstrap archive is around 1.2G, which is 1200000K
     ;Extracted chain is around 1.6G, which is 1600000K
     AddSize 2800000
+
+    Push "Spectrecoin.exe"
+    Call CloseRunningApplication
 
     CreateDirectory "${APPDATA_FOLDER}"
     SetOutPath "${APPDATA_FOLDER}"

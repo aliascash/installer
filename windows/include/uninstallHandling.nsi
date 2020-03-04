@@ -45,7 +45,7 @@ FunctionEnd
 
 
 ;Function .onInit
-Function checkPreviousInstallation
+Function CheckPreviousInstallation
 ReadRegStr $0 HKCU "Software\Spectrecoin\${UninstId}" "UninstallString"
 ${If} $0 != ""
 ${AndIf} ${Cmd} `MessageBox MB_YESNO|MB_ICONQUESTION "Found previous version, which needs to be uninstalled first." /SD IDYES IDYES`
