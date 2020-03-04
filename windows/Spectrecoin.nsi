@@ -64,6 +64,9 @@
     !insertmacro MUI_PAGE_DIRECTORY
     !insertmacro MUI_PAGE_INSTFILES
 
+    ;Add the install read me page
+    !insertmacro MUI_UNPAGE_README "README_UNINSTALL.txt"
+
     !insertmacro MUI_UNPAGE_CONFIRM
     !insertmacro MUI_UNPAGE_INSTFILES
 
@@ -171,6 +174,9 @@ SectionEnd
 ;Uninstaller Section
 
 Section un.SectionWalletBinary
+
+    Push "Spectrecoin.exe"
+    Call un.CloseRunningApplication
 
     ;Generate list and include it in script at compile-time
     !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Spectrecoin /LOG=Install.log /PREFIX="	" /MB=0'
