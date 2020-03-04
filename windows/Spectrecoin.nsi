@@ -86,16 +86,16 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
 
     ;Backup wallet.dat if existing
     IfFileExists wallet.dat 0 goAheadWithDownload
-    MessageBox MB_OK "Create backup of wallet.dat"
+;    MessageBox MB_OK "Create backup of wallet.dat"
     ${GetTime} "" "L" $0 $1 $2 $3 $4 $5 $6
     CopyFiles "wallet.dat" "wallet.dat.$2-$1-$0-$4$5$6"
 
     goAheadWithDownload:
-    MessageBox MB_OK "Downloading blockchain"
+;    MessageBox MB_OK "Downloading blockchain"
     inetc::get /caption "Downloading bootstrap blockchain. Patience, this could take a while..." /canceltext "Cancel" "https://github.com/spectrecoin/spectre-builder/archive/1.2.zip" "${APPDATA_FOLDER}\BootstrapChain.zip" /end
     Pop $1 # return value = exit code, "OK" means OK
 
-    MessageBox MB_OK "Unzip blockchain"
+;    MessageBox MB_OK "Unzip blockchain"
     nsisunz::UnzipToStack "${APPDATA_FOLDER}\BootstrapChain.zip" "${APPDATA_FOLDER}\ziptest"
     Pop $0
     StrCmp $0 "success" ok
