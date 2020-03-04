@@ -1,6 +1,6 @@
 ;2020-03-04 HLXEasy
-
-Function CloseRunningApplication
+!macro myfunc un
+Function ${un}CloseRunningApplication
     Pop $0
 ;    MessageBox MB_OK "Checking for running $0"
     DetailPrint "Checking for running $0"
@@ -19,3 +19,7 @@ Function CloseRunningApplication
 
     ${nsProcess::Unload}
 FunctionEnd
+!macroend
+
+!insertmacro myfunc ""
+!insertmacro myfunc "un."
