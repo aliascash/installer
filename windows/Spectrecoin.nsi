@@ -122,9 +122,6 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
 
     skiplist:
 
-    ;Create uninstaller
-    WriteUninstaller "${APPDATA_FOLDER}\Uninstall-BlockchainData.exe"
-
 SectionEnd
 
 ;--------------------------------
