@@ -68,11 +68,16 @@ Section "Spectrecoin" SectionWalletBinary
 
     SetOutPath "$INSTDIR"
 
-    ;ADD YOUR OWN FILES HERE...
+    ;All required files
     File /r content\Spectrecoin\*
 
-    ;Store installation folder
+    ;Store installation folder on registry
     WriteRegStr HKCU "Software\Spectrecoin" "" $INSTDIR
+
+    ;Create startmenu entries
+    CreateDirectory "$SMPROGRAMS\Spectrecoin"
+    CreateShortCut "$SMPROGRAMS\Spectrecoin\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+    CreateShortCut "$SMPROGRAMS\Spectrecoin\Spectrecoin.lnk" "$INSTDIR\Spectrecoin.exe" "" "$INSTDIR\Spectrecoin.exe" 0
 
     ;Create uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -114,12 +119,6 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
     ;Create uninstaller
     WriteUninstaller "${APPDATA_FOLDER}\Uninstall-BlockchainData.exe"
 
-SectionEnd
-
-Section "Start Menu Shortcuts"
-    CreateDirectory "$SMPROGRAMS\Spectrecoin"
-    CreateShortCut "$SMPROGRAMS\Spectrecoin\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-    CreateShortCut "$SMPROGRAMS\Spectrecoin\Spectrecoin.lnk" "$INSTDIR\Spectrecoin.exe" "" "$INSTDIR\Spectrecoin.exe" 0
 SectionEnd
 
 ;--------------------------------
