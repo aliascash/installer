@@ -101,19 +101,23 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
     SetOutPath "${APPDATA_FOLDER}"
 
     ;Backup wallet.dat if existing
-    IfFileExists wallet.dat 0 goAheadWithDownload
-;    MessageBox MB_OK "Create backup of wallet.dat"
-    ${GetTime} "" "L" $0 $1 $2 $3 $4 $5 $6
-    IntCmp $4 9 0 0 +2
-    StrCpy $4 '0$4'
-    CopyFiles "wallet.dat" "wallet.dat.$2-$1-$0-$4$5$6"
+    IfFileExists wallet.dat 0 checkForExistingBootstrapArchive
+;        MessageBox MB_OK "Create backup of wallet.dat"
+        ${GetTime} "" "L" $0 $1 $2 $3 $4 $5 $6
+        IntCmp $4 9 0 0 +2
+        StrCpy $4 '0$4'
+        CopyFiles "wallet.dat" "wallet.dat.$2-$1-$0-$4$5$6"
 
-    goAheadWithDownload:
-;    MessageBox MB_OK "Downloading blockchain"
-    Delete "${APPDATA_FOLDER}\BootstrapChain.zip"
+    checkForExistingBootstrapArchive:
+    IfFileExists "${APPDATA_FOLDER}\BootstrapChain.zip" 0 goAheadWithBootstrapDownload
+        MessageBox MB_YESNO|MB_ICONQUESTION "Found existing bootstrap archive. Remove it and download new one?" /SD IDNO IDNO goAheadWithBootstrapExtraction
+            Delete "${APPDATA_FOLDER}\BootstrapChain.zip"
+
+    goAheadWithBootstrapDownload:
     inetc::get /caption "Downloading bootstrap blockchain. Patience, this could take a while..." /canceltext "Cancel" "https://download.spectreproject.io/files/bootstrap/BootstrapChain.zip" "${APPDATA_FOLDER}\BootstrapChain.zip" /end
     Pop $1 # return value = exit code, "OK" means OK
 
+    goAheadWithBootstrapExtraction:
     ;Remove existing blockchain data
     RMDir /r "${APPDATA_FOLDER}\txleveldb"
     Delete "${APPDATA_FOLDER}\blk0001.dat"
