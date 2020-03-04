@@ -49,10 +49,17 @@
     !define MUI_HEADER_TRANSPARENT_TEXT
     !define MUI_ABORTWARNING
 
+    ;Show all languages, despite user's codepage
+    !define MUI_LANGDLL_ALLLANGUAGES
+
 ;--------------------------------
 ;Pages
 
     !insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
+
+    ;Add the install read me page
+    !insertmacro MUI_PAGE_README "README.txt"
+
     !insertmacro MUI_PAGE_COMPONENTS
     !insertmacro MUI_PAGE_DIRECTORY
     !insertmacro MUI_PAGE_INSTFILES
@@ -64,6 +71,7 @@
 ;Languages
 
     !insertmacro MUI_LANGUAGE "English"
+    !include "include\languages.nsh"
 
 ;--------------------------------
 ;Installer Sections
