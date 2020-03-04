@@ -60,7 +60,7 @@ Work in progress!
 * Plugins:
   * [NSISunzU](https://nsis.sourceforge.io/Nsisunz_plug-in) (Unicode version!)
   * [Inetc](https://nsis.sourceforge.io/Inetc_plug-in)
-  * [NsProcess](https://nsis.sourceforge.io/NsProcess_plugin) (Unicode version!)
+  * [NsProcess](https://nsis.sourceforge.io/NsProcess_plugin) (Unicode version, rename nsProcessW.dll into nsProcess.dll!)
 * Setup env var NSISDIR with path to installed NSIS folder
 
 ### Build installer
