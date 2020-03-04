@@ -110,13 +110,13 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
 
     goAheadWithDownload:
 ;    MessageBox MB_OK "Downloading blockchain"
-    Delete "$APPDATA_FOLDER\BootstrapChain.zip"
-    inetc::get /caption "Downloading bootstrap blockchain. Patience, this could take a while..." /canceltext "Cancel" "https://github.com/spectrecoin/spectre-builder/archive/1.2.zip" "${APPDATA_FOLDER}\BootstrapChain.zip" /end
+    Delete "${APPDATA_FOLDER}\BootstrapChain.zip"
+    inetc::get /caption "Downloading bootstrap blockchain. Patience, this could take a while..." /canceltext "Cancel" "https://download.spectreproject.io/files/bootstrap/BootstrapChain.zip" "${APPDATA_FOLDER}\BootstrapChain.zip" /end
     Pop $1 # return value = exit code, "OK" means OK
 
     ;Remove existing blockchain data
-    RMDir /r "$APPDATA_FOLDER\txleveldb"
-    Delete "$APPDATA_FOLDER\blk0001.dat"
+    RMDir /r "${APPDATA_FOLDER}\txleveldb"
+    Delete "${APPDATA_FOLDER}\blk0001.dat"
 
     ;Extract bootstrap chain archive
 ;    MessageBox MB_OK "Unzip blockchain"
