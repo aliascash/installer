@@ -92,6 +92,11 @@ SectionEnd
 
 Section /o "Bootstrap Blockchain" SectionBlockchain
 
+    ;Define required space as blockchain will be downloaded separately during installation
+    ;Bootstrap archive is around 1.2G, which is 1200000K
+    ;Extracted chain is around 1.6G, which is 1600000K
+    AddSize 2800000
+
     CreateDirectory "${APPDATA_FOLDER}"
     SetOutPath "${APPDATA_FOLDER}"
 
@@ -115,7 +120,8 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
 
     ;Extract bootstrap chain archive
 ;    MessageBox MB_OK "Unzip blockchain"
-    nsisunz::UnzipToStack "${APPDATA_FOLDER}\BootstrapChain.zip" "${APPDATA_FOLDER}\ziptest"
+    DetailPrint "Extracting blockchain data..."
+    nsisunz::UnzipToStack "${APPDATA_FOLDER}\BootstrapChain.zip" "${APPDATA_FOLDER}"
     Pop $0
     StrCmp $0 "success" ok
         DetailPrint "$0" ;print error message to log
@@ -136,8 +142,8 @@ SectionEnd
 ;Descriptions
 
     ;Language strings
-    LangString DESC_SectionWalletBinary ${LANG_ENGLISH} "The Spectrecoin wallet with all it's required components."
-    LangString DESC_SectionBlockchain ${LANG_ENGLISH} "The bootstrap blockchain data."
+    LangString DESC_SectionWalletBinary ${LANG_ENGLISH} "The Spectrecoin wallet software with all it's required components."
+    LangString DESC_SectionBlockchain ${LANG_ENGLISH} "The bootstrap blockchain data. Download may take some time as it's a 1.2G archive."
 
     ;Assign language strings to sections
     !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
