@@ -9,6 +9,7 @@
 
     !include "FileFunc.nsh"
     !include "LogicLib.nsh"
+    !include "nsDialogs.nsh"
     !include "nsProcess.nsh"
     !include "include\MUI_EXTRAPAGES.nsh"
     !insertmacro GetTime
@@ -61,6 +62,7 @@
     !insertmacro MUI_PAGE_README "README.txt"
 
     !insertmacro MUI_PAGE_COMPONENTS
+    Page custom TorFlavourPage
     !insertmacro MUI_PAGE_DIRECTORY
     !insertmacro MUI_PAGE_INSTFILES
 
@@ -160,6 +162,55 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
     skiplist:
 
 SectionEnd
+
+Var Dialog
+Var TorFlavour
+
+Function TorFlavourPage
+
+    SectionGetFlags ${SectionWalletBinary} $R0
+    IntOp $R0 $R0 & ${SF_SELECTED}
+    IntCmp $R0 ${SF_SELECTED} show
+        Abort
+
+    show:
+    !insertmacro MUI_HEADER_TEXT "Database Settings" "Provide PostgreSQL config and install directory."
+
+    nsDialogs::Create 1018
+    Pop $Dialog
+
+    ${If} $Dialog == error
+        Abort
+    ${EndIf}
+
+    ${NSD_CreateGroupBox} 10% 10u 80% 62u "Tor flavour"
+    Pop $0
+        ${NSD_CreateRadioButton} 20% 26u 40% 6% "Default settings"
+            Pop $TorFlavour
+            ${NSD_AddStyle} $TorFlavour ${WS_GROUP}
+            ${NSD_OnClick} $TorFlavour TorFlavour1Click
+            ${NSD_Check} $TorFlavour
+        ${NSD_CreateRadioButton} 20% 40u 40% 6% "With activated OBFS4"
+            Pop $TorFlavour
+            ${NSD_OnClick} $TorFlavour TorFlavour2Click
+        ${NSD_CreateRadioButton} 20% 54u 40% 6% "With activated MEEK"
+            Pop $TorFlavour
+            ${NSD_OnClick} $TorFlavour TorFlavour3Click
+    nsDialogs::Show
+FunctionEnd
+
+Function TorFlavour1Click
+	Pop $TorFlavour
+;	MessageBox MB_OK "TorFlavour1Click"
+FunctionEnd
+Function TorFlavour2Click
+	Pop $TorFlavour
+;	MessageBox MB_OK "TorFlavour2Click"
+FunctionEnd
+Function TorFlavour3Click
+	Pop $TorFlavour
+;	MessageBox MB_OK "TorFlavour3Click"
+FunctionEnd
 
 ;--------------------------------
 ;Descriptions
