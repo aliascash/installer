@@ -9,6 +9,7 @@
 
     !include "FileFunc.nsh"
     !include "LogicLib.nsh"
+    !include "nsProcess.nsh"
     !insertmacro GetTime
     !insertmacro un.GetTime
 
@@ -32,6 +33,7 @@
     RequestExecutionLevel user
 
     !include "include\uninstallHandling.nsi"
+    !include "include\closeApplicationIfRunning.nsi"
 
 ;--------------------------------
 ;Interface Settings
