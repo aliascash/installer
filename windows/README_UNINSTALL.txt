@@ -1,6 +1,7 @@
 The Spectrecoin uninstaller will perform the following tasks:
 - Check if Spectrecoin is already running and shut it down
 - Uninstall the Spectrecoin wallet software
+- Remove installation folder
 - Remove Start-Menu entries
 
 The blockchain data together with your wallet.dat file will NOT be removed!

@@ -4,6 +4,7 @@ Ask what to install:
 - Bootstrap blockchain
 
 For Spectrecoin:
+- Ask which Tor configuration should be activated (default/OBFS4/Meek)
 - Ask for the installation directory
 - Check if Spectrecoin is already running and shut it down
 - Check if Spectrecoin is already installed
