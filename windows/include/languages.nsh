@@ -14,6 +14,12 @@ ${Un.ReadmeLanguage} "${LANG_ENGLISH}" \
 
 LangString DESC_SectionWalletBinary ${LANG_ENGLISH} "The Spectrecoin wallet software with all it's required components."
 LangString DESC_SectionBlockchain ${LANG_ENGLISH} "The bootstrap blockchain data. Download may take some time as it's a 1.2G archive."
+LangString PAGE_TOR_FLAVOUR_TITLE ${LANG_ENGLISH} "Tor Settings"
+LangString PAGE_TOR_FLAVOUR_SUBTITLE ${LANG_ENGLISH} "Please choose Tor configuration:"
+LangString TOR_FLAVOUR_TITLE ${LANG_ENGLISH} "Tor flavour"
+LangString TOR_FLAVOUR_DEFAULT ${LANG_ENGLISH} "Default settings"
+LangString TOR_FLAVOUR_OBFS4 ${LANG_ENGLISH} "With activated OBFS4"
+LangString TOR_FLAVOUR_MEEK ${LANG_ENGLISH} "With activated Meek"
 
 ;Add 2nd language
 !insertmacro MUI_LANGUAGE "German"
@@ -34,3 +40,9 @@ ${Un.ReadmeLanguage} "${LANG_GERMAN}" \
 
 LangString DESC_SectionWalletBinary ${LANG_GERMAN} "Die Spectrecoin Wallet-Software mit allen benötigten Abhängigkeiten."
 LangString DESC_SectionBlockchain ${LANG_GERMAN} "Die Spectrecoin Bootstrap-Blockchain. Der Download wird unter Umständen einige Zeit dauern, da es sich um ein 1.2G grosses Archiv handelt."
+LangString PAGE_TOR_FLAVOUR_TITLE ${LANG_GERMAN} "Tor-Konfiguration"
+LangString PAGE_TOR_FLAVOUR_SUBTITLE ${LANG_GERMAN} "Bitte Tor-Konfiguration auswählen:"
+LangString TOR_FLAVOUR_TITLE ${LANG_GERMAN} "Tor-Konfiguration"
+LangString TOR_FLAVOUR_DEFAULT ${LANG_GERMAN} "Standard-Einstellungen"
+LangString TOR_FLAVOUR_OBFS4 ${LANG_GERMAN} "Mit aktiviertem OBFS4"
+LangString TOR_FLAVOUR_MEEK ${LANG_GERMAN} "Mit aktiviertem Meek"

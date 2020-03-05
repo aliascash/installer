@@ -37,6 +37,8 @@
     !include "include\uninstallHandling.nsi"
     !include "include\closeApplicationIfRunning.nsi"
 
+    Var ChoosenTorFlavour
+
 ;--------------------------------
 ;Interface Settings
 
@@ -91,6 +93,18 @@ Section "Spectrecoin" SectionWalletBinary
 
     ;All required files
     File /r content\Spectrecoin\*
+
+    ${If} $ChoosenTorFlavour == "obfs4"
+;    	MessageBox MB_OK "TorFlavour: $ChoosenTorFlavour"
+    	Rename $INSTDIR\Tor\torrc-defaults $INSTDIR\Tor\torrc-defaults_default
+    	Rename $INSTDIR\Tor\torrc-defaults_obfs4 $INSTDIR\Tor\torrc-defaults
+    ${ElseIf} $ChoosenTorFlavour == "meek"
+;    	MessageBox MB_OK "TorFlavour: $ChoosenTorFlavour"
+    	Rename $INSTDIR\Tor\torrc-defaults $INSTDIR\Tor\torrc-defaults_default
+    	Rename $INSTDIR\Tor\torrc-defaults_meek $INSTDIR\Tor\torrc-defaults
+    ${Else}
+;    	MessageBox MB_OK "TorFlavour: $ChoosenTorFlavour"
+    ${EndIf}
 
     ;Store installation folder on registry
     WriteRegStr HKCU "Software\Spectrecoin" "" $INSTDIR
@@ -167,14 +181,12 @@ Var Dialog
 Var TorFlavour
 
 Function TorFlavourPage
-
     SectionGetFlags ${SectionWalletBinary} $R0
     IntOp $R0 $R0 & ${SF_SELECTED}
     IntCmp $R0 ${SF_SELECTED} show
         Abort
-
     show:
-    !insertmacro MUI_HEADER_TEXT "Database Settings" "Provide PostgreSQL config and install directory."
+    !insertmacro MUI_HEADER_TEXT $(PAGE_TOR_FLAVOUR_TITLE) $(PAGE_TOR_FLAVOUR_SUBTITLE)
 
     nsDialogs::Create 1018
     Pop $Dialog
@@ -183,17 +195,17 @@ Function TorFlavourPage
         Abort
     ${EndIf}
 
-    ${NSD_CreateGroupBox} 10% 10u 80% 62u "Tor flavour"
+    ${NSD_CreateGroupBox} 10% 10u 80% 62u "$(TOR_FLAVOUR_TITLE)"
     Pop $0
-        ${NSD_CreateRadioButton} 20% 26u 40% 6% "Default settings"
+        ${NSD_CreateRadioButton} 20% 26u 40% 6% "$(TOR_FLAVOUR_DEFAULT)"
             Pop $TorFlavour
             ${NSD_AddStyle} $TorFlavour ${WS_GROUP}
             ${NSD_OnClick} $TorFlavour TorFlavour1Click
             ${NSD_Check} $TorFlavour
-        ${NSD_CreateRadioButton} 20% 40u 40% 6% "With activated OBFS4"
+        ${NSD_CreateRadioButton} 20% 40u 40% 6% "$(TOR_FLAVOUR_OBFS4)"
             Pop $TorFlavour
             ${NSD_OnClick} $TorFlavour TorFlavour2Click
-        ${NSD_CreateRadioButton} 20% 54u 40% 6% "With activated MEEK"
+        ${NSD_CreateRadioButton} 20% 54u 40% 6% "$(TOR_FLAVOUR_MEEK)"
             Pop $TorFlavour
             ${NSD_OnClick} $TorFlavour TorFlavour3Click
     nsDialogs::Show
@@ -201,15 +213,18 @@ FunctionEnd
 
 Function TorFlavour1Click
 	Pop $TorFlavour
-;	MessageBox MB_OK "TorFlavour1Click"
+	StrCpy $ChoosenTorFlavour "default"
+;	MessageBox MB_OK "TorFlavour1Click: $TorFlavour"
 FunctionEnd
 Function TorFlavour2Click
 	Pop $TorFlavour
-;	MessageBox MB_OK "TorFlavour2Click"
+	StrCpy $ChoosenTorFlavour "obfs4"
+;	MessageBox MB_OK "TorFlavour2Click: $TorFlavour"
 FunctionEnd
 Function TorFlavour3Click
 	Pop $TorFlavour
-;	MessageBox MB_OK "TorFlavour3Click"
+	StrCpy $ChoosenTorFlavour "meek"
+;	MessageBox MB_OK "TorFlavour3Click: $TorFlavour"
 FunctionEnd
 
 ;--------------------------------
@@ -233,8 +248,12 @@ Section un.SectionWalletBinary
     !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Spectrecoin /LOG=Install.log /PREFIX="	" /MB=0'
 	!include "include\Install.log"
 
+    RMDir /r "$INSTDIR\Tor"
+
     Delete "$INSTDIR\Uninstall.exe"
 
+    ;Do _NOT_ use /r here as this might remove way too much,
+    ;depending on choosen install location!
     RMDir "$INSTDIR"
 
     Delete "$SMPROGRAMS\Spectrecoin\Uninstall.lnk"
