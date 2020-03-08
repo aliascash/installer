@@ -1,5 +1,5 @@
 ;2020-03-04 HLXEasy
-;bsed on https://nsis.sourceforge.io/Auto-uninstall_old_before_installing_new
+;based on https://nsis.sourceforge.io/Auto-uninstall_old_before_installing_new
 
 !macro UninstallExisting exitcode uninstcommand
 Push `${uninstcommand}`

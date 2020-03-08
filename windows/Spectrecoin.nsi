@@ -88,6 +88,11 @@
     !include "include\languages.nsh"
 
 ;--------------------------------
+;Misc stuff
+
+    !include "include\folderIcon.nsi"
+
+;--------------------------------
 ;Installer Sections
 
 Section "Spectrecoin" SectionWalletBinary
@@ -118,6 +123,11 @@ Section "Spectrecoin" SectionWalletBinary
     WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "DisplayName" "Spectrecoin"
     WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
     WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "QuietUninstallString" '"$INSTDIR\Uninstall.exe" /S'
+
+    ;Create ini file
+    WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconFile" "$INSTDIR\Spectrecoin.exe"
+    WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconIndex" "0"
+    !insertmacro PATH_MAKE_SYSTEM_FOLDER "$INSTDIR"
 
     ;Create startmenu entries
     CreateDirectory "$SMPROGRAMS\Spectrecoin"
