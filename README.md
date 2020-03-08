@@ -53,15 +53,18 @@ Go to _Advanced_ -> _Update_ to use it.
 
 ## Windows
 
-Work in progress!
-
 ### Requirements
 * Nullsoft Scriptable Install System [NSIS v3.x](https://nsis.sourceforge.io/Download)
 * Plugins:
-  * [NSISunzU](https://nsis.sourceforge.io/Nsisunz_plug-in) (Unicode version!)
   * [Inetc](https://nsis.sourceforge.io/Inetc_plug-in)
+  * [NSISunzU](https://nsis.sourceforge.io/Nsisunz_plug-in) (Unicode version!)
   * [NsProcess](https://nsis.sourceforge.io/NsProcess_plugin) (Unicode version, rename nsProcessW.dll into nsProcess.dll!)
 * Setup env var NSISDIR with path to installed NSIS folder
 
 ### Build installer
-Execute `windows/createInstaller.bat`
+* Extract Spectrecoin archive to `<clone-location>/windows/content/Spectrecoin/`
+* Execute `windows/createInstaller.bat` as Administrator
+_or_
+* run NSIS as administrator and load `<clone-location>/windows/Spectrecoin.nsi`
+
+The resulting `Spectrecoin-Installer.exe` will be located on `<clone-location>/windows/`.
