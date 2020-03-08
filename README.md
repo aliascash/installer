@@ -56,12 +56,12 @@ Go to _Advanced_ -> _Update_ to use it.
 Work in progress!
 
 ### Requirements
-* Install [QT Installer Framework](http://doc.qt.io/qtinstallerframework/index.html)
-* Setup env var QTIFWDIR with path to installed QT Installer Framework
+* Nullsoft Scriptable Install System [NSIS v3.x](https://nsis.sourceforge.io/Download)
+* Plugins:
+  * [NSISunzU](https://nsis.sourceforge.io/Nsisunz_plug-in) (Unicode version!)
+  * [Inetc](https://nsis.sourceforge.io/Inetc_plug-in)
+  * [NsProcess](https://nsis.sourceforge.io/NsProcess_plugin) (Unicode version, rename nsProcessW.dll into nsProcess.dll!)
+* Setup env var NSISDIR with path to installed NSIS folder
 
-### Windows - offline
-%QTIFWDIR%\bin\binarycreator.exe --offline-only -c config\config.xml -p packages Spectrecoin-Installer.exe
-
-### Windows - online
-%QTIFWDIR%\bin\repogen.exe -p packages -i Spectrecoin,Tor repository
-%QTIFWDIR%\bin\binarycreator.exe -n -c config\config.xml -p packages Spectrecoin-Installer.exe
+### Build installer
+Execute `windows/createInstaller.bat`
