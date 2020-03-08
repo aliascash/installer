@@ -51,7 +51,10 @@
     !define MUI_HEADERIMAGE_RIGHT
     !define MUI_HEADER_TRANSPARENT_TEXT
     !define MUI_ABORTWARNING
+    !define MUI_FINISHPAGE_NOAUTOCLOSE
     !define MUI_FINISHPAGE_RUN "$INSTDIR\Spectrecoin.exe"
+
+    !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
     ;Show all languages, despite user's codepage
     !define MUI_LANGDLL_ALLLANGUAGES
