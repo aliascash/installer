@@ -11,7 +11,7 @@ Function ${un}CloseRunningApplication
         DetailPrint "Spectrecoin is running. Closing it down"
         ${nsProcess::CloseProcess} "$0" $R0
         DetailPrint "Waiting for Spectrecoin to close"
-        Sleep 2000
+        Sleep 10000
     ${Else}
 ;        MessageBox MB_OK "$0 was not found to be running"
         DetailPrint "$0 was not found to be running"
