@@ -51,6 +51,7 @@
     !define MUI_HEADERIMAGE_RIGHT
     !define MUI_HEADER_TRANSPARENT_TEXT
     !define MUI_ABORTWARNING
+    !define MUI_FINISHPAGE_RUN "$INSTDIR\Spectrecoin.exe"
 
     ;Show all languages, despite user's codepage
     !define MUI_LANGDLL_ALLLANGUAGES
@@ -67,6 +68,9 @@
     Page custom TorFlavourPage
     !insertmacro MUI_PAGE_DIRECTORY
     !insertmacro MUI_PAGE_INSTFILES
+
+    ;Start the application
+    !insertmacro MUI_PAGE_FINISH
 
     ;Add the install read me page
     !insertmacro MUI_UNPAGE_README "README_UNINSTALL.txt"
