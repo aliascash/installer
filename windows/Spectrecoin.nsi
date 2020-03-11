@@ -244,6 +244,14 @@ Function TorFlavour3Click
 ;	MessageBox MB_OK "TorFlavour3Click: $TorFlavour"
 FunctionEnd
 
+; Check if blockchain is already existing
+Function .onInit
+    IfFileExists "${APPDATA_FOLDER}\blk0001.dat" blockchainAlreadyExists
+        ;blk0001.dat file not found, so activate bootstrap installation section
+        SectionSetFlags ${SectionBlockchain} ${SF_SELECTED}
+    blockchainAlreadyExists:
+FunctionEnd
+
 ;--------------------------------
 ;Descriptions
 
