@@ -59,6 +59,7 @@ Go to _Advanced_ -> _Update_ to use it.
   * [Inetc](https://nsis.sourceforge.io/Inetc_plug-in)
   * [NSISunzU](https://nsis.sourceforge.io/Nsisunz_plug-in) (Unicode version!)
   * [NsProcess](https://nsis.sourceforge.io/NsProcess_plugin) (Unicode version, rename nsProcessW.dll into nsProcess.dll!)
+  * [Time](https://nsis.sourceforge.io/Time_plug-in)
 * Setup env var NSISDIR with path to installed NSIS folder
 
 ### Build installer
