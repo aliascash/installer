@@ -11,6 +11,7 @@
     !include "LogicLib.nsh"
     !include "nsDialogs.nsh"
     !include "nsProcess.nsh"
+    !include "Time.nsh"
     !include "include\MUI_EXTRAPAGES.nsh"
     !insertmacro GetTime
     !insertmacro un.GetTime
@@ -245,11 +246,35 @@ Function TorFlavour3Click
 FunctionEnd
 
 ; Check if blockchain is already existing
+Var currentTime
+Var yesterday
+Var fileTime1
+Var fileTime2
+Var fileTime3
+
 Function .onInit
     IfFileExists "${APPDATA_FOLDER}\blk0001.dat" blockchainAlreadyExists
         ;blk0001.dat file not found, so activate bootstrap installation section
         SectionSetFlags ${SectionBlockchain} ${SF_SELECTED}
+        goto exit
     blockchainAlreadyExists:
+        ; Get current date
+        ${time::GetLocalTime} $currentTime
+;        MessageBox MB_OK 'time::GetLocalTime$\n$$currentTime={$currentTime}'
+
+        ; Subtract 1 day from current date
+        ${time::MathTime} "date($currentTime) - date(1.0.0 0:0:0) = date" $yesterday
+
+        ; Get timestamps from blk0001.dat
+        ${time::GetFileTime} "${APPDATA_FOLDER}\blk0001.dat" $fileTime1 $fileTime2 $fileTime3
+;        MessageBox MB_OK 'time::GetFileTime$\n$$fileTime1={$fileTime1}$\n$$fileTime2={$fileTime2}$\n$$fileTime3={$fileTime3}'
+
+        ; Check if last write access is older than 1 day. If yes, activate bootstrap installation section
+        ${time::MathTime} "second($yesterday) - second($fileTime2) =" $0
+        IntCmp $0 0 exit exit
+;            MessageBox MB_OK 'Last write access older than one day' IDOK
+            SectionSetFlags ${SectionBlockchain} ${SF_SELECTED}
+    exit:
 FunctionEnd
 
 ;--------------------------------
