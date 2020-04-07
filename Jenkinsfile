@@ -89,10 +89,10 @@ pipeline {
                     bat 'windows\\createInstaller.bat'
                     fileOperations([
                             fileRenameOperation(
-                                    source: "${WORKSPACE}/windows/Spectrecoin-Installer.zip",
-                                    destination: "${WORKSPACE}/windows/Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.zip"),
+                                    source: "${WORKSPACE}\\windows\\Spectrecoin-Installer.zip",
+                                    destination: "${WORKSPACE}\\windows\\Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.zip"),
                     ])
-                    archiveArtifacts allowEmptyArchive: false, artifacts: "Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.zip"
+                    archiveArtifacts allowEmptyArchive: false, artifacts: "${WORKSPACE}\\windows\\Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.zip"
                 }
             }
         }
