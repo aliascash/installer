@@ -15,7 +15,7 @@ set SRC_DIR=%cd%\windows
 cd
 cd %SRC_DIR%
 
-"%NSIS_DIR%\makensis.exe" Spectrecoin.nsi
+"%NSIS_DIR%\makensis.exe" /V4 Spectrecoin.nsi
 
 echo "Everything is OK"
 GOTO END
