@@ -12,7 +12,7 @@ IF "%NSIS_DIR%" == "" GOTO NONSIS
 
 set CALL_DIR=%cd%
 
-"%NSIS_DIR%\makensisw.exe" Spectrecoin.nsi
+"%NSIS_DIR%\makensisw.exe"  /ObuildLog.txt Spectrecoin.nsi
 
 echo "Everything is OK"
 GOTO END

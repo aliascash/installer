@@ -88,6 +88,11 @@ pipeline {
                     bat 'windows\\createInstaller.bat'
                 }
             }
+            post {
+                always {
+                    archiveArtifacts allowEmptyArchive: true, artifacts: "${WORKSPACE}/windows/buildLog.txt"
+                }
+            }
         }
     }
     post {
