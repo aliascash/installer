@@ -1,3 +1,9 @@
+;  SPDX-FileCopyrightText: © 2020 The Spectrecoin developers
+;  SPDX-License-Identifier: MIT/X11
+;
+;  @author   HLXEasy <helix@spectreproject.io>
+;
+
 ;Set up install lang strings for 1st lang
 ${ReadmeLanguage} "${LANG_ENGLISH}" \
       "Read Me" \

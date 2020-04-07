@@ -1,5 +1,9 @@
-;2020-03-04 HLXEasy
-;based on https://nsis.sourceforge.io/Auto-uninstall_old_before_installing_new
+;  SPDX-FileCopyrightText: © 2020 The Spectrecoin developers
+;  SPDX-License-Identifier: MIT/X11
+;
+;  @author   HLXEasy <helix@spectreproject.io>
+;
+;  based on https://nsis.sourceforge.io/Auto-uninstall_old_before_installing_new
 
 !macro UninstallExisting exitcode uninstcommand
 Push `${uninstcommand}`

@@ -1,7 +1,11 @@
-;NSIS Modern User Interface
-;Spectrecoin installation script
-;Written by HLXEasy
-
+;  SPDX-FileCopyrightText: © 2018 The Spectrecoin developers
+;  SPDX-License-Identifier: MIT/X11
+;
+;  NSIS Modern User Interface
+;  Spectrecoin installation script
+;
+;  @author   HLXEasy <helix@spectreproject.io>
+;
 ;--------------------------------
 ;Include Modern UI
 

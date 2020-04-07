@@ -1,4 +1,8 @@
-;2020-03-04 HLXEasy
+;  SPDX-FileCopyrightText: © 2020 The Spectrecoin developers
+;  SPDX-License-Identifier: MIT/X11
+;
+;  @author   HLXEasy <helix@spectreproject.io>
+;
 !macro myfunc un
 Function ${un}CloseRunningApplication
     Pop $0
