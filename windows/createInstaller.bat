@@ -11,6 +11,9 @@ IF "%NSIS_DIR%" == "" GOTO NONSIS
 :YESNSIS
 
 set CALL_DIR=%cd%
+set SRC_DIR=%cd%\windows
+cd
+cd %SRC_DIR%
 
 "%NSIS_DIR%\makensisw.exe"  /ObuildLog.txt Spectrecoin.nsi
 
