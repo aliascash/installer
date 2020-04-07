@@ -87,12 +87,10 @@ pipeline {
                             archiveName: "${ARCHIVE_NAME}"
                     )
                     bat 'windows\\createInstaller.bat'
-                    fileOperations([
-                            fileRenameOperation(
-                                    source: "${WORKSPACE}\\windows\\Spectrecoin-Installer.zip",
-                                    destination: "${WORKSPACE}\\windows\\Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.zip"),
-                    ])
-                    archiveArtifacts allowEmptyArchive: false, artifacts: "${WORKSPACE}\\windows\\Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.zip"
+                    finishWindowsInstaller(
+                            gitTag: "${GIT_TAG_TO_USE}",
+                            gitCommitShort: "${GIT_COMMIT_SHORT}"
+                    )
                 }
             }
         }
@@ -101,21 +99,21 @@ pipeline {
                 script {
                     sh(
                             script: """
-                                rm -f Spectrecoin-*-Win64-Installer.zip
-                                wget https://ci.spectreproject.io/job/Spectrecoin/job/installer/job/${GIT_BRANCH}/${BUILD_NUMBER}/artifact/Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.zip
+                                rm -f Spectrecoin-*-Win64-Installer.exe
+                                wget https://ci.spectreproject.io/job/Spectrecoin/job/installer/job/${GIT_BRANCH}/${BUILD_NUMBER}/artifact/Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe
                             """
                     )
                     uploadArtifactToGitHub(
                             user: 'spectrecoin',
                             repository: 'spectre',
                             tag: "${GIT_TAG_TO_USE}",
-                            artifactNameRemote: "Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.zip",
+                            artifactNameRemote: "Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe",
                     )
 //                    createAndArchiveChecksumFile(
-//                            filename: "Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.zip",
+//                            filename: "Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe",
 //                            checksumfile: "Checksum-Spectrecoin-Win64-Installer.txt"
 //                    )
-                    sh "rm -f Spectrecoin-*-Win64-Installer.zip Checksum-Spectrecoin-Win64-Installer.txt"
+                    sh "rm -f Spectrecoin-*-Win64-Installer.exe Checksum-Spectrecoin-Win64-Installer.txt"
                 }
             }
         }
