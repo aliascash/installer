@@ -23,10 +23,10 @@ pipeline {
         GITHUB_TOKEN = credentials('cdc81429-53c7-4521-81e9-83a7992bca76')
     }
     parameters {
-        string(name: 'ARCHIVE_LOCATION', defaultValue: '', description: 'Location of the Spectrecoin archive with the content for the installer')
-        string(name: 'ARCHIVE_NAME', defaultValue: '', description: 'Name of Spectrecoin archive with the content for the installer')
-        string(name: 'GIT_TAG_TO_USE', defaultValue: '', description: 'Spectrecoin version to package into installer')
-        string(name: 'GIT_COMMIT_SHORT', defaultValue: '', description: 'Spectrecoin version to package into installer')
+        string(name: 'ARCHIVE_LOCATION', defaultValue: 'Enter full path', description: 'Location of the Spectrecoin archive with the content for the installer')
+        string(name: 'ARCHIVE_NAME', defaultValue: 'Spectrecoin-Build237-8fd465a3-Win64.zip', description: 'Name of Spectrecoin archive with the content for the installer')
+        string(name: 'GIT_TAG_TO_USE', defaultValue: 'Build237', description: 'Spectrecoin version to package into installer')
+        string(name: 'GIT_COMMIT_SHORT', defaultValue: '8fd465a3', description: 'Spectrecoin version to package into installer')
     }
     stages {
         stage('Notification') {
