@@ -72,7 +72,7 @@ pipeline {
         }
         stage('Create installer') {
             agent {
-                label "windows"
+                label "windows2"
             }
             when {
                 anyOf { branch 'master'; branch 'develop'; branch "${BRANCH_TO_DEPLOY}" }
