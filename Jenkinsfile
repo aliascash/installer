@@ -95,7 +95,7 @@ pipeline {
                     sh(
                             script: """
                                 rm -f Spectrecoin-*-Win64-Installer.exe
-                                wget https://ci.spectreproject.io/job/Spectrecoin/job/installer/job/${GIT_BRANCH}/${BUILD_NUMBER}/artifact/Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe
+                                wget https://ci.alias.cash/job/Spectrecoin/job/installer/job/${GIT_BRANCH}/${BUILD_NUMBER}/artifact/Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe
                             """
                     )
                     uploadArtifactToGitHub(

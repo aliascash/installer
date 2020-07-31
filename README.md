@@ -1,6 +1,6 @@
 # Spectrecoin Installer
 [![GitHub version](https://badge.fury.io/gh/spectrecoin%2Finstaller.svg)](https://badge.fury.io/gh/spectrecoin%2Finstaller) [![HitCount](http://hits.dwyl.io/spectrecoin/https://github.com/spectrecoin/installer.svg)](http://hits.dwyl.io/spectrecoin/https://github.com/spectrecoin/installer)
-[![Build Status](https://ci.spectreproject.io/buildStatus/icon?job=Spectrecoin/installer/master)](https://ci.spectreproject.io/job/Spectrecoin/job/installer/job/master/)
+[![Build Status](https://ci.alias.cash/buildStatus/icon?job=Spectrecoin/installer/master)](https://ci.alias.cash/job/Spectrecoin/job/installer/job/master/)
 
 This repository contains various components to create standalone installer packages
 or to update an existing Spectrecoin installation.
@@ -54,7 +54,7 @@ curl -L -s https://raw.githubusercontent.com/spectrecoin/installer/master/linux/
 1. Cleanup download folder
 
 ### Spectrecoin Shell UI
-If you're using the [Spectrecoin Shell UI](https://github.com/spectrecoin/spectrecoin-sh-rpc-ui),
+If you're using the [Spectrecoin Shell UI](https://github.com/aliascash/aliaswallet-sh-rpc-ui),
 the update script is fully integrated since version 2.5.
 Go to _Advanced_ -> _Update_ to use it.
 
