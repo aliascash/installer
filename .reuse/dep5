@@ -1,0 +1,17 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Alias
+Upstream-Contact: Alias Developers <info@alias.cash>
+Source: https://github.com/aliascash/alias
+
+Files: linux/* windows/*
+Copyright: 2020 Alias Developers
+Copyright: 2016 SpectreCoin Developers
+License: MIT
+
+Files: windows/include/mui_extraPages*
+Copyright: 2007 Red Wine https://nsis.sourceforge.io/Readme_Page_Based_on_MUI_License_Page
+License: Zlib
+
+Files: windows/include/unList*
+Copyright: 2006 Instructor http://forums.winamp.com/showthread.php?s=&threadid=213182
+License: Zlib

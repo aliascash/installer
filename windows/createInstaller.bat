@@ -1,6 +1,7 @@
 :: ===========================================================================
-::  SPDX-FileCopyrightText: © 2018 The Spectrecoin developers
-::  SPDX-License-Identifier: MIT/X11
+::  SPDX-FileCopyrightText: © 2020 Alias developers
+::  SPDX-FileCopyrightText: © 2018 Spectrecoin developers
+::  SPDX-License-Identifier: MIT
 ::
 ::  @author   HLXEasy <helix@spectreproject.io>
 ::

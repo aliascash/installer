@@ -1,10 +1,8 @@
 #!groovy
-// ----------------------------------------------------------------------------
-//  SPDX-FileCopyrightText: © 2020 The Spectrecoin developers
-//  SPDX-License-Identifier: MIT/X11
+// SPDX-FileCopyrightText: © 2020 Alias Developers
+// SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
 //
-//  @author   HLXEasy <helix@spectreproject.io>
-// ----------------------------------------------------------------------------
+// SPDX-License-Identifier: MIT
 
 pipeline {
     agent {

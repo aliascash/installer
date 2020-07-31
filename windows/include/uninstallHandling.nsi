@@ -1,7 +1,8 @@
-;  SPDX-FileCopyrightText: © 2020 The Spectrecoin developers
-;  SPDX-License-Identifier: MIT/X11
+;  SPDX-FileCopyrightText: © 2020 Alias developers
+;  SPDX-FileCopyrightText: © 2020 Spectrecoin developers
+;  SPDX-License-Identifier: MIT
 ;
-;  @author   HLXEasy <helix@spectreproject.io>
+;  @author Yves Schumann <yves@alias.cash>
 ;
 ;  based on https://nsis.sourceforge.io/Auto-uninstall_old_before_installing_new
 
@@ -50,7 +51,7 @@ FunctionEnd
 
 ;Function .onInit
 Function CheckPreviousInstallation
-ReadRegStr $0 HKCU "Software\Spectrecoin\${UninstId}" "UninstallString"
+ReadRegStr $0 HKCU "Software\Aliaswallet\${UninstId}" "UninstallString"
 ${If} $0 != ""
     MessageBox MB_OKCANCEL|MB_ICONQUESTION "Found previous version, which needs to be uninstalled first." /SD IDOK IDOK uninstallPreviousVersion
 	    Abort

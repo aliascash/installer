@@ -5,6 +5,13 @@
 This repository contains various components to create standalone installer packages
 or to update an existing Spectrecoin installation.
 
+## Licensing
+
+- SPDX-FileCopyrightText: © 2020 Alias Developers
+- SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
+
+SPDX-License-Identifier: MIT
+
 ## Linux
 For the supportet Linux distributions there's a simple updater script
 located under the folder _linux_. This is the easiest way to update an

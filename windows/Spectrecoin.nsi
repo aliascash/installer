@@ -1,10 +1,11 @@
-;  SPDX-FileCopyrightText: © 2018 The Spectrecoin developers
-;  SPDX-License-Identifier: MIT/X11
+;  SPDX-FileCopyrightText: © 2020 Alias developers
+;  SPDX-FileCopyrightText: © 2018 Spectrecoin developers
+;  SPDX-License-Identifier: MIT
 ;
 ;  NSIS Modern User Interface
 ;  Spectrecoin installation script
 ;
-;  @author   HLXEasy <helix@spectreproject.io>
+;  @author Yves Schumann <yves@alias.cash>
 ;
 ;--------------------------------
 ;Include Modern UI
@@ -24,17 +25,17 @@
 ;General
 
     ;Name and file
-    Name "Spectrecoin"
-    OutFile "Spectrecoin-Installer.exe"
+    Name "Aliaswallet"
+    OutFile "Aliaswallet-Installer.exe"
     Unicode True
 
     ;Defaults
-    InstallDir "$LOCALAPPDATA\Spectrecoin"
-    !define APPDATA_FOLDER "$APPDATA\Spectrecoin"
-    !define UninstId "Spectrecoin"
+    InstallDir "$LOCALAPPDATA\Aliaswallet"
+    !define APPDATA_FOLDER "$APPDATA\Aliaswallet"
+    !define UninstId "Aliaswallet"
 
     ;Get installation folder from registry if available
-    InstallDirRegKey HKCU "Software\Spectrecoin" ""
+    InstallDirRegKey HKCU "Software\Aliaswallet" ""
 
     ;Request application privileges for Windows Vista
     RequestExecutionLevel user
@@ -57,7 +58,7 @@
     !define MUI_HEADER_TRANSPARENT_TEXT
     !define MUI_ABORTWARNING
     !define MUI_FINISHPAGE_NOAUTOCLOSE
-    !define MUI_FINISHPAGE_RUN "$INSTDIR\Spectrecoin.exe"
+    !define MUI_FINISHPAGE_RUN "$INSTDIR\Aliaswallet.exe"
 
     !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
@@ -100,16 +101,16 @@
 ;--------------------------------
 ;Installer Sections
 
-Section "Spectrecoin" SectionWalletBinary
+Section "Aliaswallet" SectionWalletBinary
 
     SetOutPath "$INSTDIR"
 
-    Push "Spectrecoin.exe"
+    Push "Aliaswallet.exe"
     Call CloseRunningApplication
     Call CheckPreviousInstallation
 
     ;All required files
-    File /r content\Spectrecoin\*
+    File /r content\Aliaswallet\*
 
     ${If} $ChoosenTorFlavour == "obfs4"
 ;    	MessageBox MB_OK "TorFlavour: $ChoosenTorFlavour"
@@ -124,20 +125,20 @@ Section "Spectrecoin" SectionWalletBinary
     ${EndIf}
 
     ;Store installation folder on registry
-    WriteRegStr HKCU "Software\Spectrecoin" "" $INSTDIR
-    WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "DisplayName" "Spectrecoin"
-    WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
-    WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "QuietUninstallString" '"$INSTDIR\Uninstall.exe" /S'
+    WriteRegStr HKCU "Software\Aliaswallet" "" $INSTDIR
+    WriteRegStr HKCU "Software\Aliaswallet\${UninstId}" "DisplayName" "Aliaswallet"
+    WriteRegStr HKCU "Software\Aliaswallet\${UninstId}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
+    WriteRegStr HKCU "Software\Aliaswallet\${UninstId}" "QuietUninstallString" '"$INSTDIR\Uninstall.exe" /S'
 
     ;Create ini file
-    WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconFile" "$INSTDIR\Spectrecoin.exe"
+    WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconFile" "$INSTDIR\Aliaswallet.exe"
     WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconIndex" "0"
     !insertmacro PATH_MAKE_SYSTEM_FOLDER "$INSTDIR"
 
     ;Create startmenu entries
-    CreateDirectory "$SMPROGRAMS\Spectrecoin"
-    CreateShortCut "$SMPROGRAMS\Spectrecoin\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-    CreateShortCut "$SMPROGRAMS\Spectrecoin\Spectrecoin.lnk" "$INSTDIR\Spectrecoin.exe" "" "$INSTDIR\Spectrecoin.exe" 0
+    CreateDirectory "$SMPROGRAMS\Aliaswallet"
+    CreateShortCut "$SMPROGRAMS\Aliaswallet\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+    CreateShortCut "$SMPROGRAMS\Aliaswallet\Aliaswallet.lnk" "$INSTDIR\Aliaswallet.exe" "" "$INSTDIR\Aliaswallet.exe" 0
 
     ;Create uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -151,7 +152,7 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
     ;Extracted chain is around 1.6G, which is 1600000K
     AddSize 2800000
 
-    Push "Spectrecoin.exe"
+    Push "Aliaswallet.exe"
     Call CloseRunningApplication
 
     CreateDirectory "${APPDATA_FOLDER}"
@@ -295,11 +296,11 @@ FunctionEnd
 
 Section un.SectionWalletBinary
 
-    Push "Spectrecoin.exe"
+    Push "Aliaswallet.exe"
     Call un.CloseRunningApplication
 
     ;Generate list and include it in script at compile-time
-    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Spectrecoin /LOG=Install.log /PREFIX="	" /MB=0'
+    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Aliaswallet /LOG=Install.log /PREFIX="	" /MB=0'
 	!include "include\Install.log"
 
     RMDir /r "$INSTDIR\Tor"
@@ -310,11 +311,11 @@ Section un.SectionWalletBinary
     ;depending on choosen install location!
     RMDir "$INSTDIR"
 
-    Delete "$SMPROGRAMS\Spectrecoin\Uninstall.lnk"
-    Delete "$SMPROGRAMS\Spectrecoin\Spectrecoin.lnk"
-    RMDir "$SMPROGRAMS\Spectrecoin"
+    Delete "$SMPROGRAMS\Aliaswallet\Uninstall.lnk"
+    Delete "$SMPROGRAMS\Aliaswallet\Aliaswallet.lnk"
+    RMDir "$SMPROGRAMS\Aliaswallet"
 
-    DeleteRegKey HKCU "Software\Spectrecoin\${UninstId}"
-    DeleteRegKey /ifempty HKCU "Software\Spectrecoin"
+    DeleteRegKey HKCU "Software\Aliaswallet\${UninstId}"
+    DeleteRegKey /ifempty HKCU "Software\Aliaswallet"
 
 SectionEnd
