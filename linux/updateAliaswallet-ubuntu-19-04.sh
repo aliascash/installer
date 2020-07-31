@@ -133,17 +133,13 @@ if [[ -e ${installPath}/aliaswalletd ]] ; then
     # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
     # but only the version and the commit hash separated by "_" is used later on.
     # Option '-version' is working since v3.x
-    queryResult=$(${installPath}/aliaswalletd -version)
-    currentVersion=$(echo ${queryResult/\(/} | cut -d ' ' -f 1)
-    gitHash=$(echo ${queryResult/\(/} | cut -d ' ' -f 2)
+    currentVersion=$(${installPath}/aliaswalletd -version | awk '{print $1}')
+    gitHash=$(${installPath}/aliaswalletd -version | awk '{print substr($2,2);}')
     if [[ -n "${gitHash}" ]] ; then
         fullVersion=${currentVersion}-${gitHash}
     else
         fullVersion=${currentVersion}
     fi
-
-    # At the moment use a workaround
-    #fullVersion=$(strings ${installPath}/aliaswalletd | grep "v[123]\..\..\." | head -n 1 | sed -e "s/(//g" -e "s/)//g" | cut -d " " -f1-2 | sed "s/ /_/g")
     if [[ -z "${fullVersion}" ]] ; then
         fullVersion=$(date +%Y%m%d-%H%M)
         echo "    Unable to determine version of current binaries, using timestamp '${fullVersion}'"
