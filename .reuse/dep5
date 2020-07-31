@@ -3,7 +3,7 @@ Upstream-Name: Alias
 Upstream-Contact: Alias Developers <info@alias.cash>
 Source: https://github.com/aliascash/alias
 
-Files: linux/* windows/*
+Files: windows/*
 Copyright: 2020 Alias Developers
 Copyright: 2016 SpectreCoin Developers
 License: MIT

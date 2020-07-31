@@ -3,12 +3,16 @@
 #
 # FILE:         updateSpectrecoin-fedora.sh
 #
+# SPDX-FileCopyrightText: © 2020 Alias Developers
+# SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
+# SPDX-License-Identifier: MIT
+#
 # DESCRIPTION:  Simple installer script to update Spectrecoin binaries
 #               on Fedora
 #
 # AUTHOR:       HLXEasy
-# PROJECT:      https://spectreproject.io/
-#               https://github.com/spectrecoin/spectre
+# PROJECT:      https://alias.cash/
+#               https://github.com/aliascash/aliaswallet
 #
 # ============================================================================
 
@@ -29,7 +33,7 @@ fi
 # Define version to install
 if [[ -z "${versionToInstall}" ]] ; then
     echo "No version to install (tag) given, installing latest release"
-    githubTag=$(curl ${cacertParam} -L -s https://api.github.com/repos/spectrecoin/spectre/releases/latest | grep tag_name | cut -d: -f2 | cut -d '"' -f2)
+    githubTag=$(curl ${cacertParam} -L -s https://api.github.com/repos/aliascash/aliaswallet/releases/latest | grep tag_name | cut -d: -f2 | cut -d '"' -f2)
 else
     githubTag=${versionToInstall}
 fi
@@ -68,10 +72,10 @@ esac
 # Create work dir and download release notes and binary archive
 mkdir -p ${tmpWorkdir}
 
-#https://github.com/spectrecoin/spectre/releases/latest
-#https://github.com/spectrecoin/spectre/releases/download/2.2.1/Spectrecoin-2.2.1-8706c85-Ubuntu.tgz
-#https://github.com/spectrecoin/spectre/releases/download/Build127/Spectrecoin-Build127-8e152a8-Debian.tgz
-downloadBaseURL=https://github.com/spectrecoin/spectre/releases/download/${githubTag}
+#https://github.com/aliascash/aliaswallet/releases/latest
+#https://github.com/aliascash/aliaswallet/releases/download/2.2.1/Spectrecoin-2.2.1-8706c85-Ubuntu.tgz
+#https://github.com/aliascash/aliaswallet/releases/download/Build127/Spectrecoin-Build127-8e152a8-Debian.tgz
+downloadBaseURL=https://github.com/aliascash/aliaswallet/releases/download/${githubTag}
 releasenotesToDownload=${downloadBaseURL}/RELEASENOTES.txt
 echo "Downloading release notes with checksums ${releasenotesToDownload}"
 httpCode=$(curl ${cacertParam} -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${releasenotesToDownload})
