@@ -110,4 +110,4 @@ case ${ID} in
         ;;
 esac
 
-curl ${cacertParam} -L -s https://raw.githubusercontent.com/aliascash/installer/master/linux/updateSpectrecoin-${usedDistro}${releaseName}.sh | sudo bash -s "${versionToInstall}"
+curl ${cacertParam} -L -s https://raw.githubusercontent.com/aliascash/installer/master/linux/updateAliaswallet-${usedDistro}${releaseName}.sh | sudo bash -s "${versionToInstall}"

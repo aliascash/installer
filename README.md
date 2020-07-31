@@ -27,7 +27,7 @@ To do so, the following additional requirements must be installed:
 - sudo (to replace binaries)
 
 ### How to use
-At first, spectrecoind must be stopped to replace the binaries.
+At first, aliaswalletd must be stopped to replace the binaries.
 
 Execute the updater script afterwards with
 
