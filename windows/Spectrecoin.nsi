@@ -25,8 +25,8 @@
 ;General
 
     ;Name and file
-    Name "Aliaswallet"
-    OutFile "Aliaswallet-Installer.exe"
+    Name "Alias"
+    OutFile "Alias-Installer.exe"
     Unicode True
 
     ;Defaults
@@ -58,7 +58,7 @@
     !define MUI_HEADER_TRANSPARENT_TEXT
     !define MUI_ABORTWARNING
     !define MUI_FINISHPAGE_NOAUTOCLOSE
-    !define MUI_FINISHPAGE_RUN "$INSTDIR\Aliaswallet.exe"
+    !define MUI_FINISHPAGE_RUN "$INSTDIR\Alias.exe"
 
     !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
@@ -101,11 +101,11 @@
 ;--------------------------------
 ;Installer Sections
 
-Section "Aliaswallet" SectionWalletBinary
+Section "Alias" SectionWalletBinary
 
     SetOutPath "$INSTDIR"
 
-    Push "Aliaswallet.exe"
+    Push "Alias.exe"
     Call CloseRunningApplication
     Call CheckPreviousInstallation
 
@@ -126,19 +126,19 @@ Section "Aliaswallet" SectionWalletBinary
 
     ;Store installation folder on registry
     WriteRegStr HKCU "Software\Aliaswallet" "" $INSTDIR
-    WriteRegStr HKCU "Software\Aliaswallet\${UninstId}" "DisplayName" "Aliaswallet"
+    WriteRegStr HKCU "Software\Aliaswallet\${UninstId}" "DisplayName" "Alias"
     WriteRegStr HKCU "Software\Aliaswallet\${UninstId}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
     WriteRegStr HKCU "Software\Aliaswallet\${UninstId}" "QuietUninstallString" '"$INSTDIR\Uninstall.exe" /S'
 
     ;Create ini file
-    WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconFile" "$INSTDIR\Aliaswallet.exe"
+    WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconFile" "$INSTDIR\Alias.exe"
     WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconIndex" "0"
     !insertmacro PATH_MAKE_SYSTEM_FOLDER "$INSTDIR"
 
     ;Create startmenu entries
-    CreateDirectory "$SMPROGRAMS\Aliaswallet"
-    CreateShortCut "$SMPROGRAMS\Aliaswallet\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-    CreateShortCut "$SMPROGRAMS\Aliaswallet\Aliaswallet.lnk" "$INSTDIR\Aliaswallet.exe" "" "$INSTDIR\Aliaswallet.exe" 0
+    CreateDirectory "$SMPROGRAMS\Alias"
+    CreateShortCut "$SMPROGRAMS\Alias\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
+    CreateShortCut "$SMPROGRAMS\Alias\Alias.lnk" "$INSTDIR\Alias.exe" "" "$INSTDIR\Alias.exe" 0
 
     ;Create uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -152,7 +152,7 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
     ;Extracted chain is around 1.6G, which is 1600000K
     AddSize 2800000
 
-    Push "Aliaswallet.exe"
+    Push "Alias.exe"
     Call CloseRunningApplication
 
     CreateDirectory "${APPDATA_FOLDER}"
@@ -296,11 +296,11 @@ FunctionEnd
 
 Section un.SectionWalletBinary
 
-    Push "Aliaswallet.exe"
+    Push "Alias.exe"
     Call un.CloseRunningApplication
 
     ;Generate list and include it in script at compile-time
-    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Aliaswallet /LOG=Install.log /PREFIX="	" /MB=0'
+    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Alias /LOG=Install.log /PREFIX="	" /MB=0'
 	!include "include\Install.log"
 
     RMDir /r "$INSTDIR\Tor"
@@ -311,9 +311,9 @@ Section un.SectionWalletBinary
     ;depending on choosen install location!
     RMDir "$INSTDIR"
 
-    Delete "$SMPROGRAMS\Aliaswallet\Uninstall.lnk"
-    Delete "$SMPROGRAMS\Aliaswallet\Aliaswallet.lnk"
-    RMDir "$SMPROGRAMS\Aliaswallet"
+    Delete "$SMPROGRAMS\Alias\Uninstall.lnk"
+    Delete "$SMPROGRAMS\Alias\Alias.lnk"
+    RMDir "$SMPROGRAMS\Alias"
 
     DeleteRegKey HKCU "Software\Aliaswallet\${UninstId}"
     DeleteRegKey /ifempty HKCU "Software\Aliaswallet"
