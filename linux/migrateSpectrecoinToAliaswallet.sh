@@ -69,8 +69,8 @@ fi
 # ----------------------------------------------------------------------------
 # Rename configuration file
 if [[ -e ~/.aliaswallet/spectrecoin.conf ]] ; then
-    echo "Renaming configuration file spectrecoin.conf to aliaswallet.conf"
-    mv ~/.aliaswallet/spectrecoin.conf ~/.aliaswallet/aliaswallet.conf
+    echo "Renaming configuration file spectrecoin.conf to alias.conf"
+    mv ~/.aliaswallet/spectrecoin.conf ~/.aliaswallet/alias.conf
     echo "    Done"
 fi
 echo ""
