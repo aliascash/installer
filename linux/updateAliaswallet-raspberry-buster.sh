@@ -12,7 +12,7 @@
 #
 # AUTHOR:       HLXEasy
 # PROJECT:      https://alias.cash/
-#               https://github.com/aliascash/aliaswallet
+#               https://github.com/aliascash/alias-wallet
 #
 # ============================================================================
 
@@ -35,7 +35,7 @@ fi
 # Define version to install
 if [[ -z "${versionToInstall}" ]] ; then
     echo "No version to install (tag) given, installing latest release"
-    githubTag=$(curl ${cacertParam} -L -s https://api.github.com/repos/aliascash/aliaswallet/releases/latest | grep tag_name | cut -d: -f2 | cut -d '"' -f2)
+    githubTag=$(curl ${cacertParam} -L -s https://api.github.com/repos/aliascash/alias-wallet/releases/latest | grep tag_name | cut -d: -f2 | cut -d '"' -f2)
 else
     githubTag=${versionToInstall}
 fi
@@ -87,10 +87,10 @@ esac
 # Create work dir and download release notes and binary archive
 mkdir -p ${tmpWorkdir}
 
-#https://github.com/aliascash/aliaswallet/releases/latest
-#https://github.com/aliascash/aliaswallet/releases/download/2.2.1/Spectrecoin-2.2.1-8706c85-Ubuntu.tgz
-#https://github.com/aliascash/aliaswallet/releases/download/Build127/Aliaswallet-Build127-8e152a8-Debian.tgz
-downloadBaseURL=https://github.com/aliascash/aliaswallet/releases/download/${githubTag}
+#https://github.com/aliascash/alias-wallet/releases/latest
+#https://github.com/aliascash/alias-wallet/releases/download/2.2.1/Spectrecoin-2.2.1-8706c85-Ubuntu.tgz
+#https://github.com/aliascash/alias-wallet/releases/download/Build127/Aliaswallet-Build127-8e152a8-Debian.tgz
+downloadBaseURL=https://github.com/aliascash/alias-wallet/releases/download/${githubTag}
 releasenotesToDownload=${downloadBaseURL}/RELEASENOTES.txt
 echo "Downloading release notes with checksums ${releasenotesToDownload}"
 httpCode=$(curl ${cacertParam} -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${releasenotesToDownload})

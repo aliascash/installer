@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 # ============================================================================
 #
-# FILE:         updateSpectrecoin.sh
+# FILE:         updateAliaswallet.sh
 #
 # SPDX-FileCopyrightText: © 2020 Alias Developers
 # SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
 # SPDX-License-Identifier: MIT
 #
-# DESCRIPTION:  Simple installer script to update local Spectrecoin binaries
+# DESCRIPTION:  Simple installer script to update local Alias wallet binaries
 #
 # AUTHOR:       HLXEasy
 # PROJECT:      https://alias.cash/
-#               https://github.com/aliascash/aliaswallet
+#               https://github.com/aliascash/alias-wallet
 #
 # ============================================================================
 

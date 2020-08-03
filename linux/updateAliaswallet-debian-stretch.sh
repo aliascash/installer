@@ -12,7 +12,7 @@
 #
 # AUTHOR:       HLXEasy
 # PROJECT:      https://alias.cash/
-#               https://github.com/aliascash/aliaswallet
+#               https://github.com/aliascash/alias-wallet
 #
 # ============================================================================
 

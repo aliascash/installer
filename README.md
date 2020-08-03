@@ -54,7 +54,7 @@ curl -L -s https://raw.githubusercontent.com/aliascash/installer/master/linux/up
 1. Cleanup download folder
 
 ### Alias Shell UI
-If you're using the [Alias Shell UI](https://github.com/aliascash/aliaswallet-sh-rpc-ui),
+If you're using the [Alias Shell UI](https://github.com/aliascash/alias-sh-rpc-ui),
 the update script is fully integrated since version 2.5.
 Go to _`Advanced -> Update`_ to use it.
 

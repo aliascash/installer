@@ -11,7 +11,7 @@
 #
 # AUTHOR:       HLXEasy
 # PROJECT:      https://alias.cash/
-#               https://github.com/aliascash/aliaswallet
+#               https://github.com/aliascash/alias-wallet
 #
 # ============================================================================
 
@@ -22,48 +22,23 @@ installPath=/usr/local/bin
 # Create backup of wallet.dat
 if [[ -e ~/.spectrecoin/testnet/wallet.dat ]] ; then
     backupFile=$(date +%Y-%m-%d_%H-%M)-testnet-wallet.dat
-    echo "Creating backup of testnet wallet.dat (${backupFile})"
+    echo "Creating backup of testnet wallet.dat (~/${backupFile})"
     cp ~/.spectrecoin/testnet/wallet.dat ~/${backupFile}
     echo "    Done"
 fi
 if [[ -e ~/.spectrecoin/wallet.dat ]] ; then
     backupFile=$(date +%Y-%m-%d_%H-%M)-wallet.dat
-    echo "Creating backup of wallet.dat (${backupFile})"
+    echo "Creating backup of wallet.dat (~/${backupFile})"
     cp ~/.spectrecoin/wallet.dat ~/${backupFile}
     echo "    Done"
 fi
 
 # ----------------------------------------------------------------------------
-# Check disk space and and if at least the same amount as the data dir +10%
-# is available, copy data directory from ~/.spectrecoin to ~/.aliaswallet.
-# Otherwise ask if the folder should be renamed.
+# Rename data folder
 if [[ -d ~/.spectrecoin/ ]] ; then
-    usedDiskSpace=$(du -s ~/.spectrecoin | awk '{print $1}')
-    usedDiskSpaceWithBuffer=$(echo "scale = 0; ${usedDiskSpace} * 1.1 / 1" | bc -l)
-    freeSpaceOnHomeDir=$(df ~ | tail -n 1 | awk '{print $4}')
-    printf "Available disk space:                             %15s\n" ${freeSpaceOnHomeDir}
-    printf "Used disk space for spectrecoin data:             %15s\n" ${usedDiskSpace}
-    printf "Used disk space for spectrecoin data +10%% buffer: %15s\n" ${usedDiskSpaceWithBuffer}
-    if [[ ${freeSpaceOnHomeDir} -gt ${usedDiskSpaceWithBuffer} ]] ; then
-        echo "Copying data directory ~/.spectrecoin to ~/.aliaswallet"
-        echo "Patience please..."
-        cp -r ~/.spectrecoin ~/.aliaswallet
-        echo "    Done"
-    else
-        echo
-        echo "Not enough disk space to duplicate Spectrecoin data directory!"
-        echo
-        echo "Rename it instead of creating a copy [y/n]?"
-        echo -n "Everything else than 'y' will cancel the update: "
-        read input
-        if [[ -n "${input}" && "${input}" = 'y' ]] ; then
-            mv ~/.spectrecoin ~/.aliaswallet
-        else
-            echo "Update canceled"
-            exit 1
-        fi
-        echo "    Done"
-    fi
+    echo "Renaming data directory ~/.spectrecoin to ~/.aliaswallet"
+    mv ~/.spectrecoin ~/.aliaswallet
+    echo "    Done"
 fi
 
 # ----------------------------------------------------------------------------
@@ -78,7 +53,7 @@ echo ""
 # ----------------------------------------------------------------------------
 # Remove spectrecoin binaries
 if [[ -e ${installPath}/spectrecoind ]] ; then
-    echo "Determining spectrecoind binary version"
+    echo "Determining current spectrecoind binary version"
     # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
     # but only the version and the commit hash separated by "_" is used later on.
     # Option '-version' is working since v3.x
@@ -112,28 +87,35 @@ echo ""
 
 # ----------------------------------------------------------------------------
 # Rename and update service
-sudo systemctl disable spectrecoind
-sudo mv /lib/systemd/system/spectrecoind.service /lib/systemd/system/aliaswalletd.service
-sudo sed -i \
-    -e "s/Spectrecoin/Aliaswallet/g" \
-    -e "s/spectrecoind/aliaswalletd/g" \
-    /lib/systemd/system/aliaswalletd.service
-sudo systemctl daemon-reload
-sudo systemctl enable aliaswalletd
+if [[ -e /lib/systemd/system/spectrecoind.service ]] ; then
+    echo "Renaming spectrecoind service to aliaswallet"
+    sudo systemctl disable spectrecoind
+    sudo mv /lib/systemd/system/spectrecoind.service /lib/systemd/system/aliaswalletd.service
+    sudo sed -i \
+        -e "s/Spectrecoin/Alias wallet/g" \
+        -e "s/spectrecoind/aliaswalletd/g" \
+        /lib/systemd/system/aliaswalletd.service
+    sudo systemctl daemon-reload
+    sudo systemctl enable aliaswalletd
+    echo "    Done"
+fi
 
 # ----------------------------------------------------------------------------
 # Rename Shell-UI directory
 if [[ -d ~/spectrecoin-sh-rpc-ui ]] ; then
-    mv ~/spectrecoin-sh-rpc-ui ~/aliaswallet-sh-rpc-ui
-    cd ~/aliaswallet-sh-rpc-ui
-    git remote set-url origin https://github.com/aliascash/aliaswallet-sh-rpc-ui.git
+    echo "Renaming Shell-UI directory and update Github reference"
+    mv ~/spectrecoin-sh-rpc-ui ~/alias-sh-rpc-ui
+    cd ~/alias-sh-rpc-ui || exit
+    git remote set-url origin https://github.com/aliascash/alias-sh-rpc-ui.git
     git pull
-    cd - >/dev/null
+    cd - >/dev/null || exit
+    echo "    Done"
 fi
 
 # ----------------------------------------------------------------------------
 # Update alias definitions
 sed -i \
+    -e "s/spectrecoin-sh-rpc-ui/alias-sh-rpc-ui/g" \
     -e "s/spectrecoin/aliaswallet/g" \
     ~/.bash_aliases
 
