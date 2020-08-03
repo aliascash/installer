@@ -100,7 +100,7 @@ pipeline {
                     )
                     uploadArtifactToGitHub(
                             user: 'spectrecoin',
-                            repository: 'aliaswallet',
+                            repository: 'alias-wallet',
                             tag: "${GIT_TAG_TO_USE}",
                             artifactNameRemote: "Alias-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe",
                     )
