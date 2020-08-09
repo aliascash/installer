@@ -1,20 +1,20 @@
-The Aliaswallet installer will perform the following tasks:
+The Alias wallet installer will perform the following tasks:
 Ask what to install:
-- Aliaswallet
+- Alias wallet
 - Bootstrap blockchain
 
-For Aliaswallet:
+For Alias wallet:
 - Ask which Tor configuration should be activated (default/OBFS4/Meek)
 - Ask for the installation directory
-- Check if Aliaswallet is already running and shut it down
-- Check if Aliaswallet is already installed
+- Check if wallet is already running and shut it down
+- Check if wallet is already installed
 - Ask to uninstall or cancel installation
-- Install Aliaswallet
+- Install Alias wallet
 - Create Uninstaller
-- Create Start-Menu entries
+- Create Start menu entries
 
 For the bootstrap blockchain:
-- Check if Aliaswallet is already running and shut it down
+- Check if wallet is already running and shut it down
 - If wallet.dat is existing, create a backup named wallet.dat.<timestamp>
 - Check if bootstrap archive is existing
 - Yes: Ask if it should be used again or download a new archive
@@ -22,5 +22,5 @@ For the bootstrap blockchain:
 - Remove file %appdata%/Aliaswallet/blk0001.dat
 - Unzip bootstrap archive
 
-Thx for using Aliaswallet!
+Thx for using Alias wallet!
 The Alias Team
