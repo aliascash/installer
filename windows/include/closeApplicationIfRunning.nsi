@@ -8,7 +8,7 @@
 Function ${un}CloseRunningApplication
     Pop $0
 ;    MessageBox MB_OK "Checking for running $0"
-    DetailPrint "Checking for running $0"
+    DetailPrint "$(FIND_WALLET_PROCESS)"
     ${nsProcess::FindProcess} "$0" $R0
 
     ${If} $R0 == 0
@@ -19,7 +19,7 @@ Function ${un}CloseRunningApplication
         Sleep 10000
     ${Else}
 ;        MessageBox MB_OK "$0 was not found to be running"
-        DetailPrint "$0 $(NOT_RUNNING_AT_THE_MOMENT)"
+        DetailPrint "$(NOT_RUNNING_AT_THE_MOMENT)"
     ${EndIf}
 
     ${nsProcess::Unload}
