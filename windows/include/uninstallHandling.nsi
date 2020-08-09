@@ -64,3 +64,18 @@ ${If} $0 != ""
 	${EndIf}
 ${EndIf}
 FunctionEnd
+
+Function CheckOldInstallationBeforeRebranding
+ReadRegStr $0 HKCU "Software\Spectrecoin\${UninstIdBeforeRebranding}" "UninstallString"
+${If} $0 != ""
+    MessageBox MB_OKCANCEL|MB_ICONQUESTION "$(VERSION_FROM_BEFORE_REBRANDING_FOUND)" /SD IDOK IDOK uninstallPreviousVersion
+	    Abort
+
+	uninstallPreviousVersion:
+	!insertmacro UninstallExisting $0 $0
+	${If} $0 <> 0
+		MessageBox MB_YESNO|MB_ICONSTOP "$(UNINSTALL_FAILED)" /SD IDYES IDYES +2
+			Abort
+	${EndIf}
+${EndIf}
+FunctionEnd
