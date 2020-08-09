@@ -34,6 +34,10 @@
     !define APPDATA_FOLDER "$APPDATA\Aliaswallet"
     !define UninstId "Aliaswallet"
 
+    ;To handle old installations, define some separate vars
+    !define APPDATA_FOLDER_BEFORE_REBRANDING "$APPDATA\Spectrecoin"
+    !define UninstIdBeforeRebranding "Spectrecoin"
+
     ;Get installation folder from registry if available
     InstallDirRegKey HKCU "Software\Aliaswallet" ""
 
@@ -48,7 +52,8 @@
 ;--------------------------------
 ;Interface Settings
 
-    !define MUI_ICON "images\spectrecoin.ico"
+    !define MUI_ICON "images\alias-app.ico"
+    !define MUI_WELCOMEFINISHPAGE_BITMAP "images\branding.bmp"
     !define MUI_HEADERIMAGE
     !define MUI_HEADERIMAGE_BITMAP "images\banner_150_57.bmp" ; optional
     !define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
@@ -61,18 +66,16 @@
     !define MUI_FINISHPAGE_RUN "$INSTDIR\Alias.exe"
 
     !define MUI_UNFINISHPAGE_NOAUTOCLOSE
+    !define MUI_UNWELCOMEFINISHPAGE_BITMAP "images\branding.bmp"
 
     ;Show all languages, despite user's codepage
     !define MUI_LANGDLL_ALLLANGUAGES
 
 ;--------------------------------
-;Pages
-
+;Installer-Pages
+    !insertmacro MUI_PAGE_WELCOME
     !insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
-
-    ;Add the install read me page
     !insertmacro MUI_PAGE_README "README.txt"
-
     !insertmacro MUI_PAGE_COMPONENTS
     Page custom TorFlavourPage
     !insertmacro MUI_PAGE_DIRECTORY
@@ -81,9 +84,9 @@
     ;Start the application
     !insertmacro MUI_PAGE_FINISH
 
-    ;Add the install read me page
+;Uninstaller-Pages
+    !insertmacro MUI_UNPAGE_WELCOME
     !insertmacro MUI_UNPAGE_README "README_UNINSTALL.txt"
-
     !insertmacro MUI_UNPAGE_CONFIRM
     !insertmacro MUI_UNPAGE_INSTFILES
 
@@ -102,6 +105,10 @@
 ;Installer Sections
 
 Section "Alias" SectionWalletBinary
+    ;Handle old executable from before project rebranding
+    Push "Spectrecoin.exe"
+    Call CloseRunningApplication
+    Call CheckOldInstallationBeforeRebranding
 
     SetOutPath "$INSTDIR"
 
@@ -143,6 +150,13 @@ Section "Alias" SectionWalletBinary
     ;Create uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 
+    ;Handle data dir from before rebranding
+    IfFileExists "${APPDATA_FOLDER}" nothingToDo
+;        MessageBox MB_OK "${APPDATA_FOLDER} not found"
+        IfFileExists "${APPDATA_FOLDER_BEFORE_REBRANDING}" "" nothingToDo
+;            MessageBox MB_OK "${APPDATA_FOLDER_BEFORE_REBRANDING} found"
+            Rename "${APPDATA_FOLDER_BEFORE_REBRANDING}" "${APPDATA_FOLDER}"
+    nothingToDo:
 SectionEnd
 
 Section /o "Bootstrap Blockchain" SectionBlockchain
@@ -258,18 +272,31 @@ Var fileTime2
 Var fileTime3
 
 Function .onInit
+    ; Get current date
+    ${time::GetLocalTime} $currentTime
+;    MessageBox MB_OK 'time::GetLocalTime$\n$$currentTime={$currentTime}'
+
+    ; Subtract 1 day from current date
+    ${time::MathTime} "date($currentTime) - date(1.0.0 0:0:0) = date" $yesterday
+
     IfFileExists "${APPDATA_FOLDER}\blk0001.dat" blockchainAlreadyExists
-        ;blk0001.dat file not found, so activate bootstrap installation section
-        SectionSetFlags ${SectionBlockchain} ${SF_SELECTED}
-        goto exit
+        ;blk0001.dat file not found, so check if there might be one on the old location
+        ;from before project rebranding
+        IfFileExists "${APPDATA_FOLDER_BEFORE_REBRANDING}\blk0001.dat" blockchainAlreadyExistsOnOldLocation
+            ;blk0001.dat file not found, so activate bootstrap installation section
+            SectionSetFlags ${SectionBlockchain} ${SF_SELECTED}
+            goto exit
+        blockchainAlreadyExistsOnOldLocation:
+            ; Get timestamps from blk0001.dat on old location
+            ${time::GetFileTime} "${APPDATA_FOLDER_BEFORE_REBRANDING}\blk0001.dat" $fileTime1 $fileTime2 $fileTime3
+;            MessageBox MB_OK 'time::GetFileTime$\n$$fileTime1={$fileTime1}$\n$$fileTime2={$fileTime2}$\n$$fileTime3={$fileTime3}'
+
+            ; Check if last write access is older than 1 day. If yes, activate bootstrap installation section
+            ${time::MathTime} "second($yesterday) - second($fileTime2) =" $0
+            IntCmp $0 0 exit exit
+;                MessageBox MB_OK 'Last write access older than one day' IDOK
+                SectionSetFlags ${SectionBlockchain} ${SF_SELECTED}
     blockchainAlreadyExists:
-        ; Get current date
-        ${time::GetLocalTime} $currentTime
-;        MessageBox MB_OK 'time::GetLocalTime$\n$$currentTime={$currentTime}'
-
-        ; Subtract 1 day from current date
-        ${time::MathTime} "date($currentTime) - date(1.0.0 0:0:0) = date" $yesterday
-
         ; Get timestamps from blk0001.dat
         ${time::GetFileTime} "${APPDATA_FOLDER}\blk0001.dat" $fileTime1 $fileTime2 $fileTime3
 ;        MessageBox MB_OK 'time::GetFileTime$\n$$fileTime1={$fileTime1}$\n$$fileTime2={$fileTime2}$\n$$fileTime3={$fileTime3}'
@@ -300,7 +327,7 @@ Section un.SectionWalletBinary
     Call un.CloseRunningApplication
 
     ;Generate list and include it in script at compile-time
-    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Alias /LOG=Install.log /PREFIX="	" /MB=0'
+    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Aliaswallet /LOG=Install.log /PREFIX="	" /MB=0'
 	!include "include\Install.log"
 
     RMDir /r "$INSTDIR\Tor"
