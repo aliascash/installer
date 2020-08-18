@@ -186,7 +186,9 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
             Delete "${APPDATA_FOLDER}\BootstrapChain.zip"
 
     goAheadWithBootstrapDownload:
-    inetc::get /caption "Downloading bootstrap blockchain. Patience, this could take a while..." /canceltext "Cancel" "https://download.alias.cash/files/bootstrap/BootstrapChain.zip" "${APPDATA_FOLDER}\BootstrapChain.zip" /end
+    ;Change from spectreproject.io to alias.cash as soon as the new page is online,
+    ;Otherwise download won't work!
+    inetc::get /caption "Downloading bootstrap blockchain. Patience, this could take a while..." /canceltext "Cancel" "https://download.spectreproject.io/files/bootstrap/BootstrapChain.zip" "${APPDATA_FOLDER}\BootstrapChain.zip" /end
     Pop $1 # return value = exit code, "OK" means OK
 
     goAheadWithBootstrapExtraction:
