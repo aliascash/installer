@@ -71,6 +71,9 @@ case ${ID} in
             "disco")
                 releaseName='-19-04'
                 ;;
+            "focal")
+                releaseName='-20-04'
+                ;;
             *)
                 echo "Unsupported operating system ID=${ID}, VERSION_ID=${VERSION_CODENAME}"
                 exit
