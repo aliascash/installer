@@ -80,6 +80,9 @@ case ${ID} in
                 ;;
         esac
         ;;
+    "centos")
+        usedDistro="centos"
+        ;;
     "fedora")
         usedDistro="fedora"
         ;;
