@@ -81,8 +81,8 @@ esac
 mkdir -p ${tmpWorkdir}
 
 #https://github.com/aliascash/alias-wallet/releases/latest
-#https://github.com/aliascash/alias-wallet/releases/download/2.2.1/Spectrecoin-2.2.1-8706c85-Ubuntu.tgz
-#https://github.com/aliascash/alias-wallet/releases/download/Build127/Aliaswallet-Build127-8e152a8-Debian.tgz
+#https://github.com/aliascash/alias-wallet/releases/download/4.3.0/Aliaswallet-2.2.1-8706c85-Ubuntu.tgz
+#https://github.com/aliascash/alias-wallet/releases/download/Build123/Aliaswallet-Build123-8e152a8-Debian.tgz
 downloadBaseURL=https://github.com/aliascash/alias-wallet/releases/download/${githubTag}
 releasenotesToDownload=${downloadBaseURL}/RELEASENOTES.txt
 echo "Downloading release notes with checksums ${releasenotesToDownload}"
