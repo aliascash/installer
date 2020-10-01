@@ -1,10 +1,11 @@
-;  SPDX-FileCopyrightText: © 2018 The Spectrecoin developers
-;  SPDX-License-Identifier: MIT/X11
+;  SPDX-FileCopyrightText: © 2020 Alias developers
+;  SPDX-FileCopyrightText: © 2018 Spectrecoin developers
+;  SPDX-License-Identifier: MIT
 ;
 ;  NSIS Modern User Interface
 ;  Spectrecoin installation script
 ;
-;  @author   HLXEasy <helix@spectreproject.io>
+;  @author Yves Schumann <yves@alias.cash>
 ;
 ;--------------------------------
 ;Include Modern UI
@@ -24,17 +25,21 @@
 ;General
 
     ;Name and file
-    Name "Spectrecoin"
-    OutFile "Spectrecoin-Installer.exe"
+    Name "Alias"
+    OutFile "Alias-Installer.exe"
     Unicode True
 
     ;Defaults
-    InstallDir "$LOCALAPPDATA\Spectrecoin"
-    !define APPDATA_FOLDER "$APPDATA\Spectrecoin"
-    !define UninstId "Spectrecoin"
+    InstallDir "$LOCALAPPDATA\Aliaswallet"
+    !define APPDATA_FOLDER "$APPDATA\Aliaswallet"
+    !define UninstId "Aliaswallet"
+
+    ;To handle old installations, define some separate vars
+    !define APPDATA_FOLDER_BEFORE_REBRANDING "$APPDATA\Spectrecoin"
+    !define UninstIdBeforeRebranding "Spectrecoin"
 
     ;Get installation folder from registry if available
-    InstallDirRegKey HKCU "Software\Spectrecoin" ""
+    InstallDirRegKey HKCU "Software\Aliaswallet" ""
 
     ;Request application privileges for Windows Vista
     RequestExecutionLevel user
@@ -47,7 +52,8 @@
 ;--------------------------------
 ;Interface Settings
 
-    !define MUI_ICON "images\spectrecoin.ico"
+    !define MUI_ICON "images\alias-app.ico"
+    !define MUI_WELCOMEFINISHPAGE_BITMAP "images\branding.bmp"
     !define MUI_HEADERIMAGE
     !define MUI_HEADERIMAGE_BITMAP "images\banner_150_57.bmp" ; optional
     !define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
@@ -57,21 +63,19 @@
     !define MUI_HEADER_TRANSPARENT_TEXT
     !define MUI_ABORTWARNING
     !define MUI_FINISHPAGE_NOAUTOCLOSE
-    !define MUI_FINISHPAGE_RUN "$INSTDIR\Spectrecoin.exe"
+    !define MUI_FINISHPAGE_RUN "$INSTDIR\Alias.exe"
 
     !define MUI_UNFINISHPAGE_NOAUTOCLOSE
+    !define MUI_UNWELCOMEFINISHPAGE_BITMAP "images\branding.bmp"
 
     ;Show all languages, despite user's codepage
     !define MUI_LANGDLL_ALLLANGUAGES
 
 ;--------------------------------
-;Pages
-
+;Installer-Pages
+    !insertmacro MUI_PAGE_WELCOME
     !insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
-
-    ;Add the install read me page
     !insertmacro MUI_PAGE_README "README.txt"
-
     !insertmacro MUI_PAGE_COMPONENTS
     Page custom TorFlavourPage
     !insertmacro MUI_PAGE_DIRECTORY
@@ -80,9 +84,9 @@
     ;Start the application
     !insertmacro MUI_PAGE_FINISH
 
-    ;Add the install read me page
+;Uninstaller-Pages
+    !insertmacro MUI_UNPAGE_WELCOME
     !insertmacro MUI_UNPAGE_README "README_UNINSTALL.txt"
-
     !insertmacro MUI_UNPAGE_CONFIRM
     !insertmacro MUI_UNPAGE_INSTFILES
 
@@ -100,16 +104,20 @@
 ;--------------------------------
 ;Installer Sections
 
-Section "Spectrecoin" SectionWalletBinary
+Section "Alias" SectionWalletBinary
+    ;Handle old executable from before project rebranding
+    Push "Spectrecoin.exe"
+    Call CloseRunningApplication
+    Call CheckOldInstallationBeforeRebranding
 
     SetOutPath "$INSTDIR"
 
-    Push "Spectrecoin.exe"
+    Push "Alias.exe"
     Call CloseRunningApplication
     Call CheckPreviousInstallation
 
     ;All required files
-    File /r content\Spectrecoin\*
+    File /r content\Alias\*
 
     ${If} $ChoosenTorFlavour == "obfs4"
 ;    	MessageBox MB_OK "TorFlavour: $ChoosenTorFlavour"
@@ -124,24 +132,31 @@ Section "Spectrecoin" SectionWalletBinary
     ${EndIf}
 
     ;Store installation folder on registry
-    WriteRegStr HKCU "Software\Spectrecoin" "" $INSTDIR
-    WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "DisplayName" "Spectrecoin"
-    WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
-    WriteRegStr HKCU "Software\Spectrecoin\${UninstId}" "QuietUninstallString" '"$INSTDIR\Uninstall.exe" /S'
+    WriteRegStr HKCU "Software\Aliaswallet" "" $INSTDIR
+    WriteRegStr HKCU "Software\Aliaswallet\${UninstId}" "DisplayName" "Alias"
+    WriteRegStr HKCU "Software\Aliaswallet\${UninstId}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
+    WriteRegStr HKCU "Software\Aliaswallet\${UninstId}" "QuietUninstallString" '"$INSTDIR\Uninstall.exe" /S'
 
     ;Create ini file
-    WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconFile" "$INSTDIR\Spectrecoin.exe"
+    WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconFile" "$INSTDIR\Alias.exe"
     WriteINIStr "$INSTDIR\Desktop.ini" ".ShellClassInfo" "IconIndex" "0"
     !insertmacro PATH_MAKE_SYSTEM_FOLDER "$INSTDIR"
 
     ;Create startmenu entries
-    CreateDirectory "$SMPROGRAMS\Spectrecoin"
-    CreateShortCut "$SMPROGRAMS\Spectrecoin\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-    CreateShortCut "$SMPROGRAMS\Spectrecoin\Spectrecoin.lnk" "$INSTDIR\Spectrecoin.exe" "" "$INSTDIR\Spectrecoin.exe" 0
+    CreateDirectory "$SMPROGRAMS\Alias"
+    CreateShortCut "$SMPROGRAMS\Alias\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
+    CreateShortCut "$SMPROGRAMS\Alias\Alias.lnk" "$INSTDIR\Alias.exe" "" "$INSTDIR\Alias.exe" 0
 
     ;Create uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 
+    ;Handle data dir from before rebranding
+    IfFileExists "${APPDATA_FOLDER}" nothingToDo
+;        MessageBox MB_OK "${APPDATA_FOLDER} not found"
+        IfFileExists "${APPDATA_FOLDER_BEFORE_REBRANDING}" "" nothingToDo
+;            MessageBox MB_OK "${APPDATA_FOLDER_BEFORE_REBRANDING} found"
+            Rename "${APPDATA_FOLDER_BEFORE_REBRANDING}" "${APPDATA_FOLDER}"
+    nothingToDo:
 SectionEnd
 
 Section /o "Bootstrap Blockchain" SectionBlockchain
@@ -151,7 +166,7 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
     ;Extracted chain is around 1.6G, which is 1600000K
     AddSize 2800000
 
-    Push "Spectrecoin.exe"
+    Push "Alias.exe"
     Call CloseRunningApplication
 
     CreateDirectory "${APPDATA_FOLDER}"
@@ -171,6 +186,8 @@ Section /o "Bootstrap Blockchain" SectionBlockchain
             Delete "${APPDATA_FOLDER}\BootstrapChain.zip"
 
     goAheadWithBootstrapDownload:
+    ;Change from spectreproject.io to alias.cash as soon as the new page is online,
+    ;Otherwise download won't work!
     inetc::get /caption "Downloading bootstrap blockchain. Patience, this could take a while..." /canceltext "Cancel" "https://download.spectreproject.io/files/bootstrap/BootstrapChain.zip" "${APPDATA_FOLDER}\BootstrapChain.zip" /end
     Pop $1 # return value = exit code, "OK" means OK
 
@@ -257,18 +274,31 @@ Var fileTime2
 Var fileTime3
 
 Function .onInit
+    ; Get current date
+    ${time::GetLocalTime} $currentTime
+;    MessageBox MB_OK 'time::GetLocalTime$\n$$currentTime={$currentTime}'
+
+    ; Subtract 1 day from current date
+    ${time::MathTime} "date($currentTime) - date(1.0.0 0:0:0) = date" $yesterday
+
     IfFileExists "${APPDATA_FOLDER}\blk0001.dat" blockchainAlreadyExists
-        ;blk0001.dat file not found, so activate bootstrap installation section
-        SectionSetFlags ${SectionBlockchain} ${SF_SELECTED}
-        goto exit
+        ;blk0001.dat file not found, so check if there might be one on the old location
+        ;from before project rebranding
+        IfFileExists "${APPDATA_FOLDER_BEFORE_REBRANDING}\blk0001.dat" blockchainAlreadyExistsOnOldLocation
+            ;blk0001.dat file not found, so activate bootstrap installation section
+            SectionSetFlags ${SectionBlockchain} ${SF_SELECTED}
+            goto exit
+        blockchainAlreadyExistsOnOldLocation:
+            ; Get timestamps from blk0001.dat on old location
+            ${time::GetFileTime} "${APPDATA_FOLDER_BEFORE_REBRANDING}\blk0001.dat" $fileTime1 $fileTime2 $fileTime3
+;            MessageBox MB_OK 'time::GetFileTime$\n$$fileTime1={$fileTime1}$\n$$fileTime2={$fileTime2}$\n$$fileTime3={$fileTime3}'
+
+            ; Check if last write access is older than 1 day. If yes, activate bootstrap installation section
+            ${time::MathTime} "second($yesterday) - second($fileTime2) =" $0
+            IntCmp $0 0 exit exit
+;                MessageBox MB_OK 'Last write access older than one day' IDOK
+                SectionSetFlags ${SectionBlockchain} ${SF_SELECTED}
     blockchainAlreadyExists:
-        ; Get current date
-        ${time::GetLocalTime} $currentTime
-;        MessageBox MB_OK 'time::GetLocalTime$\n$$currentTime={$currentTime}'
-
-        ; Subtract 1 day from current date
-        ${time::MathTime} "date($currentTime) - date(1.0.0 0:0:0) = date" $yesterday
-
         ; Get timestamps from blk0001.dat
         ${time::GetFileTime} "${APPDATA_FOLDER}\blk0001.dat" $fileTime1 $fileTime2 $fileTime3
 ;        MessageBox MB_OK 'time::GetFileTime$\n$$fileTime1={$fileTime1}$\n$$fileTime2={$fileTime2}$\n$$fileTime3={$fileTime3}'
@@ -295,11 +325,11 @@ FunctionEnd
 
 Section un.SectionWalletBinary
 
-    Push "Spectrecoin.exe"
+    Push "Alias.exe"
     Call un.CloseRunningApplication
 
     ;Generate list and include it in script at compile-time
-    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Spectrecoin /LOG=Install.log /PREFIX="	" /MB=0'
+    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Alias /LOG=Install.log /PREFIX="	" /MB=0'
 	!include "include\Install.log"
 
     RMDir /r "$INSTDIR\Tor"
@@ -310,11 +340,11 @@ Section un.SectionWalletBinary
     ;depending on choosen install location!
     RMDir "$INSTDIR"
 
-    Delete "$SMPROGRAMS\Spectrecoin\Uninstall.lnk"
-    Delete "$SMPROGRAMS\Spectrecoin\Spectrecoin.lnk"
-    RMDir "$SMPROGRAMS\Spectrecoin"
+    Delete "$SMPROGRAMS\Alias\Uninstall.lnk"
+    Delete "$SMPROGRAMS\Alias\Alias.lnk"
+    RMDir "$SMPROGRAMS\Alias"
 
-    DeleteRegKey HKCU "Software\Spectrecoin\${UninstId}"
-    DeleteRegKey /ifempty HKCU "Software\Spectrecoin"
+    DeleteRegKey HKCU "Software\Aliaswallet\${UninstId}"
+    DeleteRegKey /ifempty HKCU "Software\Aliaswallet"
 
 SectionEnd

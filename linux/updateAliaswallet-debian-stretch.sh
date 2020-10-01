@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 # ============================================================================
 #
-# FILE:         updateSpectrecoin-debian-stretch.sh
+# FILE:         updateAliaswallet-debian-stretch.sh
 #
-# DESCRIPTION:  Simple installer script to update Spectrecoin binaries
+# SPDX-FileCopyrightText: © 2020 Alias Developers
+# SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
+# SPDX-License-Identifier: MIT
+#
+# DESCRIPTION:  Simple installer script to update Aliaswallet binaries
 #               on Debian Stretch
 #
 # AUTHOR:       HLXEasy
-# PROJECT:      https://spectreproject.io/
-#               https://github.com/spectrecoin/spectre
+# PROJECT:      https://alias.cash/
+#               https://github.com/aliascash/alias-wallet
 #
 # ============================================================================
 
