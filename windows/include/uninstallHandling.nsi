@@ -1,7 +1,8 @@
-;  SPDX-FileCopyrightText: © 2020 The Spectrecoin developers
-;  SPDX-License-Identifier: MIT/X11
+;  SPDX-FileCopyrightText: © 2020 Alias developers
+;  SPDX-FileCopyrightText: © 2020 Spectrecoin developers
+;  SPDX-License-Identifier: MIT
 ;
-;  @author   HLXEasy <helix@spectreproject.io>
+;  @author Yves Schumann <yves@alias.cash>
 ;
 ;  based on https://nsis.sourceforge.io/Auto-uninstall_old_before_installing_new
 
@@ -50,15 +51,30 @@ FunctionEnd
 
 ;Function .onInit
 Function CheckPreviousInstallation
-ReadRegStr $0 HKCU "Software\Spectrecoin\${UninstId}" "UninstallString"
+ReadRegStr $0 HKCU "Software\Aliaswallet\${UninstId}" "UninstallString"
 ${If} $0 != ""
-    MessageBox MB_OKCANCEL|MB_ICONQUESTION "Found previous version, which needs to be uninstalled first." /SD IDOK IDOK uninstallPreviousVersion
+    MessageBox MB_OKCANCEL|MB_ICONQUESTION "$(PREVIOUS_VERSION_FOUND)" /SD IDOK IDOK uninstallPreviousVersion
 	    Abort
 
 	uninstallPreviousVersion:
 	!insertmacro UninstallExisting $0 $0
 	${If} $0 <> 0
-		MessageBox MB_YESNO|MB_ICONSTOP "Failed to uninstall, continue anyway?" /SD IDYES IDYES +2
+		MessageBox MB_YESNO|MB_ICONSTOP "$(UNINSTALL_FAILED)" /SD IDYES IDYES +2
+			Abort
+	${EndIf}
+${EndIf}
+FunctionEnd
+
+Function CheckOldInstallationBeforeRebranding
+ReadRegStr $0 HKCU "Software\Spectrecoin\${UninstIdBeforeRebranding}" "UninstallString"
+${If} $0 != ""
+    MessageBox MB_OKCANCEL|MB_ICONQUESTION "$(VERSION_FROM_BEFORE_REBRANDING_FOUND)" /SD IDOK IDOK uninstallPreviousVersion
+	    Abort
+
+	uninstallPreviousVersion:
+	!insertmacro UninstallExisting $0 $0
+	${If} $0 <> 0
+		MessageBox MB_YESNO|MB_ICONSTOP "$(UNINSTALL_FAILED)" /SD IDYES IDYES +2
 			Abort
 	${EndIf}
 ${EndIf}

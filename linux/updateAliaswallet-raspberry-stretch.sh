@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 # ============================================================================
 #
-# FILE:         updateSpectrecoin-raspberry-stretch.sh
+# FILE:         updateAliaswallet-raspberry-stretch.sh
 #
-# DESCRIPTION:  Simple installer script to update Spectrecoin binaries
+# SPDX-FileCopyrightText: © 2020 Alias Developers
+# SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
+# SPDX-License-Identifier: MIT
+#
+# DESCRIPTION:  Simple installer script to update Aliaswallet binaries
 #               on Raspbian Stretch
 #
 # AUTHOR:       HLXEasy
-# PROJECT:      https://spectreproject.io/
-#               https://github.com/spectrecoin/spectre
+# PROJECT:      https://alias.cash/
+#               https://github.com/aliascash/alias-wallet
 #
 # ============================================================================
 
@@ -63,7 +67,7 @@ echo "=                                                                    ="
 echo "=              Please stop the Wallet on this system,                ="
 echo "=                  backup your wallet.dat file                       ="
 echo "=             and install the latest raspbian image from             ="
-echo "=           https://spectreproject.io/index.html#download            ="
+echo "=           https://alias.cash/index.html#download            ="
 echo "=      onto a different SD card, so you have this one as backup.     ="
 echo "=                                                                    ="
 echo "======================================================================"

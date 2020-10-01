@@ -1,10 +1,8 @@
 #!groovy
-// ----------------------------------------------------------------------------
-//  SPDX-FileCopyrightText: © 2020 The Spectrecoin developers
-//  SPDX-License-Identifier: MIT/X11
+// SPDX-FileCopyrightText: © 2020 Alias Developers
+// SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
 //
-//  @author   HLXEasy <helix@spectreproject.io>
-// ----------------------------------------------------------------------------
+// SPDX-License-Identifier: MIT
 
 pipeline {
     agent {
@@ -23,10 +21,10 @@ pipeline {
         GITHUB_TOKEN = credentials('cdc81429-53c7-4521-81e9-83a7992bca76')
     }
     parameters {
-        string(name: 'ARCHIVE_LOCATION', defaultValue: '', description: 'Location of the Spectrecoin archive with the content for the installer')
-        string(name: 'ARCHIVE_NAME', defaultValue: '', description: 'Name of Spectrecoin archive with the content for the installer')
-        string(name: 'GIT_TAG_TO_USE', defaultValue: '', description: 'Spectrecoin version to package into installer')
-        string(name: 'GIT_COMMIT_SHORT', defaultValue: '', description: 'Spectrecoin version to package into installer')
+        string(name: 'ARCHIVE_LOCATION', defaultValue: '', description: 'Location of the Alias archive with the content for the installer')
+        string(name: 'ARCHIVE_NAME', defaultValue: '', description: 'Name of Alias archive with the content for the installer')
+        string(name: 'GIT_TAG_TO_USE', defaultValue: '', description: 'Alias version to package into installer')
+        string(name: 'GIT_COMMIT_SHORT', defaultValue: '', description: 'Short Git commit hash to package into installer')
     }
     stages {
         stage('Notification') {
@@ -96,21 +94,21 @@ pipeline {
                 script {
                     sh(
                             script: """
-                                rm -f Spectrecoin-*-Win64-Installer.exe
-                                wget https://ci.spectreproject.io/job/Spectrecoin/job/installer/job/${GIT_BRANCH}/${BUILD_NUMBER}/artifact/Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe
+                                rm -f Alias-*-Win64-Installer.exe
+                                wget https://ci.alias.cash/job/Alias/job/installer/job/${GIT_BRANCH}/${BUILD_NUMBER}/artifact/Alias-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe
                             """
                     )
                     uploadArtifactToGitHub(
                             user: 'spectrecoin',
-                            repository: 'spectre',
+                            repository: 'alias-wallet',
                             tag: "${GIT_TAG_TO_USE}",
-                            artifactNameRemote: "Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe",
+                            artifactNameRemote: "Alias-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe",
                     )
 //                    createAndArchiveChecksumFile(
-//                            filename: "Spectrecoin-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe",
-//                            checksumfile: "Checksum-Spectrecoin-Win64-Installer.txt"
+//                            filename: "Alias-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe",
+//                            checksumfile: "Checksum-Alias-Win64-Installer.txt"
 //                    )
-                    sh "rm -f Spectrecoin-*-Win64-Installer.exe Checksum-Spectrecoin-Win64-Installer.txt"
+                    sh "rm -f Alias-*-Win64-Installer.exe Checksum-Alias-Win64-Installer.txt"
                 }
             }
         }
