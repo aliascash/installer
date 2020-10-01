@@ -117,7 +117,7 @@ Section "Alias" SectionWalletBinary
     Call CheckPreviousInstallation
 
     ;All required files
-    File /r content\Aliaswallet\*
+    File /r content\Alias\*
 
     ${If} $ChoosenTorFlavour == "obfs4"
 ;    	MessageBox MB_OK "TorFlavour: $ChoosenTorFlavour"
@@ -329,7 +329,7 @@ Section un.SectionWalletBinary
     Call un.CloseRunningApplication
 
     ;Generate list and include it in script at compile-time
-    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Aliaswallet /LOG=Install.log /PREFIX="	" /MB=0'
+    !execute 'include\unList.exe /DATE=1 /INSTDIR=content\Alias /LOG=Install.log /PREFIX="	" /MB=0'
 	!include "include\Install.log"
 
     RMDir /r "$INSTDIR\Tor"
