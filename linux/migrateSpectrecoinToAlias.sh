@@ -147,8 +147,10 @@ fi
 curl ${cacertParam} -L -s https://raw.githubusercontent.com/aliascash/installer/master/linux/updateAliaswallet.sh | sudo bash -s "${versionToInstall}"
 
 echo
-echo "The Alias wallet is not running. You can restart the Shell-UI now,"
-echo "which also starts the wallet daemon."
+echo "The Alias wallet is not running."
+echo "Please logout and login again, before restarting the Shell-UI again."
 echo
 
+# Break further script execution at this point, because the underlaying
+# script location has changed.
 kill -INT $$
