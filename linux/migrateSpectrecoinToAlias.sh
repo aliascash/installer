@@ -18,6 +18,9 @@
 versionToInstall=$1
 installPath=/usr/local/bin
 
+# Debug output
+set -ex
+
 # ----------------------------------------------------------------------------
 # Create backup of wallet.dat
 if [[ -e ~/.spectrecoin/testnet/wallet.dat ]] ; then
