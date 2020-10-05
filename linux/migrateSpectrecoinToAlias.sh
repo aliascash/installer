@@ -139,3 +139,10 @@ if [[ -e /etc/ssl/certs/ca-certificates.crt ]] ; then
 fi
 
 curl ${cacertParam} -L -s https://raw.githubusercontent.com/aliascash/installer/master/linux/updateAliaswallet.sh | sudo bash -s "${versionToInstall}"
+
+echo
+echo "The Alias wallet is not running. You can restart the Shell-UI now,"
+echo "which also starts the wallet daemon."
+echo
+
+kill -INT $$
