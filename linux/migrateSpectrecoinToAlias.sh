@@ -19,7 +19,7 @@ versionToInstall=$1
 installPath=/usr/local/bin
 
 # Debug output
-set -ex
+#set -ex
 
 # ----------------------------------------------------------------------------
 # Remove spectrecoin binaries
