@@ -117,10 +117,20 @@ fi
 
 # ----------------------------------------------------------------------------
 # Update alias definitions
-sed -i \
-    -e "s/spectrecoin-sh-rpc-ui/alias-sh-rpc-ui/g" \
-    -e "s/spectrecoin/aliaswallet/g" \
-    ~/.bash_aliases
+if [[ -e ~/.bash_aliases ]] ; then
+    echo "Updating possible alias definitions on ~/.bash_aliases"
+    sed -i \
+        -e "s/spectrecoin-sh-rpc-ui/alias-sh-rpc-ui/g" \
+        -e "s/spectrecoin/aliaswallet/g" \
+        ~/.bash_aliases
+fi
+if [[ -e ~/.zshrc ]] ; then
+    echo "Updating possible alias definitions on ~/.zshrc"
+    sed -i \
+        -e "s/spectrecoin-sh-rpc-ui/alias-sh-rpc-ui/g" \
+        -e "s/spectrecoin/aliaswallet/g" \
+        ~/.zshrc
+fi
 
 # ----------------------------------------------------------------------------
 # Use ca-certificates if available
