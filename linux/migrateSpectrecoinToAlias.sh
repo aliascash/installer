@@ -98,6 +98,12 @@ if [[ -e /lib/systemd/system/spectrecoind.service ]] ; then
         -e "s/Spectrecoin/Alias wallet/g" \
         -e "s/spectrecoind/aliaswalletd/g" \
         /lib/systemd/system/aliaswalletd.service
+
+    # Fix potential wrong binary reference
+    sudo sed -i \
+        -e "s#/usr/bin/aliaswalletd#/usr/local/bin/aliaswalletd#g" \
+        /lib/systemd/system/aliaswalletd.service
+
     sudo systemctl daemon-reload
     sudo systemctl enable aliaswalletd
     echo "    Done"
