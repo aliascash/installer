@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================================
 #
-# FILE:         migrateSpectrecoinToAliaswallet.sh
+# FILE:         migrateSpectrecoinToAlias.sh
 #
 # SPDX-FileCopyrightText: © 2020 Alias Developers
 # SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
