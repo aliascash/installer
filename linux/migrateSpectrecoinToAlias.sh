@@ -85,6 +85,14 @@ if [[ -e ~/.aliaswallet/spectrecoin.conf ]] ; then
     echo "Renaming configuration file spectrecoin.conf to alias.conf"
     mv ~/.aliaswallet/spectrecoin.conf ~/.aliaswallet/alias.conf
     echo "    Done"
+
+    echo "Replacing 'spectrecoin' with 'aliaswallet'"
+    sudo sed -i \
+        -e "s#spectrecoin.conf#alias.conf#g" \
+        -e "s#Spectrecoin#Alias wallet#g" \
+        -e "s#spectrecoin#aliaswallet#g" \
+        ~/.aliaswallet/alias.conf
+    echo "    Done"
 fi
 echo ""
 
