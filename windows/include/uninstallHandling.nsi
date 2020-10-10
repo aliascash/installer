@@ -2,7 +2,7 @@
 ;  SPDX-FileCopyrightText: © 2020 Spectrecoin developers
 ;  SPDX-License-Identifier: MIT
 ;
-;  @author Yves Schumann <yves@alias.cash>
+;  @author HLXEasy <hlxeasy@gmail.com>>
 ;
 ;  based on https://nsis.sourceforge.io/Auto-uninstall_old_before_installing_new
 

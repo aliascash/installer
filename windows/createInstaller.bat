@@ -3,7 +3,7 @@
 ::  SPDX-FileCopyrightText: © 2018 Spectrecoin developers
 ::  SPDX-License-Identifier: MIT
 ::
-::  @author Yves Schumann <yves@alias.cash>
+::  @author HLXEasy <hlxeasy@gmail.com>>
 ::
 ::  Helper script to build Spectrecoin on Windows using VS2017 and QT.
 :: ===========================================================================

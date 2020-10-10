@@ -2,7 +2,7 @@
 ;  SPDX-FileCopyrightText: © 2020 Spectrecoin developers
 ;  SPDX-License-Identifier: MIT
 ;
-;  @author Yves Schumann <yves@alias.cash>
+;  @author HLXEasy <hlxeasy@gmail.com>>
 ;
 ;Set up install lang strings for 1st lang
 ${ReadmeLanguage} "${LANG_ENGLISH}" \

@@ -2,7 +2,7 @@
 ;  SPDX-FileCopyrightText: © 2020 Spectrecoin developers
 ;  SPDX-License-Identifier: MIT
 ;
-;  @author Yves Schumann <yves@alias.cash>
+;  @author HLXEasy <hlxeasy@gmail.com>>
 ;
 !macro PATH_MAKE_SYSTEM_FOLDER pszPath
 

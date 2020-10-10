@@ -5,7 +5,7 @@
 ;  NSIS Modern User Interface
 ;  Spectrecoin installation script
 ;
-;  @author Yves Schumann <yves@alias.cash>
+;  @author HLXEasy <hlxeasy@gmail.com>>
 ;
 ;--------------------------------
 ;Include Modern UI
