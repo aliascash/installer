@@ -30,6 +30,15 @@ echo "    Determined $NAME"
 echo ""
 
 # ----------------------------------------------------------------------------
+# Current aarch64 Raspberry Pi OS has ID=debian on /etc/os-release
+# So check if we're really on a Raspi or not
+handleRaspiAarch64() {
+    if [ "$(uname -m)" = aarch64 ] ; then
+        usedDistro="raspberry"
+    fi
+}
+
+# ----------------------------------------------------------------------------
 # Use ca-certificates if available
 if [[ -e /etc/ssl/certs/ca-certificates.crt ]] ; then
     cacertParam='--cacert /etc/ssl/certs/ca-certificates.crt'
@@ -43,15 +52,18 @@ case ${ID} in
         case ${VERSION_ID} in
             "9")
                 releaseName='-stretch'
+                handleRaspiAarch64
                 ;;
             "10")
                 releaseName='-buster'
+                handleRaspiAarch64
                 ;;
             *)
                 case ${PRETTY_NAME} in
                     *"bullseye"*)
                         echo "Detected ${PRETTY_NAME}, installing Buster binaries"
                         releaseName='-buster'
+                        handleRaspiAarch64
                         ;;
                     *)
                         echo "Unsupported operating system ID=${ID}, VERSION_ID=${VERSION_ID}"
