@@ -35,6 +35,7 @@ echo ""
 handleRaspiAarch64() {
     if [ "$(uname -m)" = aarch64 ] ; then
         usedDistro="raspberry"
+        releaseName="${releaseName}-aarch64"
     fi
 }
 
