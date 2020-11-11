@@ -18,7 +18,7 @@ pipeline {
         // In case another branch beside master or develop should be deployed, enter it here
         BRANCH_TO_DEPLOY = 'automateWindowsInstallerCreation'
         DISCORD_WEBHOOK = credentials('DISCORD_WEBHOOK')
-        GITHUB_TOKEN = credentials('cdc81429-53c7-4521-81e9-83a7992bca76')
+        GITHUB_TOKEN = credentials('github-app')
     }
     parameters {
         string(name: 'ARCHIVE_LOCATION', defaultValue: '', description: 'Location of the Alias archive with the content for the installer')
