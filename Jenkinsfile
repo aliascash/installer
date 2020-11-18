@@ -43,31 +43,31 @@ pipeline {
                 )
             }
         }
-        stage('Start Windows slave') {
-            when {
-                anyOf { branch 'master'; branch 'develop'; branch "${BRANCH_TO_DEPLOY}" }
-            }
-            steps {
-                withCredentials([[
-                                         $class           : 'AmazonWebServicesCredentialsBinding',
-                                         credentialsId    : '91c4a308-07cd-4468-896c-3d75d086190d',
-                                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                                 ]]) {
-                    sh(
-                            script: """
-                                docker run \
-                                    --rm \
-                                    --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-                                    --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                                    --env AWS_DEFAULT_REGION=eu-west-1 \
-                                    garland/aws-cli-docker \
-                                    aws ec2 start-instances --instance-ids i-06fb7942772e77e55
-                            """
-                    )
-                }
-            }
-        }
+//        stage('Start Windows slave') {
+//            when {
+//                anyOf { branch 'master'; branch 'develop'; branch "${BRANCH_TO_DEPLOY}" }
+//            }
+//            steps {
+//                withCredentials([[
+//                                         $class           : 'AmazonWebServicesCredentialsBinding',
+//                                         credentialsId    : '91c4a308-07cd-4468-896c-3d75d086190d',
+//                                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+//                                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+//                                 ]]) {
+//                    sh(
+//                            script: """
+//                                docker run \
+//                                    --rm \
+//                                    --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+//                                    --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+//                                    --env AWS_DEFAULT_REGION=eu-west-1 \
+//                                    garland/aws-cli-docker \
+//                                    aws ec2 start-instances --instance-ids i-06fb7942772e77e55
+//                            """
+//                    )
+//                }
+//            }
+//        }
         stage('Create installer') {
             agent {
                 label "windows2"
