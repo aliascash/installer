@@ -19,6 +19,7 @@ pipeline {
         BRANCH_TO_DEPLOY = 'automateWindowsInstallerCreation'
         DISCORD_WEBHOOK = credentials('DISCORD_WEBHOOK')
         GITHUB_CI_TOKEN = credentials('GITHUB_CI_TOKEN')
+        ACCESS_TOKEN = credentials('ci_read_access')
         CI_URL = credentials('CI_URL')
     }
     parameters {
