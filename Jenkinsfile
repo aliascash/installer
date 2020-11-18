@@ -19,6 +19,7 @@ pipeline {
         BRANCH_TO_DEPLOY = 'automateWindowsInstallerCreation'
         DISCORD_WEBHOOK = credentials('DISCORD_WEBHOOK')
         GITHUB_CI_TOKEN = credentials('GITHUB_CI_TOKEN')
+        CI_URL = credentials('CI_URL')
     }
     parameters {
         string(name: 'ARCHIVE_LOCATION', defaultValue: '', description: 'Location of the Alias archive with the content for the installer')
@@ -70,7 +71,7 @@ pipeline {
 //        }
         stage('Create installer') {
             agent {
-                label "windows2"
+                label "windows"
             }
             when {
                 anyOf { branch 'master'; branch 'develop'; branch "${BRANCH_TO_DEPLOY}" }
@@ -95,7 +96,10 @@ pipeline {
                     sh(
                             script: """
                                 rm -f Alias-*-Win64-Installer.exe
-                                wget https://ci.alias.cash/job/Alias/job/installer/job/${GIT_BRANCH}/${BUILD_NUMBER}/artifact/Alias-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe
+                                curl -L \\
+                                    --user "${ACCESS_TOKEN}" \\
+                                    ${CI_URL}/job/Alias/job/installer/job/${GIT_BRANCH}/${BUILD_NUMBER}/artifact/Alias-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe \\
+                                    --output Alias-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe || true
                             """
                     )
                     uploadArtifactToGitHub(
