@@ -20,7 +20,7 @@ ${Un.ReadmeLanguage} "${LANG_ENGLISH}" \
 
 LangString DESC_SectionWalletBinaryFromBeforeRebranding ${LANG_ENGLISH} "Handle leftovers from before project rebranding"
 LangString DESC_SectionWalletBinary ${LANG_ENGLISH} "The Alias wallet software with all it's required components."
-LangString DESC_SectionBlockchain ${LANG_ENGLISH} "The bootstrap blockchain data. Download may take some time as it's a 1.2G archive."
+LangString DESC_SectionBlockchain ${LANG_ENGLISH} "The bootstrap blockchain data. Download may take some time as it's a 1.9G archive."
 LangString PAGE_TOR_FLAVOUR_TITLE ${LANG_ENGLISH} "Tor Settings"
 LangString PAGE_TOR_FLAVOUR_SUBTITLE ${LANG_ENGLISH} "Please choose Tor configuration:"
 LangString TOR_FLAVOUR_TITLE ${LANG_ENGLISH} "Tor flavour"
@@ -54,7 +54,7 @@ ${Un.ReadmeLanguage} "${LANG_GERMAN}" \
 
 LangString DESC_SectionWalletBinaryFromBeforeRebranding ${LANG_GERMAN} "Verarbeite Dateien von vor dem Projekt-Rebranding."
 LangString DESC_SectionWalletBinary ${LANG_GERMAN} "Die Alias Wallet Software mit allen benötigten Abhängigkeiten."
-LangString DESC_SectionBlockchain ${LANG_GERMAN} "Die Alias Wallet Bootstrap Blockchain. Der Download wird unter Umständen einige Zeit dauern, da es sich um ein 1.2G grosses Archiv handelt."
+LangString DESC_SectionBlockchain ${LANG_GERMAN} "Die Alias Wallet Bootstrap Blockchain. Der Download wird unter Umständen einige Zeit dauern, da es sich um ein 1.9G grosses Archiv handelt."
 LangString PAGE_TOR_FLAVOUR_TITLE ${LANG_GERMAN} "Tor-Konfiguration"
 LangString PAGE_TOR_FLAVOUR_SUBTITLE ${LANG_GERMAN} "Bitte Tor-Konfiguration auswählen:"
 LangString TOR_FLAVOUR_TITLE ${LANG_GERMAN} "Tor-Konfiguration"
