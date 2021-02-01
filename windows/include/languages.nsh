@@ -68,3 +68,35 @@ LangString FIND_WALLET_PROCESS ${LANG_GERMAN} "Prüfen ob Wallet läuft."
 LangString WALLET_RUNNING_SHUT_IT_DOWN ${LANG_GERMAN} "Wallet läuft noch und wird beendet."
 LangString WAIT_FOR_WALLET_SHUT_DOWN ${LANG_GERMAN} "Warte auf Beenden des Wallet."
 LangString NOT_RUNNING_AT_THE_MOMENT ${LANG_GERMAN} "Wallet läuft momentan nicht."
+
+;Add 3rd language
+!insertmacro MUI_LANGUAGE "French"
+
+${ReadmeLanguage} "${LANG_FRENCH}" \
+      "Read Me" \
+      "Short information about the Alias wallet installer." \
+      "About the installer:" \
+      "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
+
+${Un.ReadmeLanguage} "${LANG_FRENCH}" \
+      "Read Me" \
+      "Short information about the Alias wallet uninstaller." \
+      "About Uninstall:" \
+      "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
+
+LangString DESC_SectionWalletBinaryFromBeforeRebranding ${LANG_FRENCH} "Handle leftovers from before project rebranding"
+LangString DESC_SectionWalletBinary ${LANG_FRENCH} "The Alias wallet software with all it's required components."
+LangString DESC_SectionBlockchain ${LANG_FRENCH} "The bootstrap blockchain data. Download may take some time as it's a 1.9G archive."
+LangString PAGE_TOR_FLAVOUR_TITLE ${LANG_FRENCH} "Tor Settings"
+LangString PAGE_TOR_FLAVOUR_SUBTITLE ${LANG_FRENCH} "Please choose Tor configuration:"
+LangString TOR_FLAVOUR_TITLE ${LANG_FRENCH} "Tor flavour"
+LangString TOR_FLAVOUR_DEFAULT ${LANG_FRENCH} "Default settings"
+LangString TOR_FLAVOUR_OBFS4 ${LANG_FRENCH} "With activated OBFS4"
+LangString TOR_FLAVOUR_MEEK ${LANG_FRENCH} "With activated Meek"
+LangString PREVIOUS_VERSION_FOUND ${LANG_FRENCH} "Found previous version, which needs to be uninstalled first."
+LangString VERSION_FROM_BEFORE_REBRANDING_FOUND ${LANG_FRENCH} "Found version from before the project rebranding, which needs to be uninstalled first."
+LangString UNINSTALL_FAILED ${LANG_FRENCH} "Failed to uninstall, continue anyway?"
+LangString FIND_WALLET_PROCESS ${LANG_FRENCH} "Check if wallet is running."
+LangString WALLET_RUNNING_SHUT_IT_DOWN ${LANG_FRENCH} "Wallet is running. Closing it down."
+LangString WAIT_FOR_WALLET_SHUT_DOWN ${LANG_FRENCH} "Waiting for wallet to close."
+LangString NOT_RUNNING_AT_THE_MOMENT ${LANG_FRENCH} "Wallet not running."
