@@ -76,3 +76,6 @@ _or_
 * run NSIS as administrator and load `<clone-location>/windows/Alias.nsi`
 
 The resulting `Alias-Installer.exe` will be located on `<clone-location>/windows/`.
+
+### Installer translations
+See separate [README.md](windows/translations/README.md)

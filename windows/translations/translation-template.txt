@@ -1,5 +1,4 @@
 ;  SPDX-FileCopyrightText: © 2020 Alias developers
-;  SPDX-FileCopyrightText: © 2020 Spectrecoin developers
 ;  SPDX-License-Identifier: MIT
 ;
 ;  @author HLXEasy <hlxeasy@gmail.com>>
@@ -8,7 +7,7 @@
 ; Windows Alias wallet installer.
 ;
 ; To translate into a new language:
-; - Copy the file with a name indicating the new langauge
+; - Copy the file with a name indicating the new language
 ; - Fill the "..." fields with the translations
 ; - File a pull request on Github or get in contact with the developers
 
