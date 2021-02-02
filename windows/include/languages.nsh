@@ -84,7 +84,7 @@ ${Un.ReadmeLanguage} "${LANG_FRENCH}" \
       "A propos de la désinstallation:" \
       "$\n  Cliquer sur les fleches dans la barre de défilement ou appuyez sur PageSuiv pour lire le texte en entier."
 
-LangString DESC_SectionWalletBinaryFromBeforeRebranding ${LANG_FRENCH} "Gérer les orphelins d'avant le renommage du projet"
+LangString DESC_SectionWalletBinaryFromBeforeRebranding ${LANG_FRENCH} "Gérer les traces d'installation d'avant le rebranding du projet"
 LangString DESC_SectionWalletBinary ${LANG_FRENCH} "Le logiciel Portefeuille Alias avec tous ses composants requis."
 LangString DESC_SectionBlockchain ${LANG_FRENCH} "Les données de bootstrap de la blockchain. Télécharger prendra du temps car il s'agit d'une archive de 1,96Go."
 LangString PAGE_TOR_FLAVOUR_TITLE ${LANG_FRENCH} "Réglages Tor"
