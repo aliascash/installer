@@ -100,3 +100,36 @@ LangString FIND_WALLET_PROCESS ${LANG_FRENCH} "Vérifie si le portefeuille est e
 LangString WALLET_RUNNING_SHUT_IT_DOWN ${LANG_FRENCH} "Le portefeuille est en cours d'éxecution. Fermeture en cours."
 LangString WAIT_FOR_WALLET_SHUT_DOWN ${LANG_FRENCH} "Attente de la fermeture du portefeuille."
 LangString NOT_RUNNING_AT_THE_MOMENT ${LANG_FRENCH} "Le portefeuille n'est pas en cours d'éxecution."
+
+;Add 4th language
+!insertmacro MUI_LANGUAGE "Spanish"
+
+${ReadmeLanguage} "${LANG_SPANISH}" \
+      "Léeme" \
+      "Breve información sobre el instalador de la billetera Alias." \
+      "Acerca del instalador:" \
+      "$\n  Haga clic en las flechas de la barra de desplazamiento o pulse Avance de página para revisar todo el texto."
+
+;Set up uninstall lang strings for 1st lang
+${Un.ReadmeLanguage} "${LANG_SPANISH}" \
+      "Léeme" \
+      "Breve información sobre el desinstalador de la billetera Alias." \
+      "Acerca de la desinstalación:" \
+      "$\n  Haga clic en las flechas de la barra de desplazamiento o pulse Avance de página para revisar todo el texto."
+
+LangString DESC_SectionWalletBinaryFromBeforeRebranding ${LANG_SPANISH} "Manejar los residuos de antes de la renovación del proyecto"
+LangString DESC_SectionWalletBinary ${LANG_SPANISH} "El software de la billetera Alias con todos sus componentes necesarios."
+LangString DESC_SectionBlockchain ${LANG_SPANISH} "Los datos del blockchain de arranque. La descarga puede llevar algo de tiempo ya que es un archivo de 1,9G."
+LangString PAGE_TOR_FLAVOUR_TITLE ${LANG_SPANISH} "Ajustes de Tor"
+LangString PAGE_TOR_FLAVOUR_SUBTITLE ${LANG_SPANISH} "Por favor, elija la configuración de Tor:"
+LangString TOR_FLAVOUR_TITLE ${LANG_SPANISH} "Sabor de Tor"
+LangString TOR_FLAVOUR_DEFAULT ${LANG_SPANISH} "Configuración predeterminada"
+LangString TOR_FLAVOUR_OBFS4 ${LANG_SPANISH} "Con OBFS4 activado"
+LangString TOR_FLAVOUR_MEEK ${LANG_SPANISH} "Con Meek activado"
+LangString PREVIOUS_VERSION_FOUND ${LANG_SPANISH} "Se ha encontrado una versión anterior, que hay que desinstalar primero."
+LangString VERSION_FROM_BEFORE_REBRANDING_FOUND ${LANG_SPANISH} "Se ha encontrado una versión anterior al cambio de marca del proyecto, que hay que desinstalar primero."
+LangString UNINSTALL_FAILED ${LANG_SPANISH} "Falló la desinstalación, ¿continúa de todos modos?"
+LangString FIND_WALLET_PROCESS ${LANG_SPANISH} "Comprueba si la billetera está funcionando."
+LangString WALLET_RUNNING_SHUT_IT_DOWN ${LANG_SPANISH} "La billetera está funcionando. Se está cerrando."
+LangString WAIT_FOR_WALLET_SHUT_DOWN ${LANG_SPANISH} "Esperando a que se cierre la billetera."
+LangString NOT_RUNNING_AT_THE_MOMENT ${LANG_SPANISH} "La billetera no funciona."
