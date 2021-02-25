@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: © 2021 Alias Developers
+# SPDX-License-Identifier: MIT
+
 name: Build Windows Installer
 
 on:
@@ -17,46 +20,6 @@ jobs:
         with:
           persist-credentials: false
 
-      # Inetc plugin
-      - name: Download Inetc plugin for NSIS
-        uses: carlosperate/download-file-action@v1.0.3
-        with:
-          file-url: https://nsis.sourceforge.io/mediawiki/images/c/c9/Inetc.zip
-          file-name: Inetc.zip
-          location: ${{ github.workspace }}
-      - name: Extract Inetc plugin
-        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/Inetc.zip" -aoa
-
-      # NSISunzU plugin
-      - name: Download NSISunzU plugin for NSIS
-        uses: carlosperate/download-file-action@v1.0.3
-        with:
-          file-url: https://nsis.sourceforge.io/mediawiki/images/5/5a/NSISunzU.zip
-          file-name: NSISunzU.zip
-          location: ${{ github.workspace }}
-      - name: Extract NSISunzU plugin
-        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/NSISunzU.zip" -aoa
-
-      # NsProcess plugin
-      - name: Download NsProcess plugin for NSIS
-        uses: carlosperate/download-file-action@v1.0.3
-        with:
-          file-url: https://nsis.sourceforge.io/mediawiki/images/1/18/NsProcess.zip
-          file-name: NsProcess.zip
-          location: ${{ github.workspace }}
-      - name: Extract NsProcess plugin
-        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/NsProcess.zip" -aoa
-
-      # Time plugin
-      - name: Download Time plugin for NSIS
-        uses: carlosperate/download-file-action@v1.0.3
-        with:
-          file-url: https://nsis.sourceforge.io/mediawiki/images/a/aa/Time.zip
-          file-name: Time.zip
-          location: ${{ github.workspace }}
-      - name: Extract Time plugin
-        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/Time.zip" -aoa
-
       # Download content to install
       - name: Download content to install
         uses: carlosperate/download-file-action@v1.0.3
@@ -72,7 +35,5 @@ jobs:
         uses: joncloud/makensis-action@v3.4
         with:
           arguments: "/V3"
-          additional-plugin-paths: "${{ github.workspace }}/NSIS_Plugins/NSISunzU/Plugin unicode"
-            "${{ github.workspace }}/NSIS_Plugins/Plugin"
-            "${{ github.workspace }}/NSIS_Plugins/Plugins"
+          additional-plugin-paths: "${{ github.workspace }}/windows/plugins"
           script-file: "windows/Alias.nsi"

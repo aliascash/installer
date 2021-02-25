@@ -8,7 +8,7 @@ Copyright: 2020 Alias Developers
 Copyright: 2016 SpectreCoin Developers
 License: MIT
 
-Files: windows/include/mui_extraPages*
+Files: windows/include/mui_extraPages* windows/include/nsProcess.nsh windows/include/Time.nsh windows/plugins/*
 Copyright: 2007 Red Wine https://nsis.sourceforge.io/Readme_Page_Based_on_MUI_License_Page
 License: Zlib
 
