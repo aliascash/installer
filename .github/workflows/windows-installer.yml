@@ -1,0 +1,76 @@
+name: Build Windows Installer
+
+on:
+  push:
+    branches:
+      - master
+      - githubActionsRefactoring
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      # Inetc plugin
+      - name: Download Inetc plugin for NSIS
+        uses: carlosperate/download-file-action@v1.0.3
+        with:
+          file-url: https://nsis.sourceforge.io/mediawiki/images/c/c9/Inetc.zip
+          file-name: Inetc.zip
+          location: ${{ github.workspace }}
+      - name: Extract Inetc plugin
+        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/Inetc.zip"
+
+      # NSISunzU plugin
+      - name: Download NSISunzU plugin for NSIS
+        uses: carlosperate/download-file-action@v1.0.3
+        with:
+          file-url: https://nsis.sourceforge.io/mediawiki/images/5/5a/NSISunzU.zip
+          file-name: NSISunzU.zip
+          location: ${{ github.workspace }}
+      - name: Extract NSISunzU plugin
+        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/NSISunzU.zip"
+
+      # NsProcess plugin
+      - name: Download NsProcess plugin for NSIS
+        uses: carlosperate/download-file-action@v1.0.3
+        with:
+          file-url: https://nsis.sourceforge.io/mediawiki/images/1/18/NsProcess.zip
+          file-name: NsProcess.zip
+          location: ${{ github.workspace }}
+      - name: Extract NsProcess plugin
+        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/NsProcess.zip"
+
+      # Time plugin
+      - name: Download Time plugin for NSIS
+        uses: carlosperate/download-file-action@v1.0.3
+        with:
+          file-url: https://nsis.sourceforge.io/mediawiki/images/a/aa/Time.zip
+          file-name: Time.zip
+          location: ${{ github.workspace }}
+      - name: Extract Time plugin
+        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/Time.zip"
+
+      # Download content to install
+      - name: Download content to install
+        uses: carlosperate/download-file-action@v1.0.3
+        with:
+          file-url: https://github.com/aliascash/alias-wallet/releases/download/4.3.1/Alias-4.3.1-425be867-Win64-Qt5.12.zip
+          file-name: Alias.zip
+          location: ${{ github.workspace }}
+      - name: Extract content to install
+        run: 7z x -o"${{ github.workspace }}/windows/content" "${{ github.workspace }}/Alias.zip"
+
+      # Create installer
+      - name: Create Windows installer
+        uses: joncloud/makensis-action@v3.4
+        with:
+          arguments: "/V3"
+          additional-plugin-paths: "${{ github.workspace }}/NSIS_Plugins/Plugins"
+          script-file: "windows/Alias.nsi"
