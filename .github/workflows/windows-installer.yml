@@ -25,7 +25,7 @@ jobs:
           file-name: Inetc.zip
           location: ${{ github.workspace }}
       - name: Extract Inetc plugin
-        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/Inetc.zip"
+        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/Inetc.zip" -aoa
 
       # NSISunzU plugin
       - name: Download NSISunzU plugin for NSIS
@@ -35,7 +35,7 @@ jobs:
           file-name: NSISunzU.zip
           location: ${{ github.workspace }}
       - name: Extract NSISunzU plugin
-        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/NSISunzU.zip"
+        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/NSISunzU.zip" -aoa
 
       # NsProcess plugin
       - name: Download NsProcess plugin for NSIS
@@ -45,7 +45,7 @@ jobs:
           file-name: NsProcess.zip
           location: ${{ github.workspace }}
       - name: Extract NsProcess plugin
-        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/NsProcess.zip"
+        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/NsProcess.zip" -aoa
 
       # Time plugin
       - name: Download Time plugin for NSIS
@@ -55,7 +55,7 @@ jobs:
           file-name: Time.zip
           location: ${{ github.workspace }}
       - name: Extract Time plugin
-        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/Time.zip"
+        run: 7z x -o"${{ github.workspace }}/NSIS_Plugins" "${{ github.workspace }}/Time.zip" -aoa
 
       # Download content to install
       - name: Download content to install
