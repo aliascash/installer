@@ -34,6 +34,6 @@ jobs:
       - name: Create Windows installer
         uses: joncloud/makensis-action@v3.4
         with:
-          arguments: "/V3"
+          arguments: "/V4"
           additional-plugin-paths: "${{ github.workspace }}/windows/plugins"
           script-file: "windows/Alias.nsi"
