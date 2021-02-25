@@ -72,7 +72,7 @@ jobs:
         uses: joncloud/makensis-action@v3.4
         with:
           arguments: "/V3"
-          additional-plugin-paths: "${{ github.workspace }}/NSIS_Plugins/NSISunzU/Plugin unicode
-            ${{ github.workspace }}/NSIS_Plugins/Plugin
-            ${{ github.workspace }}/NSIS_Plugins/Plugins"
+          additional-plugin-paths: "${{ github.workspace }}/NSIS_Plugins/NSISunzU/Plugin unicode"
+            "${{ github.workspace }}/NSIS_Plugins/Plugin"
+            "${{ github.workspace }}/NSIS_Plugins/Plugins"
           script-file: "windows/Alias.nsi"
