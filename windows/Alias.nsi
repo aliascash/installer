@@ -15,8 +15,8 @@
     !include "FileFunc.nsh"
     !include "LogicLib.nsh"
     !include "nsDialogs.nsh"
-    !include "nsProcess.nsh"
-    !include "Time.nsh"
+    !include "include\nsProcess.nsh"
+    !include "include\Time.nsh"
     !include "include\MUI_EXTRAPAGES.nsh"
     !insertmacro GetTime
     !insertmacro un.GetTime

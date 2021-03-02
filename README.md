@@ -1,6 +1,7 @@
 # Alias Installer
-[![GitHub version](https://badge.fury.io/gh/aliascash%2Finstaller.svg)](https://badge.fury.io/gh/aliascash%2Finstaller) [![HitCount](http://hits.dwyl.io/aliascash/https://github.com/aliascash/installer.svg)](http://hits.dwyl.io/aliascash/https://github.com/aliascash/installer)
-[![Build Status](https://ci.alias.cash/buildStatus/icon?job=Alias/installer/master)](https://ci.alias.cash/job/Alias/job/installer/job/master/)
+[![GitHub version](https://badge.fury.io/gh/aliascash%2Finstaller.svg)](https://badge.fury.io/gh/aliascash%2Finstaller)
+[![HitCount](http://hits.dwyl.io/aliascash/https://github.com/aliascash/installer.svg)](http://hits.dwyl.io/aliascash/https://github.com/aliascash/installer)
+[![Build Status](https://github.com/aliascash/installer/actions/workflows/windows-installer.yml/badge.svg/)](https://github.com/aliascash/installer/actions)
 
 This repository contains various components to create standalone installer packages
 or to update an existing Alias installation.
