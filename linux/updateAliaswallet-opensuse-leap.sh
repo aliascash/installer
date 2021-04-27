@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # ============================================================================
 #
-# FILE:         updateAliaswallet-ubuntu-20-04.sh
+# FILE:         updateAliaswallet-opensuse-leap.sh
 #
 # SPDX-FileCopyrightText: © 2020 Alias Developers
 # SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
 # SPDX-License-Identifier: MIT
 #
 # DESCRIPTION:  Simple installer script to update Aliaswallet binaries
-#               on Ubuntu 20 (Focal)
+#               on openSUSE Leap
 #
 # AUTHOR:       HLXEasy
 # PROJECT:      https://alias.cash/
@@ -48,25 +48,21 @@ else
     exit 1
 fi
 echo "    Determined $NAME"
+echo ""
 
 # ----------------------------------------------------------------------------
 # Define some variables
-usedDistro="Ubuntu-20-04"
+usedDistro=''
+useBackports=false
+torRepoFile="/etc/apt/sources.list.d/tor.list"
+releaseName=''
 case ${ID} in
-    "ubuntu")
-        case ${VERSION_CODENAME} in
-            "focal")
-                echo "    Running on ${ID}/${VERSION_CODENAME}"
-                ;;
-            *)
-                echo "    Unable to execute update script for Ubuntu 20.04 (Focal) on this system:"
-                cat /etc/os-release
-                exit 1
-                ;;
-        esac
+    "opensuse-leap")
+        usedDistro="OpenSUSE-Tumbleweed"
         ;;
     *)
-        echo "    Wrong update script for operating system ${ID}!"
+        echo "Unable to execute update script for OpenSUSE-Tumbleweed on this system:"
+        cat /etc/os-release
         exit 1
         ;;
 esac
@@ -158,14 +154,10 @@ fi
 echo ""
 
 # ----------------------------------------------------------------------------
-# Update/upgrade system
-echo "Updating system and installing required packages"
-sudo apt-get update -y
-sudo apt-get upgrade -y
-sudo apt-get install -y \
-    --no-install-recommends \
-    tor
-sudo apt-get clean
+# Update the whole system
+echo "Updating system"
+sudo zypper update -y
+sudo zypper clean
 echo "    Done"
 echo ""
 

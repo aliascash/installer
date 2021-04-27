@@ -99,6 +99,9 @@ case ${ID} in
     "fedora")
         usedDistro="fedora"
         ;;
+    "opensuse-leap")
+        usedDistro="opensuse-leap"
+        ;;
     "raspbian")
         usedDistro="raspberry"
         case ${VERSION_ID} in
@@ -129,4 +132,4 @@ case ${ID} in
         ;;
 esac
 
-curl ${cacertParam} -L -s https://raw.githubusercontent.com/aliascash/installer/master/linux/updateAliaswallet-${usedDistro}${releaseName}.sh | sudo bash -s "${versionToInstall}"
+curl ${cacertParam} -L -s https://raw.githubusercontent.com/aliascash/installer/checksumfileRefactoring/linux/updateAliaswallet-${usedDistro}${releaseName}.sh | sudo bash -s "${versionToInstall}"
