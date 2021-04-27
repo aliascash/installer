@@ -23,9 +23,7 @@ tmpChecksumfile=checksumfile.txt
 tmpBinaryArchive=Aliaswallet.tgz
 torRepo="deb https://deb.torproject.org/torproject.org buster main"
 torRepoFile="/etc/apt/sources.list.d/tor.list"
-boostVersion='1.67.0'
-usedDistro="Debian"
-releaseName='-Buster'
+usedDistro="Debian-Buster"
 
 # ----------------------------------------------------------------------------
 # Use ca-certificates if available
@@ -53,7 +51,6 @@ else
     exit 1
 fi
 echo "    Determined $NAME"
-echo ""
 
 # ----------------------------------------------------------------------------
 # Check current system
@@ -61,15 +58,15 @@ case ${ID} in
     "debian")
         case ${VERSION_ID} in
             "10")
-                echo "Running on ${ID}/${VERSION_ID}"
+                echo "    Running on ${ID}/${VERSION_ID}"
                 ;;
             *)
                 case ${PRETTY_NAME} in
                     *"bullseye"*)
-                        echo "Detected ${PRETTY_NAME}, installing Buster binaries"
+                        echo "    Detected ${PRETTY_NAME}, installing Buster binaries"
                         ;;
                     *)
-                        echo "Unable to execute update script for Debian Buster on this system:"
+                        echo "    Unable to execute update script for Debian Buster on this system:"
                         cat /etc/os-release
                         exit 1
                         ;;
@@ -78,10 +75,11 @@ case ${ID} in
         esac
         ;;
     *)
-        echo "Wrong update script for operating system ${ID}!"
+        echo "    Wrong update script for operating system ${ID}!"
         exit 1
         ;;
 esac
+echo ""
 
 # ----------------------------------------------------------------------------
 # Create work dir and download release notes and binary archive
@@ -96,7 +94,7 @@ gitHashOfChoosenTag=$(git ls-remote -t https://github.com/aliascash/alias-wallet
 downloadBaseURL=https://github.com/aliascash/alias-wallet/releases/download/${githubTag}
 
 # https://github.com/aliascash/alias-wallet/releases/download/Build4/Alias-Build4-29c64da2-Debian-Buster.sha256
-checksumfile=${downloadBaseURL}/Alias-${githubTag}-${gitHashOfChoosenTag}-Debian-Buster.sha256
+checksumfile=${downloadBaseURL}/Alias-${githubTag}-${gitHashOfChoosenTag}-${usedDistro}.sha256
 echo "Downloading checksum file ${checksumfile}"
 httpCode=$(curl ${cacertParam} -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${checksumfile})
 if [[ ${httpCode} -ge 400 ]] ; then
@@ -106,7 +104,7 @@ fi
 echo "    Done"
 echo ""
 
-filenameToDownload=${downloadBaseURL}/Alias-${githubTag}-${gitHashOfChoosenTag}-Debian-Buster.tgz
+filenameToDownload=${downloadBaseURL}/Alias-${githubTag}-${gitHashOfChoosenTag}-${usedDistro}.tgz
 echo "Downloading binary archive ${filenameToDownload}"
 httpCode=$(curl ${cacertParam} -L -o ${tmpWorkdir}/${tmpBinaryArchive} -w "%{http_code}" ${filenameToDownload})
 if [[ ${httpCode} -ge 400 ]] ; then
@@ -133,7 +131,7 @@ else
 fi
 echo "    Downloaded archive is ok, checksums match values from ${checksumfile}"
 echo ""
-exit
+
 # ----------------------------------------------------------------------------
 # Backup current binaries
 if [[ -e ${installPath}/aliaswalletd ]] ; then
