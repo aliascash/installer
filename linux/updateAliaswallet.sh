@@ -99,6 +99,9 @@ case ${ID} in
     "fedora")
         usedDistro="fedora"
         ;;
+    "opensuse-leap")
+        usedDistro="opensuse-leap"
+        ;;
     "raspbian")
         usedDistro="raspberry"
         case ${VERSION_ID} in
