@@ -87,35 +87,30 @@ esac
 # Create work dir and download release notes and binary archive
 mkdir -p ${tmpWorkdir}
 
+# Determine git hash of choosen tag as this is part of the filename
+gitHashOfChoosenTag=$(git ls-remote -t https://github.com/aliascash/alias-wallet | grep -w refs/tags/${githubTag}\$ | head -c 8)
+
 #https://github.com/aliascash/alias-wallet/releases/latest
 #https://github.com/aliascash/alias-wallet/releases/download/4.3.0/Aliaswallet-2.2.1-8706c85-Ubuntu.tgz
 #https://github.com/aliascash/alias-wallet/releases/download/Build123/Aliaswallet-Build123-8e152a8-Debian.tgz
 downloadBaseURL=https://github.com/aliascash/alias-wallet/releases/download/${githubTag}
-releasenotesToDownload=${downloadBaseURL}/RELEASENOTES.txt
-echo "Downloading release notes with checksums ${releasenotesToDownload}"
-httpCode=$(curl ${cacertParam} -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${releasenotesToDownload})
+
+# https://github.com/aliascash/alias-wallet/releases/download/Build4/Alias-Build4-29c64da2-Debian-Buster.sha256
+checksumfile=${downloadBaseURL}/Alias-${githubTag}-${gitHashOfChoosenTag}-Debian-Buster.sha256
+echo "Downloading checksum file ${checksumfile}"
+httpCode=$(curl ${cacertParam} -L -o ${tmpWorkdir}/${tmpChecksumfile} -w "%{http_code}" ${checksumfile})
 if [[ ${httpCode} -ge 400 ]] ; then
-    echo "${releasenotesToDownload} not found!"
+    echo "${checksumfile} not found!"
     exit 1
 fi
 echo "    Done"
 echo ""
-# Desired line of text looks like this:
-# **Aliaswallet-Build139-0c97a29-Debian-Buster.tgz:** `1128be441ff910ef31361dfb04273618b23809ee25a29ec9f67effde060c53bb`
-officialChecksum=$(grep "${usedDistro}${releaseName}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '`' -f2)
-filenameToDownload=$(grep "${usedDistro}${releaseName}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '*' -f3 | sed "s/://g")
 
-# If nothing found, try again without ${releaseName}
-if [[ -z "${officialChecksum}" ]] || [[ -z "${filenameToDownload}" ]] ; then
-    # **Aliaswallet-Build139-0c97a29-Debian.tgz:** `1128be441ff910ef31361dfb04273618b23809ee25a29ec9f67effde060c53bb`
-    officialChecksum=$(grep "${usedDistro}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '`' -f2)
-    filenameToDownload=$(grep "${usedDistro}.tgz:" ${tmpWorkdir}/${tmpChecksumfile} | cut -d '*' -f3 | sed "s/://g")
-fi
-
-echo "Downloading binary archive ${downloadBaseURL}/${filenameToDownload}"
-httpCode=$(curl ${cacertParam} -L -o ${tmpWorkdir}/${tmpBinaryArchive} -w "%{http_code}" ${downloadBaseURL}/${filenameToDownload})
+filenameToDownload=${downloadBaseURL}/Alias-${githubTag}-${gitHashOfChoosenTag}-Debian-Buster.tgz
+echo "Downloading binary archive ${filenameToDownload}"
+httpCode=$(curl ${cacertParam} -L -o ${tmpWorkdir}/${tmpBinaryArchive} -w "%{http_code}" ${filenameToDownload})
 if [[ ${httpCode} -ge 400 ]] ; then
-    echo "Archive ${downloadBaseURL}/${filenameToDownload} not found!"
+    echo "Archive ${filenameToDownload} not found!"
     exit 1
 fi
 echo "    Done"
@@ -124,16 +119,21 @@ echo ""
 # ----------------------------------------------------------------------------
 # Get checksum from release notes and verify downloaded archive
 echo "Verifying checksum"
-determinedSha256Checksum=$(sha256sum ${tmpWorkdir}/${tmpBinaryArchive} | awk '{ print $1 }')
-if [[ "${officialChecksum}" != "${determinedSha256Checksum}" ]] ; then
-    echo "ERROR: sha256sum of downloaded file not matching value from ${releasenotesToDownload}: (${officialChecksum} != ${determinedSha256Checksum})"
+officialChecksum=$(cat ${tmpWorkdir}/${tmpChecksumfile})
+determinedChecksum=$(sha256sum ${tmpWorkdir}/${tmpBinaryArchive} | awk '{ print $1 }')
+echo "    Expected checksum:   ${officialChecksum}"
+echo "    Determined checksum: ${determinedChecksum}"
+if [[ "${officialChecksum}" != "${determinedChecksum}" ]] ; then
+    echo
+    echo "ERROR: Checksum of downloaded file not matching value from ${checksumfile}!"
+    echo
     exit 1
 else
-    echo "    sha256sum OK"
+    echo "    Checksum OK"
 fi
-echo "    Downloaded archive is ok, checksums match values from ${releasenotesToDownload}"
+echo "    Downloaded archive is ok, checksums match values from ${checksumfile}"
 echo ""
-
+exit
 # ----------------------------------------------------------------------------
 # Backup current binaries
 if [[ -e ${installPath}/aliaswalletd ]] ; then
