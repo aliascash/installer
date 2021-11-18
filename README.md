@@ -65,6 +65,7 @@ Go to _`Advanced -> Update`_ to use it.
 * Nullsoft Scriptable Install System [NSIS v3.x](https://nsis.sourceforge.io/Download)
 * Plugins:
   * [Inetc](https://nsis.sourceforge.io/Inetc_plug-in)
+    * As the bootstrap archive is larger than 2G now, a special version of InetC is required. See [this discussion](http://forums.winamp.com/showthread.php?t=381592) for details.
   * [NSISunzU](https://nsis.sourceforge.io/Nsisunz_plug-in) (Unicode version!)
   * [NsProcess](https://nsis.sourceforge.io/NsProcess_plugin) (Unicode version, rename nsProcessW.dll into nsProcess.dll!)
   * [Time](https://nsis.sourceforge.io/Time_plug-in)
