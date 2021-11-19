@@ -5,5 +5,4 @@
 
 *.7z
 *.zip
-Alias/
-Aliaswallet/
+Alias*/
