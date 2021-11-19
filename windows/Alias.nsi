@@ -162,9 +162,9 @@ SectionEnd
 Section /o "Bootstrap Blockchain" SectionBlockchain
 
     ;Define required space as blockchain will be downloaded separately during installation
-    ;Bootstrap archive is around 1.2G, which is 1200000K
-    ;Extracted chain is around 1.6G, which is 1600000K
-    AddSize 2800000
+    ;Bootstrap archive is around 2.2G, which is 220000K
+    ;Extracted chain is around 2.6G, which is 2600000K
+    AddSize 5500000
 
     Push "Alias.exe"
     Call CloseRunningApplication
