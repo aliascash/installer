@@ -33,13 +33,14 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in
 ; installers for other applications. (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
+AppCopyright=(c) 2021 {#MyAppPublisher}
 AppId=FBB6A488-F94A-45D8-8D13-86EDD1ADC90A
 AppName={#MyAppName}
-AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+AppVersion={#MyAppVersion}
 DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile=..\LICENSES\MIT.txt
@@ -48,6 +49,9 @@ PrivilegesRequired=lowest
 OutputBaseFilename={#MyAppName}-Installer
 Compression=lzma
 SolidCompression=yes
+SetupIconFile=images/alias-app.ico
+WizardImageFile=images/branding.bmp
+WizardSmallImageFile=images/branding.bmp
 WizardStyle=modern
 
 [Languages]
