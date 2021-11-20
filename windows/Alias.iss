@@ -91,7 +91,6 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
-//procedure InitializeWizard();
 function NextButtonClick(CurPageID: Integer): Boolean;
 begin
     Result := True;
@@ -117,11 +116,9 @@ begin
     if CurStep = ssPostInstall then begin
         if WizardIsComponentSelected('bootstrap') then begin
             if FileExists(ExpandConstant('{userappdata}\Aliaswallet\{#BootstrapArchiveName}')) then begin
-//            if FileExists(ExpandConstant('{tmp}\{#BootstrapArchiveName}')) then begin
                 ForceDirectories('{userappdata}\Aliaswallet\');
                 shellobj := CreateOleObject('Shell.Application');
                 ZipFileV := ExpandConstant('{userappdata}\Aliaswallet\{#BootstrapArchiveName}');
-//                ZipFileV := ExpandConstant('{tmp}\{#BootstrapArchiveName}');
                 TargetFldrV := ExpandConstant('{userappdata}\Aliaswallet\');
                 SrcFldr := shellobj.NameSpace(ZipFileV);
                 DestFldr := shellobj.NameSpace(TargetFldrV);
