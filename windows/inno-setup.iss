@@ -22,7 +22,6 @@
 #define MyAppPublisher "Alias Team"
 #define MyAppURL "https://alias.cash/"
 #define MyAppExeName "Alias.exe"
-#define MyAppDataLocation "{userappdata}\Aliaswallet"
 #define BootstrapArchiveName "BootstrapChain.zip"
 //#define BootstrapMainURL "https://download.alias.cash/files/bootstrap/{#BootstrapArchiveName}"
 #define BootstrapMainURL "https://github.com/aliascash/docker-aliwa-server/archive/refs/tags/1.0.zip"
@@ -61,21 +60,21 @@ Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "tr"; MessagesFile: "compiler:Languages\Turkish.isl"
 
 [Dirs]
-Name: "{#MyAppDataLocation}"; Flags: uninsneveruninstall
+Name: "{userappdata}\Aliaswallet"; Flags: uninsneveruninstall
 
 [Types]
-Name: installWallet; Description: "Install Alias Wallet Software"; Flags: iscustom
+Name: installWallet; Description: "Install Alias"; Flags: iscustom
 
 [Components]
-Name: wallet;      Description: "Install Alias Wallet"; Types: installWallet
-Name: bootstrap;   Description: "Bootstrap Blockchain Data"; Types: installWallet
+Name: wallet;        Description: "Install Alias Wallet"; Types: installWallet
+Name: bootstrap;     Description: "Bootstrap Blockchain Data"; Types: installWallet
 
 [Tasks]
-Name: desktopicon; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Components: wallet
+Name: desktopicon;   Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Components: wallet
 
 [Files]
 Source: "content\Alias_Only\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "content\Alias_Only\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "content\Alias_Only\*";               DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -86,30 +85,45 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
-//if IsComponentSelected('bootstrap') then
-//begin
-    procedure InitializeWizard();
-    var
-        shellobj: variant;
-        ZipFileV, TargetFldrV: variant;
-        SrcFldr, DestFldr: variant;
-        shellfldritems: variant;
-    begin
-        idpAddFile('{#BootstrapMainURL}', ExpandConstant('{#MyAppDataLocation}\{#BootstrapArchiveName}'));
-            // Mirrors
-            //idpAddMirror('{#BootstrapMainURL}', '{#BootstrapMirrorURL1}');
-            //idpAddMirror('{#BootstrapMainURL}', '{#BootstrapMirrorURL2}');
+//procedure InitializeWizard();
+function NextButtonClick(CurPageID: Integer): Boolean;
+begin
+    Result := True;
+    if CurPageID = wpReady then begin
+        if WizardIsComponentSelected('bootstrap') then begin
+            // Data dir needs to be created manually as [Dirs] is not ready at this point
+            CreateDir(ExpandConstant('{userappdata}\Aliaswallet'));
+            idpAddFile('{#BootstrapMainURL}', ExpandConstant('{userappdata}\Aliaswallet\{#BootstrapArchiveName}'));
+//            idpAddFile('{#BootstrapMainURL}', ExpandConstant('{tmp}\{#BootstrapArchiveName}'));
+                // Mirrors
+                //idpAddMirror('{#BootstrapMainURL}', '{#BootstrapMirrorURL1}');
+                //idpAddMirror('{#BootstrapMainURL}', '{#BootstrapMirrorURL2}');
 
-        idpDownloadAfter(wpReady);
-        if FileExists(ExpandConstant('{#MyAppDataLocation}\{#BootstrapArchiveName}')) then begin
-            ForceDirectories('{#MyAppDataLocation}\');
-            shellobj := CreateOleObject('Shell.Application');
-            ZipFileV := ExpandConstant('{#MyAppDataLocation}\{#BootstrapArchiveName}');
-            TargetFldrV := ExpandConstant('{#MyAppDataLocation}\');
-            SrcFldr := shellobj.NameSpace(ZipFileV);
-            DestFldr := shellobj.NameSpace(TargetFldrV);
-            shellfldritems := SrcFldr.Items;
-            DestFldr.CopyHere(shellfldritems, {#SHCONTCH_NOPROGRESSBOX} or {#SHCONTCH_RESPONDYESTOALL});  
+            idpDownloadAfter(wpReady);
         end;
     end;
-//end;
+end;
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+    shellobj: variant;
+    ZipFileV, TargetFldrV: variant;
+    SrcFldr, DestFldr: variant;
+    shellfldritems: variant;
+begin
+    if CurStep = ssPostInstall then begin
+        if WizardIsComponentSelected('bootstrap') then begin
+            if FileExists(ExpandConstant('{userappdata}\Aliaswallet\{#BootstrapArchiveName}')) then begin
+//            if FileExists(ExpandConstant('{tmp}\{#BootstrapArchiveName}')) then begin
+                ForceDirectories('{userappdata}\Aliaswallet\');
+                shellobj := CreateOleObject('Shell.Application');
+                ZipFileV := ExpandConstant('{userappdata}\Aliaswallet\{#BootstrapArchiveName}');
+//                ZipFileV := ExpandConstant('{tmp}\{#BootstrapArchiveName}');
+                TargetFldrV := ExpandConstant('{userappdata}\Aliaswallet\');
+                SrcFldr := shellobj.NameSpace(ZipFileV);
+                DestFldr := shellobj.NameSpace(TargetFldrV);
+                shellfldritems := SrcFldr.Items;
+                DestFldr.CopyHere(shellfldritems, {#SHCONTCH_NOPROGRESSBOX} or {#SHCONTCH_RESPONDYESTOALL});  
+            end;
+        end;
+    end;
+end;
