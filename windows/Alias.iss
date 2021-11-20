@@ -78,8 +78,8 @@ Name: bootstrap;     Description: "Bootstrap Blockchain Data"; Types: installWal
 Name: desktopicon;   Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Components: wallet
 
 [Files]
-Source: "content\Alias_Only\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "content\Alias_Only\*";               DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "content\Alias\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "content\Alias\*";               DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
