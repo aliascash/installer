@@ -24,10 +24,11 @@
 #define MyAppURL "https://alias.cash/"
 #define MyAppExeName "Alias.exe"
 #define BootstrapArchiveName "BootstrapChain.zip"
-//#define BootstrapMainURL "https://download.alias.cash/files/bootstrap/{#BootstrapArchiveName}"
-#define BootstrapMainURL "https://github.com/aliascash/docker-aliwa-server/archive/refs/tags/1.0.zip"
-#define BootstrapMirrorURL1 "https://download.alias.cash/files/bootstrap/{#BootstrapArchiveName}"
-#define BootstrapMirrorURL2 "https://download.alias.cash/files/bootstrap/{#BootstrapArchiveName}"
+// For testing purposes just a small archive
+//#define BootstrapMainURL "https://github.com/aliascash/docker-aliwa-server/archive/refs/tags/1.0.zip"
+#define BootstrapMainURL "https://download.alias.cash/files/bootstrap"
+#define BootstrapMirrorURL1 "https://download.alias.cash/files/bootstrap"
+#define BootstrapMirrorURL2 "https://download.alias.cash/files/bootstrap"
 #define SHCONTCH_NOPROGRESSBOX 4
 #define SHCONTCH_RESPONDYESTOALL 16
 
@@ -98,12 +99,10 @@ begin
         if WizardIsComponentSelected('bootstrap') then begin
             // Data dir needs to be created manually as [Dirs] is not ready at this point
             CreateDir(ExpandConstant('{userappdata}\Aliaswallet'));
-            idpAddFile('{#BootstrapMainURL}', ExpandConstant('{userappdata}\Aliaswallet\{#BootstrapArchiveName}'));
-//            idpAddFile('{#BootstrapMainURL}', ExpandConstant('{tmp}\{#BootstrapArchiveName}'));
+            idpAddFile('{#BootstrapMainURL}/{#BootstrapArchiveName}', ExpandConstant('{userappdata}\Aliaswallet\{#BootstrapArchiveName}'));
                 // Mirrors
-                //idpAddMirror('{#BootstrapMainURL}', '{#BootstrapMirrorURL1}');
-                //idpAddMirror('{#BootstrapMainURL}', '{#BootstrapMirrorURL2}');
-
+                //idpAddMirror('{#BootstrapMainURL}/{#BootstrapArchiveName}', '{#BootstrapMirrorURL1}/{#BootstrapArchiveName}');
+                //idpAddMirror('{#BootstrapMainURL}/{#BootstrapArchiveName}', '{#BootstrapMirrorURL2}/{#BootstrapArchiveName}');
             idpDownloadAfter(wpReady);
         end;
     end;
