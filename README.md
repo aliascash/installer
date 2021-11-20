@@ -65,7 +65,7 @@ Go to _`Advanced -> Update`_ to use it.
 * [Inno Setup](https://jrsoftware.org/isinfo.php)
 * Plugins:
   * [Inno Download Plugin](https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin)
-* Setup env var `NSIS_DIR` with path to installed NSIS folder
+* Setup env var `INNOSETUP_DIR` with path to installed Inno Setup folder
 
 ### Build installer
 * Extract Alias wallet archive to `<clone-location>/windows/content/Alias/`
