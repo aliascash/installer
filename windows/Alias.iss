@@ -8,7 +8,8 @@
 
 ; Include download plugin and translations
 ; (https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin/)
-#pragma include __INCLUDE__ + ";" + ReadReg(HKLM, "Software\Mitrich Software\Inno Download Plugin", "InstallDir")
+//#pragma include __INCLUDE__ + ";" + ReadReg(HKLM, "Software\Mitrich Software\Inno Download Plugin", "InstallDir")
+#pragma include __INCLUDE__ + ";" + SourcePath + "\plugins\InnoDownloadPlugin"
 #include <idp.iss>
 #include <idplang\German.iss>
 #include <idplang\Spanish.iss>
