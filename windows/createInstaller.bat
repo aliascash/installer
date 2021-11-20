@@ -16,7 +16,7 @@ set SRC_DIR=%cd%\windows
 cd
 cd %SRC_DIR%
 
-"%INNOSETUP_DIR%\Compil32.exe" Alias.iss
+"%INNOSETUP_DIR%\ISCC.exe" Alias.iss
 
 echo "Everything is OK"
 GOTO END
