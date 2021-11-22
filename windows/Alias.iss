@@ -53,7 +53,7 @@ Compression=lzma
 SolidCompression=yes
 SetupIconFile=images/alias-app.ico
 WizardImageFile=images/branding.bmp
-WizardSmallImageFile=images/branding.bmp
+WizardSmallImageFile=images/Alias-55x55.bmp,images/Alias-64x68.bmp,images/Alias-83x80.bmp,images/Alias-92x97.bmp,images/Alias-110x106.bmp,images/Alias-119x123.bmp,images/Alias-138x140.bmp
 WizardStyle=modern
 
 [Languages]
