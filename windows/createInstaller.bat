@@ -8,21 +8,27 @@
 ::  Helper script to build an Alias Windows installer.
 :: ===========================================================================
 
-IF "%INNOSETUP_DIR%" == "" GOTO NOINNOSETUP
-:YESINNOSETUP
+@echo off
 
 set CALL_DIR=%cd%
 set SRC_DIR=%cd%\windows
 cd
 cd %SRC_DIR%
 
-"%INNOSETUP_DIR%\ISCC.exe" Alias.iss
+where /q ISCC.exe
+IF ERRORLEVEL 1 (
+    IF "%INNOSETUP_DIR%" == "" GOTO NOINNOSETUP
+    :YESINNOSETUP
+    "%INNOSETUP_DIR%\ISCC.exe" Alias.iss
+) ELSE (
+    ISCC.exe Alias.iss
+)
 
 echo "Everything is OK"
 GOTO END
 
 :NOINNOSETUP
-@ECHO The INNOSETUP_DIR environment variable was NOT detected!
+@ECHO INNOSETUP_DIR environment variable not detected and ISCC.exe is not on PATH!
 
 :END
 cd %CALL_DIR%

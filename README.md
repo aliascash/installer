@@ -65,11 +65,14 @@ Go to _`Advanced -> Update`_ to use it.
 * [Inno Setup](https://jrsoftware.org/isinfo.php)
 * Plugins:
   * [Inno Download Plugin](https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin)
-* Setup env var `INNOSETUP_DIR` with path to installed Inno Setup folder
+* Either
+  * add path to Inno Setup installation to PATH
+  * _or_
+  * setup env var `INNOSETUP_DIR` with path to Inno Setup folder
 
 ### Build installer
 * Extract Alias wallet archive to `<clone-location>/windows/content/Alias/`
-* Execute `windows/createInstaller.bat` as Administrator
+* Execute `windows/createInstaller.bat`
 _or_
 * Run Inno Setup Compiler and load `<clone-location>/windows/Alias.iss`
 
