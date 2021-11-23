@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # ============================================================================
 #
-# FILE:         updateAliaswallet-ubuntu-20-04.sh
+# FILE:         updateAliaswallet-raspberry-buster.sh
 #
 # SPDX-FileCopyrightText: © 2020 Alias Developers
 # SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
 # SPDX-License-Identifier: MIT
 #
 # DESCRIPTION:  Simple installer script to update Aliaswallet binaries
-#               on Ubuntu 20 (Focal)
+#               on Raspbian Buster
 #
 # AUTHOR:       HLXEasy
 # PROJECT:      https://alias.cash/
@@ -21,6 +21,9 @@ installPath=/usr/local/bin
 tmpWorkdir=/tmp/AliaswalletUpdate
 tmpChecksumfile=checksumfile.txt
 tmpBinaryArchive=Aliaswallet.tgz
+torRepo="deb https://deb.torproject.org/torproject.org buster main"
+torRepoFile="/etc/apt/sources.list.d/tor.list"
+usedDistro="RaspberryPi-Buster-aarch64"
 
 # ----------------------------------------------------------------------------
 # Use ca-certificates if available
@@ -49,19 +52,34 @@ else
 fi
 echo "    Determined $NAME"
 
+if [ "$(uname -m)" = aarch64 ] ; then
+    echo "    Running on aarch64 architecture"
+else
+    echo ""
+    echo "This Raspberry Pi is not running on aarch64 architecture!"
+    echo ""
+    exit 1
+fi
+
 # ----------------------------------------------------------------------------
-# Define some variables
-usedDistro="Ubuntu-20-04"
+# Check current system
 case ${ID} in
-    "ubuntu")
-        case ${VERSION_CODENAME} in
-            "focal")
-                echo "    Running on ${ID}/${VERSION_CODENAME}"
+    "raspbian"|"debian")
+        case ${VERSION_ID} in
+            "10")
+                echo "    Running on ${ID}/${VERSION_ID}"
                 ;;
             *)
-                echo "    Unable to execute update script for Ubuntu 20.04 (Focal) on this system:"
-                cat /etc/os-release
-                exit 1
+                case ${PRETTY_NAME} in
+                    *"bullseye"*)
+                        echo "    Detected ${PRETTY_NAME}, installing Buster binaries"
+                        ;;
+                    *)
+                        echo "    Unable to execute update script for Raspbian Buster on this system:"
+                        cat /etc/os-release
+                        exit 1
+                        ;;
+                esac
                 ;;
         esac
         ;;
@@ -158,12 +176,32 @@ fi
 echo ""
 
 # ----------------------------------------------------------------------------
-# Update/upgrade system
-echo "Updating system and installing required packages"
+# If necessary, check for configured Tor repo
+if [[ -e ${torRepoFile} ]] ; then
+    echo "Tor repo already configured"
+else
+    echo "Adding Tor repo"
+    sudo apt-get install -y \
+        dirmngr
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7638D0442B90D010
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
+    echo "${torRepo}" | sudo tee --append ${torRepoFile} > /dev/null
+    curl ${cacertParam} https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import
+    gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
+    echo "    Done"
+fi
+echo ""
+
+# ----------------------------------------------------------------------------
+# Update the whole system
 sudo apt-get update -y
+sudo apt-get install -y \
+    apt-transport-https \
+    deb.torproject.org-keyring
 sudo apt-get upgrade -y
 sudo apt-get install -y \
     --no-install-recommends \
+    --allow-unauthenticated \
     tor
 sudo apt-get clean
 echo "    Done"

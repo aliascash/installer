@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================================
 #
-# FILE:         migrateSpectrecoinToAliaswallet.sh
+# FILE:         migrateSpectrecoinToAlias.sh
 #
 # SPDX-FileCopyrightText: © 2020 Alias Developers
 # SPDX-FileCopyrightText: © 2016 SpectreCoin Developers
@@ -17,6 +17,44 @@
 
 versionToInstall=$1
 installPath=/usr/local/bin
+
+# Debug output
+#set -ex
+
+# ----------------------------------------------------------------------------
+# Remove spectrecoin binaries
+if [[ -e ${installPath}/spectrecoind ]] ; then
+    echo "Determining current spectrecoind binary version"
+    # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
+    # but only the version and the commit hash separated by "_" is used later on.
+    # Option '-version' is working since v3.x
+    queryResult=$(${installPath}/spectrecoind -version || true)
+    currentVersion=$(echo ${queryResult/\(/} | cut -d ' ' -f 1)
+    gitHash=$(echo ${queryResult/\(/} | cut -d ' ' -f 2)
+    if [[ -n "${gitHash}" ]] ; then
+        fullVersion=${currentVersion}-${gitHash}
+    else
+        fullVersion=${currentVersion}
+    fi
+    if [[ -z "${fullVersion}" ]] ; then
+        fullVersion=$(date +%Y%m%d-%H%M)
+        echo "    Unable to determine version of current binaries, using timestamp '${fullVersion}'"
+    else
+        echo "    Creating backup of current version ${fullVersion}"
+    fi
+    if [[ -f ${installPath}/spectrecoind-${fullVersion} ]] ; then
+        echo "    Backup of current version already existing"
+    else
+        sudo mv ${installPath}/spectrecoind ${installPath}/spectrecoind-${fullVersion}
+        if [[ -e ${installPath}/spectrecoin ]] ; then
+            sudo mv ${installPath}/spectrecoin  ${installPath}/spectrecoin-${fullVersion}
+        fi
+        echo "    Done"
+    fi
+else
+    echo "Binary ${installPath}/spectrecoind not found, skip backup creation"
+fi
+echo ""
 
 # ----------------------------------------------------------------------------
 # Create backup of wallet.dat
@@ -47,41 +85,14 @@ if [[ -e ~/.aliaswallet/spectrecoin.conf ]] ; then
     echo "Renaming configuration file spectrecoin.conf to alias.conf"
     mv ~/.aliaswallet/spectrecoin.conf ~/.aliaswallet/alias.conf
     echo "    Done"
-fi
-echo ""
 
-# ----------------------------------------------------------------------------
-# Remove spectrecoin binaries
-if [[ -e ${installPath}/spectrecoind ]] ; then
-    echo "Determining current spectrecoind binary version"
-    # Version is something like "v2.2.2.0 (86e9b92 - 2019-01-26 17:20:20 +0100)"
-    # but only the version and the commit hash separated by "_" is used later on.
-    # Option '-version' is working since v3.x
-    queryResult=$(${installPath}/spectrecoind -version)
-    currentVersion=$(echo ${queryResult/\(/} | cut -d ' ' -f 1)
-    gitHash=$(echo ${queryResult/\(/} | cut -d ' ' -f 2)
-    if [[ -n "${gitHash}" ]] ; then
-        fullVersion=${currentVersion}-${gitHash}
-    else
-        fullVersion=${currentVersion}
-    fi
-    if [[ -z "${fullVersion}" ]] ; then
-        fullVersion=$(date +%Y%m%d-%H%M)
-        echo "    Unable to determine version of current binaries, using timestamp '${fullVersion}'"
-    else
-        echo "    Creating backup of current version ${fullVersion}"
-    fi
-    if [[ -f ${installPath}/spectrecoind-${fullVersion} ]] ; then
-        echo "    Backup of current version already existing"
-    else
-        sudo mv ${installPath}/spectrecoind ${installPath}/spectrecoind-${fullVersion}
-        if [[ -e ${installPath}/spectrecoin ]] ; then
-            sudo mv ${installPath}/spectrecoin  ${installPath}/spectrecoin-${fullVersion}
-        fi
-        echo "    Done"
-    fi
-else
-    echo "Binary ${installPath}/spectrecoind not found, skip backup creation"
+    echo "Replacing 'spectrecoin' with 'aliaswallet'"
+    sudo sed -i \
+        -e "s#spectrecoin.conf#alias.conf#g" \
+        -e "s#Spectrecoin#Alias wallet#g" \
+        -e "s#spectrecoin#aliaswallet#g" \
+        ~/.aliaswallet/alias.conf
+    echo "    Done"
 fi
 echo ""
 
@@ -95,6 +106,12 @@ if [[ -e /lib/systemd/system/spectrecoind.service ]] ; then
         -e "s/Spectrecoin/Alias wallet/g" \
         -e "s/spectrecoind/aliaswalletd/g" \
         /lib/systemd/system/aliaswalletd.service
+
+    # Fix potential wrong binary reference
+    sudo sed -i \
+        -e "s#/usr/bin/aliaswalletd#/usr/local/bin/aliaswalletd#g" \
+        /lib/systemd/system/aliaswalletd.service
+
     sudo systemctl daemon-reload
     sudo systemctl enable aliaswalletd
     echo "    Done"
@@ -114,10 +131,20 @@ fi
 
 # ----------------------------------------------------------------------------
 # Update alias definitions
-sed -i \
-    -e "s/spectrecoin-sh-rpc-ui/alias-sh-rpc-ui/g" \
-    -e "s/spectrecoin/aliaswallet/g" \
-    ~/.bash_aliases
+if [[ -e ~/.bash_aliases ]] ; then
+    echo "Updating possible alias definitions on ~/.bash_aliases"
+    sed -i \
+        -e "s/spectrecoin-sh-rpc-ui/alias-sh-rpc-ui/g" \
+        -e "s/spectrecoin/aliaswallet/g" \
+        ~/.bash_aliases
+fi
+if [[ -e ~/.zshrc ]] ; then
+    echo "Updating possible alias definitions on ~/.zshrc"
+    sed -i \
+        -e "s/spectrecoin-sh-rpc-ui/alias-sh-rpc-ui/g" \
+        -e "s/spectrecoin/aliaswallet/g" \
+        ~/.zshrc
+fi
 
 # ----------------------------------------------------------------------------
 # Use ca-certificates if available
@@ -126,3 +153,12 @@ if [[ -e /etc/ssl/certs/ca-certificates.crt ]] ; then
 fi
 
 curl ${cacertParam} -L -s https://raw.githubusercontent.com/aliascash/installer/master/linux/updateAliaswallet.sh | sudo bash -s "${versionToInstall}"
+
+echo
+echo "The Alias wallet is not running."
+echo "Please logout and login again, before restarting the Shell-UI again."
+echo
+
+# Break further script execution at this point, because the underlaying
+# script location has changed.
+kill -INT $$

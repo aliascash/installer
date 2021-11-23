@@ -3,26 +3,26 @@
 ::  SPDX-FileCopyrightText: © 2018 Spectrecoin developers
 ::  SPDX-License-Identifier: MIT
 ::
-::  @author Yves Schumann <yves@alias.cash>
+::  @author HLXEasy <hlxeasy@gmail.com>>
 ::
-::  Helper script to build Spectrecoin on Windows using VS2017 and QT.
+::  Helper script to build an Alias Windows installer.
 :: ===========================================================================
 
-IF "%NSIS_DIR%" == "" GOTO NONSIS
-:YESNSIS
+IF "%INNOSETUP_DIR%" == "" GOTO NOINNOSETUP
+:YESINNOSETUP
 
 set CALL_DIR=%cd%
 set SRC_DIR=%cd%\windows
 cd
 cd %SRC_DIR%
 
-"%NSIS_DIR%\makensis.exe" /V4 Alias.nsi
+"%INNOSETUP_DIR%\ISCC.exe" Alias.iss
 
 echo "Everything is OK"
 GOTO END
 
-:NONSIS
-@ECHO The NSIS_DIR environment variable was NOT detected!
+:NOINNOSETUP
+@ECHO The INNOSETUP_DIR environment variable was NOT detected!
 
 :END
 cd %CALL_DIR%

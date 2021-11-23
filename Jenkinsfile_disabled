@@ -17,8 +17,10 @@ pipeline {
     environment {
         // In case another branch beside master or develop should be deployed, enter it here
         BRANCH_TO_DEPLOY = 'automateWindowsInstallerCreation'
-        DISCORD_WEBHOOK = credentials('991ce248-5da9-4068-9aea-8a6c2c388a19')
-        GITHUB_TOKEN = credentials('cdc81429-53c7-4521-81e9-83a7992bca76')
+        DISCORD_WEBHOOK = credentials('DISCORD_WEBHOOK')
+        GITHUB_CI_TOKEN = credentials('GITHUB_CI_TOKEN')
+        ACCESS_TOKEN = credentials('ci_read_access')
+        CI_URL = credentials('CI_URL')
     }
     parameters {
         string(name: 'ARCHIVE_LOCATION', defaultValue: 'Enter full path', description: 'Location of the Alias archive with the content for the installer')
@@ -34,43 +36,43 @@ pipeline {
                 discordSend(
                         description: "Started build #$env.BUILD_NUMBER",
                         image: '',
-                        link: "$env.BUILD_URL",
+                        //link: "$env.BUILD_URL",
                         successful: true,
                         result: "ABORTED",
                         thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                         title: "$env.JOB_NAME",
-                        webhookURL: "${DISCORD_WEBHOOK}"
+                        webhookURL: DISCORD_WEBHOOK
                 )
             }
         }
-        stage('Start Windows slave') {
-            when {
-                anyOf { branch 'master'; branch 'develop'; branch "${BRANCH_TO_DEPLOY}" }
-            }
-            steps {
-                withCredentials([[
-                                         $class           : 'AmazonWebServicesCredentialsBinding',
-                                         credentialsId    : '91c4a308-07cd-4468-896c-3d75d086190d',
-                                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                                 ]]) {
-                    sh(
-                            script: """
-                                docker run \
-                                    --rm \
-                                    --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-                                    --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                                    --env AWS_DEFAULT_REGION=eu-west-1 \
-                                    garland/aws-cli-docker \
-                                    aws ec2 start-instances --instance-ids i-06fb7942772e77e55
-                            """
-                    )
-                }
-            }
-        }
+//        stage('Start Windows slave') {
+//            when {
+//                anyOf { branch 'master'; branch 'develop'; branch "${BRANCH_TO_DEPLOY}" }
+//            }
+//            steps {
+//                withCredentials([[
+//                                         $class           : 'AmazonWebServicesCredentialsBinding',
+//                                         credentialsId    : '91c4a308-07cd-4468-896c-3d75d086190d',
+//                                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+//                                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+//                                 ]]) {
+//                    sh(
+//                            script: """
+//                                docker run \
+//                                    --rm \
+//                                    --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+//                                    --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+//                                    --env AWS_DEFAULT_REGION=eu-west-1 \
+//                                    garland/aws-cli-docker \
+//                                    aws ec2 start-instances --instance-ids i-06fb7942772e77e55
+//                            """
+//                    )
+//                }
+//            }
+//        }
         stage('Create installer') {
             agent {
-                label "windows2"
+                label "windows"
             }
             when {
                 anyOf { branch 'master'; branch 'develop'; branch "${BRANCH_TO_DEPLOY}" }
@@ -95,10 +97,14 @@ pipeline {
                     sh(
                             script: """
                                 rm -f Alias-*-Win64-Installer.exe
-                                wget https://ci.alias.cash/job/Alias/job/installer/job/${GIT_BRANCH}/${BUILD_NUMBER}/artifact/Alias-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe
+                                curl -L \\
+                                    --user "${ACCESS_TOKEN}" \\
+                                    ${CI_URL}/job/Alias/job/installer/job/${GIT_BRANCH}/${BUILD_NUMBER}/artifact/Alias-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe \\
+                                    --output Alias-${GIT_TAG_TO_USE}-${GIT_COMMIT_SHORT}-Win64-Installer.exe || true
                             """
                     )
                     uploadArtifactToGitHub(
+                            githubCIToken: GITHUB_CI_TOKEN,
                             user: 'aliascash',
                             repository: 'alias-wallet',
                             tag: "${GIT_TAG_TO_USE}",
@@ -128,11 +134,11 @@ pipeline {
                 discordSend(
                         description: "Build #$env.BUILD_NUMBER finished successfully",
                         image: '',
-                        link: "$env.BUILD_URL",
+                        //link: "$env.BUILD_URL",
                         successful: true,
                         thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                         title: "$env.JOB_NAME",
-                        webhookURL: "${DISCORD_WEBHOOK}"
+                        webhookURL: DISCORD_WEBHOOK
                 )
             }
         }
@@ -147,12 +153,12 @@ pipeline {
             discordSend(
                     description: "Build #$env.BUILD_NUMBER finished unstable",
                     image: '',
-                    link: "$env.BUILD_URL",
+                    //link: "$env.BUILD_URL",
                     successful: true,
                     result: "UNSTABLE",
                     thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                     title: "$env.JOB_NAME",
-                    webhookURL: "${DISCORD_WEBHOOK}"
+                    webhookURL: DISCORD_WEBHOOK
             )
         }
         failure {
@@ -166,23 +172,23 @@ pipeline {
             discordSend(
                     description: "Build #$env.BUILD_NUMBER failed!",
                     image: '',
-                    link: "$env.BUILD_URL",
+                    //link: "$env.BUILD_URL",
                     successful: false,
                     thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                     title: "$env.JOB_NAME",
-                    webhookURL: "${DISCORD_WEBHOOK}"
+                    webhookURL: DISCORD_WEBHOOK
             )
         }
         aborted {
             discordSend(
                     description: "Build #$env.BUILD_NUMBER was aborted",
                     image: '',
-                    link: "$env.BUILD_URL",
+                    //link: "$env.BUILD_URL",
                     successful: true,
                     result: "ABORTED",
                     thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                     title: "$env.JOB_NAME",
-                    webhookURL: "${DISCORD_WEBHOOK}"
+                    webhookURL: DISCORD_WEBHOOK
             )
         }
     }
