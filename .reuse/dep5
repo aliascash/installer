@@ -8,10 +8,6 @@ Copyright: 2020 Alias Developers
 Copyright: 2016 SpectreCoin Developers
 License: MIT
 
-Files: windows/include/mui_extraPages* windows/include/nsProcess.nsh windows/include/Time.nsh windows/plugins/*
-Copyright: 2007 Red Wine https://nsis.sourceforge.io/Readme_Page_Based_on_MUI_License_Page
-License: Zlib
-
-Files: windows/include/unList*
-Copyright: 2006 Instructor http://forums.winamp.com/showthread.php?s=&threadid=213182
+Files: windows/plugins/InnoDownloadPlugin/*
+Copyright: 2016 Mitrich Software <https://mitrichsoftware.wordpress.com/2016/04/18/inno-download-plugin-1-5-1/>
 License: Zlib

@@ -62,21 +62,15 @@ Go to _`Advanced -> Update`_ to use it.
 ## Windows
 
 ### Requirements
-* Nullsoft Scriptable Install System [NSIS v3.x](https://nsis.sourceforge.io/Download)
+* [Inno Setup](https://jrsoftware.org/isinfo.php)
 * Plugins:
-  * [Inetc](https://nsis.sourceforge.io/Inetc_plug-in)
-  * [NSISunzU](https://nsis.sourceforge.io/Nsisunz_plug-in) (Unicode version!)
-  * [NsProcess](https://nsis.sourceforge.io/NsProcess_plugin) (Unicode version, rename nsProcessW.dll into nsProcess.dll!)
-  * [Time](https://nsis.sourceforge.io/Time_plug-in)
-* Setup env var `NSIS_DIR` with path to installed NSIS folder
+  * [Inno Download Plugin](https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin)
+* Setup env var `INNOSETUP_DIR` with path to installed Inno Setup folder
 
 ### Build installer
 * Extract Alias wallet archive to `<clone-location>/windows/content/Alias/`
 * Execute `windows/createInstaller.bat` as Administrator
 _or_
-* run NSIS as administrator and load `<clone-location>/windows/Alias.nsi`
+* Run Inno Setup Compiler and load `<clone-location>/windows/Alias.iss`
 
-The resulting `Alias-Installer.exe` will be located on `<clone-location>/windows/`.
-
-### Installer translations
-See separate [README.md](windows/translations/README.md)
+The resulting `Alias-Installer.exe` will be located on `<clone-location>/windows/Output/`.
